@@ -1,0 +1,52 @@
+.home {
+  background: linear-gradient(95deg, #ffffff 20%, #d9f1e1);
+  position: relative;
+  height: auto;
+  padding: 3rem 15% 1rem 15%;
+  display: flex;
+  gap: 1rem;
+}
+
+.left {
+  height: 100%;
+  width: 30%;
+}
+
+.right {
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hostel-total {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.sortedByContainer {
+  border: 1px solid black;
+  background-color: #d9f1e1;
+  width: 50%;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+.sortedByContainer > span {
+  width: 27%;
+  font-size: 1.2rem;
+}
+select {
+  border-style: solid;
+  background-color: #d9f1e1;
+  border-color: #d9f1e1;
+  height: 100%;
+  width: 73%;
+  font-size: 1.2rem;
+  border-radius: 15px;
+}

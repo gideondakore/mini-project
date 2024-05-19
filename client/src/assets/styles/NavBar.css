@@ -1,0 +1,17 @@
+.nav {
+  background-color: #d9f1e1;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: baseline;
+  height: 15vh;
+  width: 100vw;
+  padding: 0 15% 0 15%;
+}
+
+.urlTitle {
+  color: #7c0303;
+  font-weight: bolder;
+  text-transform: capitalize;
+  text-decoration: none;
+}
