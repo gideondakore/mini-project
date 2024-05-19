@@ -66,14 +66,6 @@ const Home = () => {
             locationRate={locationRate}
           />
         ))}
-        {/* <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels />
-        <DisplayHostels /> */}
       </section>
     </main>
   );

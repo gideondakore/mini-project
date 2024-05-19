@@ -6,7 +6,9 @@ const RegisterBtn = () => {
   const styles = useStyles();
   return (
     <div className={styles.registerSignInBtnContainer}>
-      <button className={styles.registerSignInBtn}>Register</button>
+      <button type="button" className={styles.registerSignInBtn}>
+        Register
+      </button>
     </div>
   );
 };
