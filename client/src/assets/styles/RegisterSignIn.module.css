@@ -1,0 +1,52 @@
+.registerSignInBtnWrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem;
+  align-items: center;
+}
+
+.registerSignInBtnContainer {
+  height: 2.5rem;
+  width: 5rem;
+}
+
+.registerSignInBtn {
+  background-color: #222f36;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  border: 0;
+  border-radius: 0.2rem;
+  transition: all 0.8s ease;
+}
+
+.registerSignInBtn:hover {
+  background-color: #0c1114;
+  font-size: 1.3rem;
+}
+
+.customerService {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+/*  */
+
+/*  */
+
+.listProperty {
+  text-decoration: none;
+  color: #222f36;
+  margin: 0 2rem 0 0.2rem;
+  font-size: 1.2rem;
+}
+
+.listProperty:hover {
+  text-decoration: underline;
+  text-decoration-color: #0c1114;
+  color: #0c1114;
+}
