@@ -64,6 +64,7 @@ const Home = () => {
             reviews={reviews}
             rate={rate}
             locationRate={locationRate}
+            key={i}
           />
         ))}
       </section>
