@@ -5,6 +5,8 @@ import { StylesProvider } from "../context/NavBarStyleContext";
 import styles from "../assets/styles/RegisterSignIn.module.css";
 import { GoQuestion } from "react-icons/go";
 import { SearchAreaInput } from "../components";
+import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 const NavBar = () => {
   return (
@@ -29,6 +31,8 @@ const NavBar = () => {
           </div>
         </StylesProvider>
       </div>
+      <Outlet />
+      <Footer />
     </>
   );
 };

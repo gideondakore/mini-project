@@ -1,0 +1,214 @@
+:root {
+  --form-logo-width: 70px;
+  --form-logo-height: 70px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  position: relative;
+}
+
+.container {
+  background-image: url("../../assets/images/sysadmin_03.jpg");
+  background-color: linear-gradient(45deg, rgb(224, 114, 224), purple);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-origin: border-box;
+}
+
+main {
+  position: relative;
+  display: flex;
+  padding: 0.3rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.login_section {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 40%;
+  padding-top: 3.1rem;
+  border-radius: 32px;
+  background-color: rgb(205, 219, 219);
+}
+
+.form_logo {
+  position: absolute;
+  width: var(--form-logo-width);
+  height: var(--form-logo-height);
+  border-radius: 50%;
+  left: calc(50% - var(--form-logo-width) / 2);
+  top: -28px;
+  background: linear-gradient(90deg, rgb(207, 155, 207), rgb(75, 41, 75));
+}
+
+.login_title {
+  margin: auto;
+  text-transform: capitalize;
+  color: rgb(172, 103, 172);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+#grid-form {
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(4, minmax(3.5rem, auto));
+  grid-template-columns: 80%;
+  justify-content: center;
+  row-gap: 10px;
+}
+
+input.email {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  margin: 1.4rem 0px 0px 0px;
+  width: 100%;
+}
+
+label.email {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+#passForgot {
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+#passForgot > :nth-child(2) {
+  text-decoration: none;
+}
+#passForgot > :hover:nth-child(2) {
+  text-decoration: underline;
+}
+
+input.password {
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  margin: 1.4rem 0px 0px 0px;
+  width: 100%;
+}
+
+.remember-check {
+  grid-row: 3 / span 1;
+  grid-column: 1 / span 1;
+  display: flex;
+}
+
+input.btnCheck {
+  width: 0.9rem;
+  height: 20px;
+  cursor: pointer;
+}
+
+.login_button {
+  grid-row: 4 / span 1;
+  grid-column: 1 / span 1;
+  height: 2.75rem;
+  width: 50%;
+  place-self: center;
+  cursor: pointer;
+}
+
+#sign_title {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  height: 2rem;
+}
+
+#sign_title > hr {
+  height: 2px;
+  width: 5.5rem;
+  margin: 0px;
+}
+
+#providers {
+  display: block;
+  width: 100%;
+  height: 3rem;
+  margin-top: 10px;
+  position: relative;
+}
+
+#providers-list {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+li {
+  height: 100%;
+  min-width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+li > a {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  height: 75%;
+  width: 75;
+}
+
+li > a > img {
+  width: 100%;
+  height: 100%;
+}
+
+#signup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+#signup > a {
+  text-decoration: none;
+  text-transform: capitalize;
+}
+#signup > a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login_section {
+    width: 80vw;
+  }
+
+  input.email,
+  input.password {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .login_section {
+    width: 90vw;
+  }
+}

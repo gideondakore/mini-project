@@ -1,33 +1,34 @@
 import * as dotenv from "dotenv";
 import express, { Request, Response, urlencoded } from "express";
 import User from "./models/user.model";
-// import fetch from "node-fetch";
+import cors from "cors";
 
 dotenv.config();
+
+interface CorsOptions {
+  origin: string;
+  methods: string;
+  credentials: boolean;
+  optionsSuccessStatus: number;
+}
+
+const corsOptions: CorsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,POST,PUT,PATCH,DELETE,HEAD",
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(corsOptions));
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const GOOGLE_OAUTH_URL = process.env.GOOGLE_OAUTH_URL;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
 const GOOGLE_TOKEN_INFO_URL = process.env.GOOGLE_TOKEN_INFO_URL as string;
-const GOOGLE_CALLBACK_URL = "http%3A//localhost:8000/google/callback";
-
-const GOOGLE_OAUTH_SCOPES = [
-  "https%3A//www.googleapis.com/auth/userinfo.email",
-  "https%3A//www.googleapis.com/auth/userinfo.profile",
-];
-
-app.get("/register", async (req: Request, res: Response) => {
-  const state = "some_state";
-  const scopes = GOOGLE_OAUTH_SCOPES.join(" ");
-  const GOOGLE_OAUTH_CONSENT_SCREEN_URL = `${GOOGLE_OAUTH_URL}?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_CALLBACK_URL}&access_type=offline&response_type=code&state=${state}&scope=${scopes}`;
-  res.redirect(GOOGLE_OAUTH_CONSENT_SCREEN_URL);
-});
 
 interface GoogleOAuthData {
   code: string;
@@ -64,13 +65,12 @@ app.get("/google/callback", async (req: Request, res: Response) => {
   const token_info_data = await token_info_response.json();
 
   const { email, name } = token_info_data;
-  // console.log("Email: ", email, " Name: ", name);
   let user = await User.findOne({ email }).select("-password");
   if (!user) {
     user = await User.create({ name, email });
   }
   const token = user.generateToken();
-  console.log(token);
+  console.log(user, token);
   res.status(token_info_response.status).json({ user, token });
 });
 

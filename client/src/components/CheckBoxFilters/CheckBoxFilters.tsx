@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import "./CheckBoxFilters.css";
-import useInViewport from "../../hooks/useInViewport";
+// import useInViewport from "../../hooks/useInViewport";
 
 const CheckBoxFilters = () => {
   const elementRef = useRef<HTMLDivElement>(null);
-  const isInView = useInViewport(elementRef, { threshold: 0.0 });
+  // const isInView = useInViewport(elementRef, { threshold: 0.0 });
 
   return (
     <div className="filtersWrapper" ref={elementRef}>
@@ -401,7 +401,7 @@ const CheckBoxFilters = () => {
           <label htmlFor="emergency-cord">Emergency cord in bathroom</label>
         </p>
       </div>
-      {!isInView && (
+      {/* {!isInView && (
         <div className="filterContainer-sticky">
           <p>Popular filter</p>
           <p>
@@ -436,7 +436,7 @@ const CheckBoxFilters = () => {
             <label htmlFor="five-star">5 star</label>
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
