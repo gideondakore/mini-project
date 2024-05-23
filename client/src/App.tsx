@@ -6,14 +6,11 @@ import NavBar from "./layouts/NavBar";
 
 const App = () => {
   return (
-    <div>
-      <Routes>
-        <Route path="/" element={<NavBar />}>
-          <Route index element={<Home />} />
-        </Route>
-        {/* <Route path="/register" element={<Register />} /> */}
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<NavBar />}>
+        <Route index element={<Home />} />
+      </Route>
+    </Routes>
   );
 };
 
