@@ -1,23 +1,31 @@
 import React from "react";
+import loginLogo from "../../assets/images/login-svg.svg";
+import gLogo from "../../assets/images/google-svg.svg";
+import fbLogo from "../../assets/images/facebook-svg.svg";
+import xLogo from "../../assets/images/twitter-x.svg";
 import "./Register.css";
 const Register = () => {
   return (
-    <div className="container">
-      <main>
+    <div className="mainWrapper">
+      <main className="mainContainer">
         <div className="form_logo">
-          <img
-            width="50px"
-            height="50px"
-            src="../../assets/images/login-svg.svg"
-            alt="login"
-          />
+          <img width="50px" height="50px" src={loginLogo} alt="login" />
         </div>
         <section className="login_section">
           <h3 className="login_title">login now</h3>
           <form id="form">
             <div id="grid-form">
+              <label htmlFor="fullname" className="fullname">
+                Full name
+              </label>
+              <input
+                className="fullname"
+                type="text"
+                placeholder="Full name"
+                required
+              />
               <label htmlFor="email" className="email">
-                email
+                Email
               </label>
               <input
                 className="email"
@@ -25,19 +33,26 @@ const Register = () => {
                 placeholder="Enter your email"
                 required
               />
-              <div id="passForgot">
-                <label htmlFor="password" className="password">
-                  password{" "}
-                </label>
-                <a className="passForgot" href="/">
-                  forgot password?
-                </a>
-              </div>
-
+              <label htmlFor="birthDate" className="birthDate">
+                Birth date
+              </label>
+              <input className="birthDate" type="date" required />
+              <label htmlFor="password" className="password">
+                Password
+              </label>
               <input
                 className="password"
                 type="password"
                 placeholder="Enter your password"
+                required
+              />
+              <label htmlFor="confirmPassword" className="confirmPassword">
+                Confirm password
+              </label>
+              <input
+                className="confirmPassword"
+                type="password"
+                placeholder="Confirm password"
                 required
               />
               <div className="remember-check">
@@ -62,10 +77,7 @@ const Register = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        src="../../assets/images/google-svg.svg"
-                        alt="google logo"
-                      />
+                      <img src={gLogo} alt="google logo" />
                     </a>
                   </li>
                   <li>
@@ -74,18 +86,12 @@ const Register = () => {
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <img
-                        src="../../assets/images/facebook-svg.svg"
-                        alt="facebook logo"
-                      />
+                      <img src={fbLogo} alt="facebook logo" />
                     </a>
                   </li>
                   <li>
                     <a href="https://x.com" target="_blank" rel="noreferrer">
-                      <img
-                        src="../../assets/images/twitter-x.svg"
-                        alt="x logo"
-                      />
+                      <img src={xLogo} alt="x logo" />
                     </a>
                   </li>
                 </ul>

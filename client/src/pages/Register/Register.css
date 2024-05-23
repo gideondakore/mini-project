@@ -11,22 +11,24 @@ html {
   position: relative;
 }
 
-.container {
+.mainWrapper {
   background-image: url("../../assets/images/sysadmin_03.jpg");
   background-color: linear-gradient(45deg, rgb(224, 114, 224), purple);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   background-origin: border-box;
+  height: 100dvh;
+  width: 100dvw;
 }
 
-main {
+.mainContainer {
   position: relative;
   display: flex;
   padding: 0.3rem;
   align-items: center;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 5rem;
 }
 
 .login_section {
@@ -67,49 +69,79 @@ form {
 #grid-form {
   width: 100%;
   display: grid;
-  grid-template-rows: repeat(4, minmax(3.5rem, auto));
+  grid-template-rows: repeat(7, minmax(4.5rem, auto));
   grid-template-columns: 80%;
   justify-content: center;
   row-gap: 10px;
 }
 
-input.email {
+input.fullname {
   grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  margin: 1.8rem 0px 0px 0px;
+  width: 100%;
+}
+
+label.fullname {
+  grid-row: 1 / span 1;
+  grid-column: 1 / span 1;
+  width: 100%;
+}
+
+input.email {
+  grid-row: 2 / span 1;
   grid-column: 1 / span 1;
   margin: 1.4rem 0px 0px 0px;
   width: 100%;
 }
 
 label.email {
-  grid-row: 1 / span 1;
+  grid-row: 2 / span 1;
   grid-column: 1 / span 1;
-  margin-bottom: 1.5rem;
   width: 100%;
 }
 
-#passForgot {
-  grid-row: 2 / span 1;
-  grid-column: 1 / span 1;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-#passForgot > :nth-child(2) {
-  text-decoration: none;
-}
-#passForgot > :hover:nth-child(2) {
-  text-decoration: underline;
-}
-
-input.password {
-  grid-row: 2 / span 1;
+input.birthDate {
+  grid-row: 3 / span 1;
   grid-column: 1 / span 1;
   margin: 1.4rem 0px 0px 0px;
   width: 100%;
 }
 
-.remember-check {
+label.birthDate {
   grid-row: 3 / span 1;
+  grid-column: 1 / span 1;
+  width: 100%;
+}
+
+input.password {
+  grid-row: 4 / span 1;
+  grid-column: 1 / span 1;
+  margin: 1.4rem 0px 0px 0px;
+  width: 100%;
+}
+
+label.password {
+  grid-row: 4 / span 1;
+  grid-column: 1 / span 1;
+  width: 100%;
+}
+
+input.confirmPassword {
+  grid-row: 5 / span 1;
+  grid-column: 1 / span 1;
+  margin: 1.4rem 0px 0px 0px;
+  width: 100%;
+}
+
+label.confirmPassword {
+  grid-row: 5 / span 1;
+  grid-column: 1 / span 1;
+  width: 100%;
+}
+
+.remember-check {
+  grid-row: 6 / span 1;
   grid-column: 1 / span 1;
   display: flex;
 }
@@ -121,7 +153,7 @@ input.btnCheck {
 }
 
 .login_button {
-  grid-row: 4 / span 1;
+  grid-row: 7 / span 1;
   grid-column: 1 / span 1;
   height: 2.75rem;
   width: 50%;

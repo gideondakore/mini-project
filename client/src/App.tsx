@@ -10,6 +10,10 @@ const App = () => {
       <Route path="/" element={<NavBar />}>
         <Route index element={<Home />} />
       </Route>
+      <Route path="/register">
+        <Route index element={<Register />} />
+        <Route path=":id" element={<Register />} />
+      </Route>
     </Routes>
   );
 };

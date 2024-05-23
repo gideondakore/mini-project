@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import "./CheckBoxFilters.css";
-// import useInViewport from "../../hooks/useInViewport";
+import useInViewport from "../../hooks/useInViewport";
 
 const CheckBoxFilters = () => {
   const elementRef = useRef<HTMLDivElement>(null);
-  // const isInView = useInViewport(elementRef, { threshold: 0.0 });
+  const isInView = useInViewport(elementRef, { threshold: 0.0 });
 
   return (
     <div className="filtersWrapper" ref={elementRef}>
@@ -24,7 +24,9 @@ const CheckBoxFilters = () => {
             name="apartment"
             value="apartment"
           />
-          <label htmlFor="apartment">Apartment</label>
+          <label className="filterLabel" htmlFor="apartment">
+            Apartment
+          </label>
         </p>
         <p>
           <input
@@ -33,11 +35,15 @@ const CheckBoxFilters = () => {
             name="free-wifi"
             value="free-wifi"
           />
-          <label htmlFor="free-wifi">Free WiFi</label>
+          <label className="filterLabel" htmlFor="free-wifi">
+            Free WiFi
+          </label>
         </p>
         <p>
           <input type="checkbox" id="ac" name="ac" value="ac" />
-          <label htmlFor="ac">Air conditioning</label>
+          <label className="filterLabel" htmlFor="ac">
+            Air conditioning
+          </label>
         </p>
         <p>
           <input
@@ -46,7 +52,9 @@ const CheckBoxFilters = () => {
             name="five-star"
             value="five-star"
           />
-          <label htmlFor="five-star">5 star</label>
+          <label className="filterLabel" htmlFor="five-star">
+            5 star
+          </label>
         </p>
       </div>
 
@@ -54,7 +62,9 @@ const CheckBoxFilters = () => {
         <p>Facilities</p>
         <p>
           <input type="checkbox" id="parking" name="parking" value="parking" />
-          <label htmlFor="parking">Parking</label>
+          <label className="filterLabel" htmlFor="parking">
+            Parking
+          </label>
         </p>
         <p>
           <input
@@ -63,11 +73,15 @@ const CheckBoxFilters = () => {
             name="free-wifi"
             value="free-wifi"
           />
-          <label htmlFor="free-wifi">Free WiFi</label>
+          <label className="filterLabel" htmlFor="free-wifi">
+            Free WiFi
+          </label>
         </p>
         <p>
           <input type="checkbox" id="ac" name="ac" value="ac" />
-          <label htmlFor="ac">Air conditioning</label>
+          <label className="filterLabel" htmlFor="ac">
+            Air conditioning
+          </label>
         </p>
         <p>
           <input
@@ -76,7 +90,9 @@ const CheckBoxFilters = () => {
             name="room-service"
             value="room-service"
           />
-          <label htmlFor="room-service">Room service</label>
+          <label className="filterLabel" htmlFor="room-service">
+            Room service
+          </label>
         </p>
         <p>
           <input
@@ -85,7 +101,9 @@ const CheckBoxFilters = () => {
             name="fitness-center"
             value="fitness-center"
           />
-          <label htmlFor="fitness-center">Fitness centre</label>
+          <label className="filterLabel" htmlFor="fitness-center">
+            Fitness centre
+          </label>
         </p>
 
         <p>
@@ -95,7 +113,9 @@ const CheckBoxFilters = () => {
             name="wheelchair"
             value="wheelchair"
           />
-          <label htmlFor="wheelchair">Wheelchair accessible</label>
+          <label className="filterLabel" htmlFor="wheelchair">
+            Wheelchair accessible
+          </label>
         </p>
       </div>
 
@@ -110,7 +130,9 @@ const CheckBoxFilters = () => {
             name="apartment"
             value="apartment"
           />
-          <label htmlFor="apartment">Apartment</label>
+          <label className="filterLabel" htmlFor="apartment">
+            Apartment
+          </label>
         </p>
         <p>
           <input
@@ -119,11 +141,15 @@ const CheckBoxFilters = () => {
             name="homestel"
             value="homestel"
           />
-          <label htmlFor="homestel">Homestel</label>
+          <label className="filterLabel" htmlFor="homestel">
+            Homestel
+          </label>
         </p>
         <p>
           <input type="checkbox" id="hostel" name="hostel" value="hostel" />
-          <label htmlFor="ac">Hostel</label>
+          <label className="filterLabel" htmlFor="ac">
+            Hostel
+          </label>
         </p>
       </div>
 
@@ -141,7 +167,9 @@ const CheckBoxFilters = () => {
             name="one-star"
             value="one-star"
           />
-          <label htmlFor="one-star">1 star</label>
+          <label className="filterLabel" htmlFor="one-star">
+            1 star
+          </label>
         </p>
         <p>
           <input
@@ -150,7 +178,9 @@ const CheckBoxFilters = () => {
             name="two-star"
             value="two-star"
           />
-          <label htmlFor="two-star">2 star</label>
+          <label className="filterLabel" htmlFor="two-star">
+            2 star
+          </label>
         </p>
         <p>
           <input
@@ -159,7 +189,9 @@ const CheckBoxFilters = () => {
             name="three-star"
             value="three-star"
           />
-          <label htmlFor="three-star">3 star</label>
+          <label className="filterLabel" htmlFor="three-star">
+            3 star
+          </label>
         </p>
         <p>
           <input
@@ -168,7 +200,9 @@ const CheckBoxFilters = () => {
             name="four-star"
             value="four-star"
           />
-          <label htmlFor="four-star">4 star</label>
+          <label className="filterLabel" htmlFor="four-star">
+            4 star
+          </label>
         </p>
         <p>
           <input
@@ -177,11 +211,15 @@ const CheckBoxFilters = () => {
             name="five-star"
             value="five-star"
           />
-          <label htmlFor="five-star">5 star</label>
+          <label className="filterLabel" htmlFor="five-star">
+            5 star
+          </label>
         </p>
         <p>
           <input type="checkbox" id="unrated" name="unrated" value="unrated" />
-          <label htmlFor="unrated">Unrated</label>
+          <label className="filterLabel" htmlFor="unrated">
+            Unrated
+          </label>
         </p>
       </div>
 
@@ -194,31 +232,45 @@ const CheckBoxFilters = () => {
             name="private-bathroom"
             value="private-bathroom"
           />
-          <label htmlFor="private-bathroom">Private bathroom</label>
+          <label className="filterLabel" htmlFor="private-bathroom">
+            Private bathroom
+          </label>
         </p>
         <p>
           <input type="checkbox" id="ac" name="ac" value="ac" />
-          <label htmlFor="ac">Air Conditioning</label>
+          <label className="filterLabel" htmlFor="ac">
+            Air Conditioning
+          </label>
         </p>
         <p>
           <input type="checkbox" id="kitchen" name="kitchen" value="kitchen" />
-          <label htmlFor="kitchen">Kitchen/Kitchenette</label>
+          <label className="filterLabel" htmlFor="kitchen">
+            Kitchen/Kitchenette
+          </label>
         </p>
         <p>
           <input type="checkbox" id="shower" name="shower" value="shower" />
-          <label htmlFor="shower">Shower</label>
+          <label className="filterLabel" htmlFor="shower">
+            Shower
+          </label>
         </p>
         <p>
           <input type="checkbox" id="kitchen" name="kitchen" value="kitchen" />
-          <label htmlFor="kitchen">Kitchen/Kitchenette</label>
+          <label className="filterLabel" htmlFor="kitchen">
+            Kitchen/Kitchenette
+          </label>
         </p>
         <p>
           <input type="checkbox" id="balcony" name="balcony" value="balcony" />
-          <label htmlFor="balcony">Balcony</label>
+          <label className="filterLabel" htmlFor="balcony">
+            Balcony
+          </label>
         </p>
         <p>
           <input type="checkbox" id="kitchen" name="kitchen" value="kitchen" />
-          <label htmlFor="kitchen">Kitchen/Kitchenette</label>
+          <label className="filterLabel" htmlFor="kitchen">
+            Kitchen/Kitchenette
+          </label>
         </p>
         <p>
           <input
@@ -227,15 +279,21 @@ const CheckBoxFilters = () => {
             name="refrigerator"
             value="refrigerator"
           />
-          <label htmlFor="refrigerator">Refrigerator</label>
+          <label className="filterLabel" htmlFor="refrigerator">
+            Refrigerator
+          </label>
         </p>
         <p>
           <input type="checkbox" id="kitchen" name="kitchen" value="kitchen" />
-          <label htmlFor="kitchen">Kitchen/Kitchenette</label>
+          <label className="filterLabel" htmlFor="kitchen">
+            Kitchen/Kitchenette
+          </label>
         </p>
         <p>
           <input type="checkbox" id="toilet" name="toilet" value="toilet" />
-          <label htmlFor="toilet">Toilet</label>
+          <label className="filterLabel" htmlFor="toilet">
+            Toilet
+          </label>
         </p>
         <p>
           <input
@@ -244,19 +302,27 @@ const CheckBoxFilters = () => {
             name="accessible-room"
             value="accessible-room"
           />
-          <label htmlFor="accessible-room">Accessible room</label>
+          <label className="filterLabel" htmlFor="accessible-room">
+            Accessible room
+          </label>
         </p>
         <p>
           <input type="checkbox" id="tv" name="tv" value="tv" />
-          <label htmlFor="tv">TV</label>
+          <label className="filterLabel" htmlFor="tv">
+            TV
+          </label>
         </p>
         <p>
           <input type="checkbox" id="hot-tub" name="hot-tub" value="hot-tub" />
-          <label htmlFor="hot-tub">Hot tub</label>
+          <label className="filterLabel" htmlFor="hot-tub">
+            Hot tub
+          </label>
         </p>
         <p>
           <input type="checkbox" id="terrace" name="terrace" value="terrace" />
-          <label htmlFor="terrace">Terrace</label>
+          <label className="filterLabel" htmlFor="terrace">
+            Terrace
+          </label>
         </p>
         <p>
           <input
@@ -265,11 +331,15 @@ const CheckBoxFilters = () => {
             name="toilet-paper"
             value="toilet-paper"
           />
-          <label htmlFor="toilet-paper">Toilet paper</label>
+          <label className="filterLabel" htmlFor="toilet-paper">
+            Toilet paper
+          </label>
         </p>
         <p>
           <input type="checkbox" id="bath" name="bath" value="bath" />
-          <label htmlFor="bath">Bath</label>
+          <label className="filterLabel" htmlFor="bath">
+            Bath
+          </label>
         </p>
       </div>
 
@@ -282,7 +352,9 @@ const CheckBoxFilters = () => {
             name="less-one"
             value="less-one"
           />
-          <label htmlFor="less-one">Less than 1 km</label>
+          <label className="filterLabel" htmlFor="less-one">
+            Less than 1 km
+          </label>
         </p>
         <p>
           <input
@@ -291,7 +363,9 @@ const CheckBoxFilters = () => {
             name="less-three"
             value="less-three"
           />
-          <label htmlFor="less-three">Less than 3 km</label>
+          <label className="filterLabel" htmlFor="less-three">
+            Less than 3 km
+          </label>
         </p>
         <p>
           <input
@@ -300,7 +374,9 @@ const CheckBoxFilters = () => {
             name="less-five"
             value="less-five"
           />
-          <label htmlFor="less-five">Less than 5 km</label>
+          <label className="filterLabel" htmlFor="less-five">
+            Less than 5 km
+          </label>
         </p>
       </div>
 
@@ -313,7 +389,9 @@ const CheckBoxFilters = () => {
             name="fitness-centre"
             value="fitness-centre"
           />
-          <label htmlFor="fitness-centre">Fitness centre</label>
+          <label className="filterLabel" htmlFor="fitness-centre">
+            Fitness centre
+          </label>
         </p>
         <p>
           <input
@@ -322,11 +400,15 @@ const CheckBoxFilters = () => {
             name="table-tennis"
             value="table-tennis"
           />
-          <label htmlFor="table-tennis">Table tennis</label>
+          <label className="filterLabel" htmlFor="table-tennis">
+            Table tennis
+          </label>
         </p>
         <p>
           <input type="checkbox" id="snooker" name="snooker" value="snooker" />
-          <label htmlFor="snooker">Snooker/pool</label>
+          <label className="filterLabel" htmlFor="snooker">
+            Snooker/pool
+          </label>
         </p>
         <p>
           <input
@@ -335,19 +417,27 @@ const CheckBoxFilters = () => {
             name="video-game"
             value="video-game"
           />
-          <label htmlFor="video-game">Video game</label>
+          <label className="filterLabel" htmlFor="video-game">
+            Video game
+          </label>
         </p>
         <p>
           <input type="checkbox" id="ludo" name="ludo" value="ludo" />
-          <label htmlFor="ludo">Ludo & Snake game</label>
+          <label className="filterLabel" htmlFor="ludo">
+            Ludo & Snake game
+          </label>
         </p>
         <p>
           <input type="checkbox" id="checker" name="checker" value="checker" />
-          <label htmlFor="checker">Checker</label>
+          <label className="filterLabel" htmlFor="checker">
+            Checker
+          </label>
         </p>
         <p>
           <input type="checkbox" id="chess" name="chess" value="chess" />
-          <label htmlFor="chess">Chess</label>
+          <label className="filterLabel" htmlFor="chess">
+            Chess
+          </label>
         </p>
       </div>
 
@@ -360,7 +450,7 @@ const CheckBoxFilters = () => {
             name="ground-floor"
             value="ground-floor"
           />
-          <label htmlFor="ground-floor">
+          <label className="filterLabel" htmlFor="ground-floor">
             Entire unit located on ground floor
           </label>
         </p>
@@ -371,7 +461,9 @@ const CheckBoxFilters = () => {
             name="elevator"
             value="elevator"
           />
-          <label htmlFor="elevator">Upper floors accessible by elevator</label>
+          <label className="filterLabel" htmlFor="elevator">
+            Upper floors accessible by elevator
+          </label>
         </p>
         <p>
           <input
@@ -380,7 +472,9 @@ const CheckBoxFilters = () => {
             name="wheelchair"
             value="wheelchair"
           />
-          <label htmlFor="wheelchair">Entire unit wheelchair accessible</label>
+          <label className="filterLabel" htmlFor="wheelchair">
+            Entire unit wheelchair accessible
+          </label>
         </p>
         <p>
           <input
@@ -389,7 +483,9 @@ const CheckBoxFilters = () => {
             name="showerchair"
             value="showerchair"
           />
-          <label htmlFor="showerchair">Shower chair</label>
+          <label className="filterLabel" htmlFor="showerchair">
+            Shower chair
+          </label>
         </p>
         <p>
           <input
@@ -398,10 +494,12 @@ const CheckBoxFilters = () => {
             name="emergency-cord"
             value="emergency-cord"
           />
-          <label htmlFor="emergency-cord">Emergency cord in bathroom</label>
+          <label className="filterLabel" htmlFor="emergency-cord">
+            Emergency cord in bathroom
+          </label>
         </p>
       </div>
-      {/* {!isInView && (
+      {!isInView && (
         <div className="filterContainer-sticky">
           <p>Popular filter</p>
           <p>
@@ -411,7 +509,9 @@ const CheckBoxFilters = () => {
               name="apartment"
               value="apartment"
             />
-            <label htmlFor="apartment">Apartment</label>
+            <label className="filterLabel" htmlFor="apartment">
+              Apartment
+            </label>
           </p>
           <p>
             <input
@@ -420,11 +520,15 @@ const CheckBoxFilters = () => {
               name="free-wifi"
               value="free-wifi"
             />
-            <label htmlFor="free-wifi">Free WiFi</label>
+            <label className="filterLabel" htmlFor="free-wifi">
+              Free WiFi
+            </label>
           </p>
           <p>
             <input type="checkbox" id="ac" name="ac" value="ac" />
-            <label htmlFor="ac">Air conditioning</label>
+            <label className="filterLabel" htmlFor="ac">
+              Air conditioning
+            </label>
           </p>
           <p>
             <input
@@ -433,10 +537,12 @@ const CheckBoxFilters = () => {
               name="five-star"
               value="five-star"
             />
-            <label htmlFor="five-star">5 star</label>
+            <label className="filterLabel" htmlFor="five-star">
+              5 star
+            </label>
           </p>
         </div>
-      )} */}
+      )}
     </div>
   );
 };
