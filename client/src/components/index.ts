@@ -4,6 +4,8 @@ import { CheckBoxFilters } from "./CheckBoxFilters/CheckBoxFilters";
 import SearchAreaInput from "./SearchAreaInput/SearchAreaInput";
 import DisplayHostels from "./DisplayHostels/DisplayHostels";
 import SideBar from "./SideBar/SideBar";
+import ComprehensiveSearch from "./ComprehensiveSearch/ComprehensiveSearch";
+
 import type {
   StarType,
   RemarkType,
@@ -17,6 +19,7 @@ export {
   SearchAreaInput,
   DisplayHostels,
   SideBar,
+  ComprehensiveSearch,
   StarType,
   RemarkType,
   RateType,
