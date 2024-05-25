@@ -1,5 +1,5 @@
 import React from "react";
-import "./Home.css";
+// import "./Home.css";
 import { CheckBoxFilters } from "../../components";
 import { DisplayHostels } from "../../components";
 import { StarType, RemarkType, RateType } from "../../components";

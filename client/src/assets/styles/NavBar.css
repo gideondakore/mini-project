@@ -1,17 +1,9 @@
-.nav {
-  background-color: #d9f1e1;
+.nav-bar {
+  background-color: var(--backgroundColor);
   display: flex;
-  flex-wrap: nowrap;
+  height: 5rem;
+  width: 100%;
   justify-content: space-between;
-  align-items: baseline;
-  height: 15vh;
-  width: 100vw;
-  padding: 0 15% 0 15%;
-}
-
-.urlTitle {
-  color: #7c0303;
-  font-weight: bolder;
-  text-transform: capitalize;
-  text-decoration: none;
+  padding: 0px 10px 0px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }

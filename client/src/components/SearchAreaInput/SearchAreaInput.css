@@ -5,64 +5,28 @@
   justify-content: center;
   align-items: center;
   height: 3rem;
-  padding-left: 1px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: #222f36;
-  border-radius: 3px;
-  position: absolute;
-  left: 30%;
-  top: 80px;
-  z-index: 10;
-  background-color: #d9f1e1;
+  padding-left: 5px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.08);
 }
 
 .hostelFilterByAreaName {
-  border-color: #d9f1e1;
   border-style: solid;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0.08);
   height: 100%;
   border: 0px;
+  border-radius: 20px;
   font-size: 1rem;
-  font-weight: bold;
-  padding: 0 5px 0 2px;
+  font-weight: 600;
+  font-family: var(--fontFamily);
+  padding: 0 10px 0 15px;
 }
 
 .hostelFilterByAreaName:focus {
   outline: none;
 }
 ::placeholder {
-  color: #222f36;
+  color: var(--fontColor);
+  font-family: var(--fontFamily);
   opacity: 0.8;
-}
-
-.availableAreasContainer {
-  display: flex;
-  border: 1px solid #222f36;
-  padding: 10px;
-  min-width: 10rem;
-  position: absolute;
-  left: 30%;
-  top: 130px;
-  z-index: 10;
-  font-size: 1.2rem;
-  color: #d9f1e1;
-  max-height: 10rem;
-  overflow-y: auto;
-  /* background-color: #b5d0de; */
-  background-color: #a7ccb4;
-}
-
-.availableAreas {
-  list-style-type: none;
-  width: 100%;
-}
-
-.availableAreas > li {
-  cursor: pointer;
-  margin-bottom: 10px;
-  font-size: large;
-  font-weight: bold;
-  border: 1px solid #222f36;
-  width: 100%;
 }

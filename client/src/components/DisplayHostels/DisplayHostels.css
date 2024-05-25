@@ -10,7 +10,7 @@
   padding: 5px;
   gap: 0.5rem;
   border-radius: 10px;
-  background-color: azure;
+  background-color: var(--backgroundColor);
 }
 
 .hostelInfoWrapper:hover {
@@ -44,8 +44,10 @@
 }
 
 .hostelInfo-info p:first-of-type {
-  font-size: 1.2rem;
-  font-weight: bold;
+  color: var(--fontColor);
+  font-family: var(--fontFamily);
+  font-size: 1.5rem;
+  font-weight: 600;
   text-transform: capitalize;
 }
 
@@ -55,9 +57,11 @@
   flex-wrap: wrap;
 }
 .hostelInfo-info p:nth-of-type(2) > a {
-  font-size: 1rem;
-  color: blue;
-  text-decoration-color: blue;
+  color: var(--accent);
+  font-family: var(--fontFamily);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration-color: var(--secondary);
   margin-right: 1rem;
 }
 
@@ -80,8 +84,10 @@
 
 .location-rate {
   align-self: flex-end;
-  font-weight: bold;
-  color: blue;
+  color: var(--fontColor);
+  font-family: var(--fontFamily);
+  font-size: 1.2rem;
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -90,7 +96,10 @@
   width: 7rem;
   align-self: flex-end;
   background-color: rgba(0, 0, 255, 0.8);
+  color: var(--fontColor);
+  font-family: var(--fontFamily);
   font-size: 1.2rem;
+  font-weight: 600;
   border-style: solid;
   border-radius: 5px;
   color: white;

@@ -5,16 +5,11 @@ import { StylesProvider } from "../context/NavBarStyleContext";
 import styles from "../assets/styles/RegisterSignIn.module.css";
 import { GoQuestion } from "react-icons/go";
 import { SearchAreaInput } from "../components";
-import { Outlet } from "react-router-dom";
-import Footer from "./Footer";
 
 const NavBar = () => {
   return (
     <>
-      <div className="nav">
-        <a href="/" className="urlTitle">
-          Hostelbook.com
-        </a>
+      <div className="nav-bar">
         <SearchAreaInput />
         <StylesProvider styles={styles}>
           <div className={styles.registerSignInBtnWrapper}>
@@ -23,16 +18,11 @@ const NavBar = () => {
               style={{ color: "#222f36", fontSize: "1.8rem" }}
               title="Contact customer service"
             />
-            <a className={styles.listProperty} href="/">
-              List your property
-            </a>
             <RegisterBtn />
             <SignInBtn />
           </div>
         </StylesProvider>
       </div>
-      <Outlet />
-      <Footer />
     </>
   );
 };

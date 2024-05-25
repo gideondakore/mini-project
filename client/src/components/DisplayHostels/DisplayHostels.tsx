@@ -161,8 +161,8 @@ const DisplayHostels = ({
               <img
                 src={imgUrl}
                 alt="hostel pic"
-                height={250}
-                width={230}
+                height={350}
+                width={380}
                 className="hostelImage"
               />
               <button

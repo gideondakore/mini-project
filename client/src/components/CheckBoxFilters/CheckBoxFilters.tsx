@@ -119,8 +119,6 @@ const CheckBoxFilters = () => {
         </p>
       </div>
 
-      {/* //////////////////////// */}
-
       <div className="filterContainer">
         <p>Property type</p>
         <p>
@@ -152,8 +150,6 @@ const CheckBoxFilters = () => {
           </label>
         </p>
       </div>
-
-      {/* ////////////////////////////// */}
 
       <div className="filterContainer">
         <p>Propert rating</p>
@@ -499,6 +495,7 @@ const CheckBoxFilters = () => {
           </label>
         </p>
       </div>
+
       {!isInView && (
         <div className="filterContainer-sticky">
           <p>Popular filter</p>
