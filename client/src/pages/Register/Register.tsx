@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import loginLogo from "../../assets/images/login-svg.svg";
 import gLogo from "../../assets/images/google-svg.svg";
 import fbLogo from "../../assets/images/facebook-svg.svg";
 import xLogo from "../../assets/images/twitter-x.svg";
 import "./Register.css";
+import { aouthLogin } from "../../services/api/authService";
 const Register = () => {
+  const [oAuthType, setOauthType] = useState<string>("");
+
+  useEffect(() => {
+    if (oAuthType === "google") {
+      aouthLogin();
+    }
+  }, [oAuthType]);
+
   return (
     <div className="mainWrapper">
       <main className="mainContainer">
@@ -72,13 +81,16 @@ const Register = () => {
               <div id="providers">
                 <ul id="providers-list">
                   <li>
-                    <a
-                      href="https://google.com"
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      // href="https://google.com"
+                      // target="_blank"
+                      // rel="noreferrer"
+                      onClick={() => {
+                        setOauthType("google");
+                      }}
                     >
                       <img src={gLogo} alt="google logo" />
-                    </a>
+                    </button>
                   </li>
                   <li>
                     <a
@@ -97,8 +109,8 @@ const Register = () => {
                 </ul>
               </div>
               <div id="signup">
-                <p>Doesn't have an account yet?</p>
-                <a href="/register.html">sign up</a>
+                <p>Already have an account?</p>
+                <a href="/register.html">sign in</a>
               </div>
             </footer>
           </form>

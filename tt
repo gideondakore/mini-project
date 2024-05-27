@@ -1,0 +1,112 @@
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
+
+// Use cookie-parser middleware with a secret key for signed cookies
+app.use(cookieParser('your_secret_key'));
+
+app.get('/set-cookie', (req, res) => {
+  res.cookie('access_token', 'your_access_token', {
+    httpOnly: true,
+    secure: false,   // Set to true in production with HTTPS
+    sameSite: 'Lax', // Adjust according to your needs
+    maxAge: 3600000  // 1 hour in milliseconds
+  });
+  res.send('Cookie set');
+});
+
+app.get('/check-cookie', (req, res) => {
+  // Get the cookie
+  const token = req.cookies['access_token'];
+
+  if (!token) {
+    return res.status(401).send('No access token provided');
+  }
+
+  // Here you would validate the token (e.g., verify its signature, check expiration)
+  if (isValidToken(token)) {
+    res.send('Access token is valid');
+  } else {
+    res.status(401).send('Invalid access token');
+  }
+});
+
+function isValidToken(token) {
+  // Implement your token validation logic here
+  // For example, you could decode and verify a JWT token
+  // In this example, we'll just check if the token equals a predefined value
+  return token === 'your_access_token';
+}
+
+app.listen(8000, () => {
+  console.log('Server is running on port 8000');
+});
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+const jwt = require('jsonwebtoken');
+
+function isValidToken(token) {
+  try {
+    // Replace 'your_secret_key' with your actual secret key used to sign the JWT
+    const decoded = jwt.verify(token, 'your_secret_key');
+    // Token is valid if no error was thrown and it can be decoded
+    return true;
+  } catch (err) {
+    // Token is not valid
+    return false;
+  }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
+const app = express();
+
+const SECRET_KEY = 'your_secret_key';
+
+app.use(cookieParser(SECRET_KEY));
+
+// Function to create a JWT
+function createToken() {
+  const payload = { userId: 123, role: 'user' }; // Example payload
+  return jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' }); // Token expires in 1 hour
+}
+
+// Route to set the JWT cookie
+app.get('/set-cookie', (req, res) => {
+  const token = createToken();
+  res.cookie('access_token', token, {
+    httpOnly: true,
+    secure: false,   // Set to true in production with HTTPS
+    sameSite: 'Lax', // Adjust according to your needs
+    maxAge: 3600000  // 1 hour in milliseconds
+  });
+  res.send('JWT cookie set');
+});
+
+// Route to check the JWT cookie
+app.get('/check-cookie', (req, res) => {
+  const token = req.cookies['access_token'];
+
+  if (!token) {
+    return res.status(401).send('No access token provided');
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    res.send(`Access token is valid. User ID: ${decoded.userId}, Role: ${decoded.role}`);
+  } catch (err) {
+    res.status(401).send('Invalid access token');
+  }
+});
+
+app.listen(8000, () => {
+  console.log('Server is running on port 8000');
+});
