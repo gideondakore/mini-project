@@ -1,10 +1,9 @@
 import * as dotenv from "dotenv";
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import User from "./models/user.model";
 import cors from "cors";
 import sessions from "express-session";
 import cookieParser from "cookie-parser";
-import { access } from "fs";
 
 dotenv.config();
 
@@ -35,6 +34,7 @@ app.use(cookieParser(process.env.COOKIES_SECRET_KEY));
 //   })
 // );
 
+const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
@@ -80,71 +80,61 @@ const tokenRefresh = async (refreshToken: string) => {
 };
 
 //session validation using cookies
-app.use(async (req: Request, res: Response, next) => {
-  const accessToken = req.cookies.access_token;
-  const refreshToken = req.cookies.refresh_token;
-
+const cookieVerificationAndRefresh = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
+    const accessToken = req.cookies.access_token;
+    const refreshToken = req.cookies.refresh_token;
     const verify_access_token = await verifyAccessToken(accessToken);
 
-    const verify_access_token_data =
-      verify_access_token?.verify_access_token_data;
     const verify_access_token_response =
       verify_access_token?.verify_access_token_response;
-
-    // console.log(refreshToken);
-
     if (verify_access_token_response?.ok) {
-      next();
+      return next();
     }
 
     if (refreshToken === undefined) {
       return res.status(verify_access_token_response?.status as number).json({
+        authenticated: verify_access_token_response?.ok,
         message: verify_access_token_response?.statusText,
         status: verify_access_token_response?.status,
       });
     }
 
     const new_access_token_data = await tokenRefresh(refreshToken);
+
     const refresh_token_data = new_access_token_data?.refresh_token_data;
     const refresh_token_response =
       new_access_token_data?.refresh_token_response;
-
     if (!refresh_token_response?.ok) {
       return res.status(refresh_token_response?.status as number).json({
+        authenticated: refresh_token_response?.ok,
         message: refresh_token_response?.statusText,
         status: refresh_token_response?.status,
       });
     }
 
-    console.log("From middle ware: ");
-
     const { access_token, expires_in } = refresh_token_data;
     res.cookie("access_token", access_token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "none",
       maxAge: expires_in * 1000,
     });
 
-    const access_token_response = await verifyAccessToken(access_token);
-
-    const access_token_data = access_token_response?.verify_access_token_data;
-
-    console.log(
-      "Refresh token: ",
-      refresh_token_data,
-      " Access token: ",
-      access_token,
-      " Access Token Data",
-      access_token_data
-    );
-
-    next();
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+    });
+    return next();
   } catch (error) {
     console.error(`Error occur in the Middle ware: ${error}`);
   }
-});
+};
 
 //Google  Oauth call back url
 app.get("/google/callback", async (req: Request, res: Response) => {
@@ -162,7 +152,7 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     code,
     client_id: GOOGLE_CLIENT_ID as string,
     client_secret: GOOGLE_CLIENT_SECRET as string,
-    redirect_uri: "http://localhost:8000/google/callback",
+    redirect_uri: `http://localhost:8000/google/callback`,
     grant_type: "authorization_code",
   };
 
@@ -177,37 +167,35 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     const { access_token, refresh_token, id_token, expires_in } =
       access_token_data;
 
-    console.log("ACCESS TOKEN DATA: ", access_token_data);
-
     const token_info_response = await fetch(
       `${GOOGLE_TOKEN_INFO_URL}?id_token=${id_token}`
     );
 
     const token_info_data = await token_info_response.json();
-
-    const { email, name } = token_info_data;
+    console.log("TOKEN INFO: ", token_info_data);
+    const { email, name, picture } = token_info_data;
     let user = await User.findOne({ email }).select("-password");
     if (!user) {
-      user = await User.create({ name, email });
+      user = await User.create({ name, email, picture: picture });
     }
 
     res.cookie("access_token", access_token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "none",
       maxAge: expires_in * 1000,
     });
 
     res.cookie("refresh_token", refresh_token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: "none",
     });
 
     res.redirect(FRONTEND_URL);
   } catch (error) {
     console.error("ErroreExchanging authentication code for token: ", error);
-    res.status(500).send("Authentication failed");
+    return res.status(500).send("Authentication failed");
   }
 });
 
@@ -215,8 +203,32 @@ app.get("/api/test", async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refresh_token;
   const accessToken = req.cookies.access_token;
 
-  res.json({ refreshToken: refreshToken, accessToken: accessToken });
+  return res.json({ refreshToken: refreshToken, accessToken: accessToken });
 });
+
+app.get(
+  "/authentication-status",
+  cookieVerificationAndRefresh,
+  async (req: Request, res: Response) => {
+    try {
+      const { access_token } = req.cookies;
+      const access_token_response = await verifyAccessToken(access_token);
+      const response = access_token_response?.verify_access_token_response;
+
+      if (!response?.ok) {
+        return res
+          .status(response?.status as number)
+          .json({ authenticated: response?.ok, message: "error" });
+      }
+
+      return res
+        .status(response?.status as number)
+        .json({ authenticated: response?.ok, message: "success" });
+    } catch (error) {
+      console.error("Error checking for authenticated status");
+    }
+  }
+);
 
 const PORT = process.env.PORT || 5500;
 

@@ -1,16 +1,19 @@
-.registerSignInBtnWrapper {
+.registerSignInBtnWrapper,
+.registerSignOutBtnWrapper {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-end;
   gap: 1rem;
 }
 
-.registerSignInBtnContainer {
+.registerSignInBtnContainer,
+.registerSignOutBtnContainer {
   height: 2.5rem;
   width: 5rem;
 }
 
-.registerSignInBtn {
+.registerSignInBtn,
+.registerSignOutBtn {
   background-color: #222f36;
   color: white;
   font-size: 1rem;
@@ -22,7 +25,8 @@
   transition: all 0.8s ease;
 }
 
-.registerSignInBtn:hover {
+.registerSignInBtn:hover,
+.registerSignOutBtn:hover {
   background-color: #0c1114;
   font-size: 1.3rem;
 }

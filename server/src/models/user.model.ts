@@ -26,6 +26,11 @@ const UserSchema = new mongoose.Schema({
     minlength: 6,
     required: false,
   },
+
+  picture: {
+    type: String,
+    required: false,
+  },
 });
 
 const JWT_SECRET = process.env.JWT_SECRET!;

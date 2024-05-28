@@ -1,7 +1,7 @@
 import React from "react";
 import { useStyles } from "../../context/NavBarStyleContext";
 
-const SignInBtn = () => {
+const SignOutBtn = () => {
   const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 
   const handleClick = async () => {
@@ -9,7 +9,6 @@ const SignInBtn = () => {
       const response = await fetch(`${ngrok_forward_uri}/api/test`, {
         credentials: "omit",
       });
-      console.log(response);
       if (!response) {
         console.error("Error occur fetching data");
       }
@@ -24,12 +23,12 @@ const SignInBtn = () => {
 
   const styles = useStyles();
   return (
-    <div className={styles.registerSignInBtnContainer}>
-      <button className={styles.registerSignInBtn} onClick={handleClick}>
-        Sign in
+    <div className={styles.registerSignOutBtnContainer}>
+      <button className={styles.registerSignOutBtn} onClick={handleClick}>
+        Sign out
       </button>
     </div>
   );
 };
 
-export default SignInBtn;
+export default SignOutBtn;
