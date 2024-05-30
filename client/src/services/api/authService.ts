@@ -1,7 +1,4 @@
-// import axios from "axios";
-
-const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
-
+import getToken from "../../utils/getToken";
 const aouthLogin = async () => {
   const GOOGLE_OAUTH_URL = process.env.REACT_APP_GOOGLE_OAUTH_URL;
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -10,6 +7,7 @@ const aouthLogin = async () => {
   const GOOGLE_OAUTH_SCOPES = [
     "https%3A//www.googleapis.com/auth/userinfo.email",
     "https%3A//www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/user.birthday.read",
   ];
 
   try {
@@ -23,12 +21,15 @@ const aouthLogin = async () => {
 };
 
 const isAuthenticated = async () => {
+  const { credential_access_token, credential_refresh_token } = getToken();
+
   try {
     const response = await fetch(
       `http://localhost:8000/authentication-status`,
       {
         headers: new Headers({
           "ngrok-skip-browser-warning": "12345",
+          Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
         }),
         credentials: "include",
       }
@@ -39,7 +40,6 @@ const isAuthenticated = async () => {
     }
 
     const { authenticated } = await response.json();
-    console.log("Response Body: ", authenticated);
     return authenticated;
   } catch (error) {
     throw new Error(`Error checking for authentication status: ${error}`);
@@ -48,17 +48,38 @@ const isAuthenticated = async () => {
 
 const authLogout = async () => {
   try {
-    const response = await fetch(`${ngrok_forward_uri}/oauth-logout`, {
+    const response = await fetch(`http://localhost:8000/oauth-logout`, {
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "12345",
+      }),
       credentials: "include",
     });
 
-    if (!response.ok) {
-      console.error("Error response from server");
-    }
+    const { msg, status } = await response.json();
 
-    const data = await response.json();
-
-    console.log(data);
-  } catch (error) {}
+    console.log(msg, status);
+    return status;
+  } catch (error) {
+    throw new Error(`Error occur logging out: ${error}`);
+  }
 };
-export { aouthLogin, isAuthenticated, authLogout };
+
+const authUserProfile = async () => {
+  try {
+    const response = await fetch("http://localhost:8000/user-profile", {
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "12345",
+      }),
+      credentials: "include",
+    });
+
+    if (!response?.ok) {
+      console.error("Error fetching user profile");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error(`Network error: ${error}`);
+  }
+};
+export { aouthLogin, isAuthenticated, authLogout, authUserProfile };

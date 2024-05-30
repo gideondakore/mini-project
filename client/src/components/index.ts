@@ -5,7 +5,9 @@ import SearchAreaInput from "./SearchAreaInput/SearchAreaInput";
 import DisplayHostels from "./DisplayHostels/DisplayHostels";
 import SideBar from "./SideBar/SideBar";
 import ComprehensiveSearch from "./ComprehensiveSearch/ComprehensiveSearch";
-import SignOutBtn from "./SignOut/SignOut";
+import SignOutBtn from "./SignOutBtn/SignOut";
+import ProfilePhoto from "./ProfilePhoto/ProfilePhoto";
+// import SignOutBtn from "./SignOutBtn/SignOut";
 
 import type {
   StarType,
@@ -22,6 +24,7 @@ export {
   SideBar,
   ComprehensiveSearch,
   SignOutBtn,
+  ProfilePhoto,
   StarType,
   RemarkType,
   RateType,

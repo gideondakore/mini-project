@@ -2,9 +2,16 @@ import * as dotenv from "dotenv";
 import express, { Request, Response, NextFunction } from "express";
 import User from "./models/user.model";
 import cors from "cors";
-import sessions from "express-session";
+import session from "express-session";
 import cookieParser from "cookie-parser";
-
+import verifyAccessToken from "./verifications/verifyAccessToken";
+import cookieVerificationAndRefresh from "./verifications/cookiesVerificationAndRefresh";
+import getUserProfile from "./utils/getUserProfile";
+import checkPasswordValidity from "./validations/checkPasswordValidity";
+import getUser from "./utils/getUser";
+import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { error } from "console";
 dotenv.config();
 
 interface CorsOptions {
@@ -26,13 +33,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(cookieParser(process.env.COOKIES_SECRET_KEY));
-// app.use(
-//   sessions({
-//     secret: process.env.JWT_SECRET as string,
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET_TOKEN as string,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+    },
+  })
+);
 
 const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -40,101 +51,6 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
 const GOOGLE_TOKEN_INFO_URL = process.env.GOOGLE_TOKEN_INFO_URL as string;
 const FRONTEND_URL = "http://localhost:3000";
-
-//Verifying token
-const verifyAccessToken = async (token: string) => {
-  try {
-    const verify_access_token_response = await fetch(
-      `${GOOGLE_TOKEN_INFO_URL}?access_token=${token}`
-    );
-    // console.log("From verify token: ", response.ok);
-    const verify_access_token_data = await verify_access_token_response.json();
-
-    return { verify_access_token_data, verify_access_token_response };
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-//Refresh token for new access token
-const tokenRefresh = async (refreshToken: string) => {
-  const data: any = {
-    client_id: GOOGLE_CLIENT_ID,
-    client_secret: GOOGLE_CLIENT_SECRET,
-    refresh_token: refreshToken,
-    grant_type: "refresh_token",
-  };
-
-  try {
-    const refresh_token_response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-
-    const refresh_token_data = await refresh_token_response.json();
-
-    return { refresh_token_data, refresh_token_response };
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-//session validation using cookies
-const cookieVerificationAndRefresh = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const accessToken = req.cookies.access_token;
-    const refreshToken = req.cookies.refresh_token;
-    const verify_access_token = await verifyAccessToken(accessToken);
-
-    const verify_access_token_response =
-      verify_access_token?.verify_access_token_response;
-    if (verify_access_token_response?.ok) {
-      return next();
-    }
-
-    if (refreshToken === undefined) {
-      return res.status(verify_access_token_response?.status as number).json({
-        authenticated: verify_access_token_response?.ok,
-        message: verify_access_token_response?.statusText,
-        status: verify_access_token_response?.status,
-      });
-    }
-
-    const new_access_token_data = await tokenRefresh(refreshToken);
-
-    const refresh_token_data = new_access_token_data?.refresh_token_data;
-    const refresh_token_response =
-      new_access_token_data?.refresh_token_response;
-    if (!refresh_token_response?.ok) {
-      return res.status(refresh_token_response?.status as number).json({
-        authenticated: refresh_token_response?.ok,
-        message: refresh_token_response?.statusText,
-        status: refresh_token_response?.status,
-      });
-    }
-
-    const { access_token, expires_in } = refresh_token_data;
-    res.cookie("access_token", access_token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: expires_in * 1000,
-    });
-
-    res.cookie("refresh_token", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    });
-    return next();
-  } catch (error) {
-    console.error(`Error occur in the Middle ware: ${error}`);
-  }
-};
 
 //Google  Oauth call back url
 app.get("/google/callback", async (req: Request, res: Response) => {
@@ -173,6 +89,7 @@ app.get("/google/callback", async (req: Request, res: Response) => {
 
     const token_info_data = await token_info_response.json();
     console.log("TOKEN INFO: ", token_info_data);
+
     const { email, name, picture } = token_info_data;
     let user = await User.findOne({ email }).select("-password");
     if (!user) {
@@ -230,6 +147,185 @@ app.get(
   }
 );
 
+app.get("/oauth-logout", async (req: Request, res: Response) => {
+  try {
+    const access_token = req.cookies["access_token"];
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token");
+    res.status(200).json({ msg: "success", status: 200 });
+  } catch (error) {
+    console.error(`error occur while signing out: ${error}`);
+  }
+});
+
+//OAuth user profile pic generator
+app.get("/user-profile", async (req: Request, res: Response) => {
+  try {
+    const { access_token } = req.cookies;
+    // console.log("ACCESS TOKEN: ", access_token);
+    const userProfile = await getUserProfile(access_token);
+
+    const { verify_access_token_data, verify_access_token_response } =
+      userProfile!;
+    const { email } = verify_access_token_data;
+    const user = await User.findOne({ email: email }).select("-password");
+    res.status(200).json({ picture: user?.picture });
+  } catch (error) {
+    console.error("Error occur in user-profile response handler");
+  }
+});
+
+//////////////////// CREDENTIALS FUNCTIONALITY ////////////////////////
+
+//Credential login
+app.post("/credential-register", async (req: Request, res: Response) => {
+  try {
+    const body = req.body;
+    const { fullname, email, birthDate, password } = body;
+    const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+
+    let validatedCredentials: string[] = [];
+
+    if (password) {
+      validatedCredentials.push(...checkPasswordValidity(password));
+    } else {
+      validatedCredentials.push("Valid password must be provided");
+    }
+
+    if (email) {
+      if (!validEmailRegex.test(email)) {
+        validatedCredentials.unshift("Invalid email");
+      }
+    } else {
+      validatedCredentials.unshift("Valid email must be provided");
+    }
+
+    if (
+      Array.isArray(validatedCredentials) &&
+      validatedCredentials.length === 0
+    ) {
+      const { message, success, user } = (await getUser(email, fullname))!;
+
+      // console.log(message, success, user);
+      if (!success) {
+        return res
+          .status(201)
+          .json({ message: message, success: success, user: user });
+      }
+
+      const hashedPassword = bcryptjs.hashSync(password, 10);
+      const dbUser = await User.create({
+        name: fullname,
+        email: email,
+        password: hashedPassword,
+        birthday: birthDate,
+      });
+
+      req.session.id = dbUser._id;
+      req.session.name = dbUser.name;
+      req.session.email = dbUser.email;
+
+      const payload = {
+        id: dbUser._id,
+        name: dbUser.name,
+        email: dbUser.email,
+      };
+      const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
+      // console.log("DB user: ", dbUser);
+      if (dbUser) {
+        const accessToken = dbUser.generateToken();
+        const refreshToken = jwt.sign(payload, jwtRefreshSecret);
+        //TODO: I have to store the refresh token for later use
+        req.session.refreshToken = refreshToken;
+        // console.log("Access token generator", accessToken);
+        return res.status(200).json({
+          message: [message],
+          success: success,
+          credential_access_token: accessToken,
+          credential_refresh_token: refreshToken,
+        });
+      }
+
+      return res
+        .status(500)
+        .json({ message: ["Internal server error"], success: false });
+    }
+  } catch (error) {
+    console.error("Error handling user credentials body!");
+  }
+});
+
+// ////////////////////////////////////////////////
+////////////////// JWT AUTHENTICATIONS //////////
+
+//generating access token
+interface DBUser {
+  _id: string;
+  name: string;
+  email: string;
+}
+const generateAccessToken = (user: DBUser) => {
+  const payload = {
+    id: user._id,
+    name: user.name,
+    email: user.email,
+  };
+
+  const jwtAccessSecret = process.env.JWT_ACCESS_TOKEN_SECRET as string;
+  const option = { expiresIn: "10m" };
+  return jwt.sign(payload, jwtAccessSecret, option);
+};
+
+//verifying access token
+// const verifyJwtAccessToken = (token: string) => {
+//   const jwtSecret = process.env.JWT_SECRET as string;
+
+//   try {
+//     const decoded = jwt.verify(token, jwtSecret, (err, payload) => {
+//       if (err) {
+//         return { success: false, error: error };
+//       }
+//     });
+
+//     return { success: true, data: decoded };
+//   } catch (error) {
+//     return { success: false, error: error };
+//   }
+// };
+
+//Authenticate jwt token
+// const authenticateJwtToken = (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
+
+//   if (!token) {
+//     return res.sendStatus(401);
+//   }
+
+//   const result = verifyJwtAccessToken(token);
+
+//   if (!result.success) {
+//     return res.status(403).json({ error: result.error });
+//   }
+
+//   req.user = result.data;
+//   next();
+// };
+
+app.post("/credential-refresh-token", async (req: Request, res: Response) => {
+  const refreshToken = req.body.credential_access_token;
+  if (refreshToken === null) {
+    return res.sendStatus(401);
+  }
+
+  if (refreshToken !== req.body.refreshToken) {
+    return res.sendStatus(403);
+  }
+});
 const PORT = process.env.PORT || 5500;
 
 const start = (port: string | number) => {

@@ -5,24 +5,32 @@ import {
   SignInBtn,
   SignOutBtn,
   SearchAreaInput,
+  ProfilePhoto,
 } from "../components";
 import { StylesProvider } from "../context/NavBarStyleContext";
 import styles from "../assets/styles/RegisterSignIn.module.css";
 import { GoQuestion } from "react-icons/go";
-// import { SearchAreaInput } from "../components";
-import { isAuthenticated } from "../services/api/authService";
+import { isAuthenticated, authUserProfile } from "../services/api/authService";
 
 const NavBar = () => {
   const [auth, setAuth] = useState<boolean>(false);
+  const [pic, setPic] = useState<string>("");
 
   useEffect(() => {
     isAuthenticated()
       .then((authenticated) => {
-        console.log("Authenticated:", authenticated);
         setAuth(authenticated);
       })
       .catch((error) => console.error("Authentication check failed:", error));
-  }, []);
+
+    if (auth) {
+      authUserProfile()
+        .then((picUrl) => {
+          setPic(picUrl?.picture);
+        })
+        .catch((error) => console.error(`Error fetching pic: ${error}`));
+    }
+  });
 
   return (
     <>
@@ -36,7 +44,10 @@ const NavBar = () => {
               title="Contact customer service"
             />
             {auth ? (
-              <SignOutBtn />
+              <>
+                <SignOutBtn />
+                <ProfilePhoto profileUrl={pic} />
+              </>
             ) : (
               <>
                 <RegisterBtn />

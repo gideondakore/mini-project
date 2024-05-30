@@ -11,7 +11,7 @@ html {
   position: relative;
 }
 
-.mainWrapper {
+.mainWrapperSignIn {
   background-image: url("../../assets/images/sysadmin_03.jpg");
   background-color: linear-gradient(45deg, rgb(224, 114, 224), purple);
   background-position: center;
@@ -22,7 +22,7 @@ html {
   width: 100dvw;
 }
 
-.mainContainer {
+.mainContainerSignIn {
   position: relative;
   display: flex;
   padding: 0.3rem;
@@ -31,7 +31,7 @@ html {
   margin-top: 5rem;
 }
 
-.login_section {
+.login_section-signin {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -41,7 +41,7 @@ html {
   background-color: rgb(205, 219, 219);
 }
 
-.form_logo {
+.form_logo-signin {
   position: absolute;
   width: var(--form-logo-width);
   height: var(--form-logo-height);
@@ -51,7 +51,7 @@ html {
   background: linear-gradient(90deg, rgb(207, 155, 207), rgb(75, 41, 75));
 }
 
-.login_title {
+.login_title-signin {
   margin: auto;
   text-transform: capitalize;
   color: rgb(172, 103, 172);
@@ -66,94 +66,64 @@ form {
   padding-bottom: 2rem;
 }
 
-#grid-form {
+#grid-form-signin {
   width: 100%;
   display: grid;
-  grid-template-rows: repeat(7, minmax(4.5rem, auto));
+  grid-template-rows: repeat(4, minmax(3.5rem, auto));
   grid-template-columns: 80%;
   justify-content: center;
   row-gap: 10px;
 }
 
-input.fullname {
+input.email-signin {
   grid-row: 1 / span 1;
   grid-column: 1 / span 1;
-  margin: 1.8rem 0px 0px 0px;
+  margin: 1.4rem 0px 0px 0px;
   width: 100%;
 }
 
-label.fullname {
+label.email-signin {
   grid-row: 1 / span 1;
   grid-column: 1 / span 1;
+  margin-bottom: 1.5rem;
   width: 100%;
 }
 
-input.email {
+#passForgot-signin {
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+#passForgot-signin > :nth-child(2) {
+  text-decoration: none;
+}
+#passForgot-signin > :hover:nth-child(2) {
+  text-decoration: underline;
+}
+
+input.password-signin {
   grid-row: 2 / span 1;
   grid-column: 1 / span 1;
   margin: 1.4rem 0px 0px 0px;
   width: 100%;
 }
 
-label.email {
-  grid-row: 2 / span 1;
-  grid-column: 1 / span 1;
-  width: 100%;
-}
-
-input.birthDate {
+.remember-check-signin {
   grid-row: 3 / span 1;
-  grid-column: 1 / span 1;
-  margin: 1.4rem 0px 0px 0px;
-  width: 100%;
-}
-
-label.birthDate {
-  grid-row: 3 / span 1;
-  grid-column: 1 / span 1;
-  width: 100%;
-}
-
-input.password {
-  grid-row: 4 / span 1;
-  grid-column: 1 / span 1;
-  margin: 1.4rem 0px 0px 0px;
-  width: 100%;
-}
-
-label.password {
-  grid-row: 4 / span 1;
-  grid-column: 1 / span 1;
-  width: 100%;
-}
-
-input.confirmPassword {
-  grid-row: 5 / span 1;
-  grid-column: 1 / span 1;
-  margin: 1.4rem 0px 0px 0px;
-  width: 100%;
-}
-
-label.confirmPassword {
-  grid-row: 5 / span 1;
-  grid-column: 1 / span 1;
-  width: 100%;
-}
-
-.remember-check {
-  grid-row: 6 / span 1;
   grid-column: 1 / span 1;
   display: flex;
 }
 
-input.btnCheck {
+input.btnCheck-signin {
   width: 0.9rem;
   height: 20px;
   cursor: pointer;
 }
 
-.login_button {
-  grid-row: 7 / span 1;
+.login_button-signin {
+  grid-row: 4 / span 1;
   grid-column: 1 / span 1;
   height: 2.75rem;
   width: 50%;
@@ -161,20 +131,20 @@ input.btnCheck {
   cursor: pointer;
 }
 
-#sign_title {
+#sign_title-signin {
   display: flex;
   justify-content: center;
   align-items: baseline;
   height: 2rem;
 }
 
-#sign_title > hr {
+#sign_title-signin > hr {
   height: 2px;
   width: 5.5rem;
   margin: 0px;
 }
 
-#providers {
+#providers-signin {
   display: block;
   width: 100%;
   height: 3rem;
@@ -182,7 +152,7 @@ input.btnCheck {
   position: relative;
 }
 
-#providers-list {
+#providers-list-signin {
   width: 100%;
   height: 100%;
   margin: 0px;
@@ -200,40 +170,36 @@ li {
   justify-content: center;
   align-items: center;
 }
-li > button {
+li > a {
   cursor: pointer;
   display: block;
   position: relative;
-  height: 95%;
-  width: 95%;
-  border-radius: 50%;
-  border-style: solid;
-  background-color: var(--backgroundColor);
-  border-color: rgb(205, 219, 219);
+  height: 75%;
+  width: 75;
 }
 
-li > button > img {
+li > a > img {
   width: 100%;
   height: 100%;
 }
 
-#signup {
+#signup-signin {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 }
 
-#signup > a {
+#signup-signin > a {
   text-decoration: none;
   text-transform: capitalize;
 }
-#signup > a:hover {
+#signup-signin > a:hover {
   text-decoration: underline;
 }
 
 @media (max-width: 768px) {
-  .login_section {
+  .login_section-signin {
     width: 80vw;
   }
 
@@ -244,7 +210,7 @@ li > button > img {
 }
 
 @media (max-width: 480px) {
-  .login_section {
+  .login_section-signin {
     width: 90vw;
   }
 }

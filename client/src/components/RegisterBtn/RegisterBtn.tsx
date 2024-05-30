@@ -1,7 +1,5 @@
 import React from "react";
 import { useStyles } from "../../context/NavBarStyleContext";
-// import { Register } from "../../pages";
-// import "./RegisterBtn.css";
 
 const RegisterBtn = () => {
   const handleRegister = () => {

@@ -3,6 +3,8 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 1.5rem;
   gap: 1rem;
 }
 
