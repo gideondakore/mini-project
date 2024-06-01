@@ -43,13 +43,14 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const JWT_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET!;
-const JWT_LIFETIME = process.env.JWT_LIFETIME;
+const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET!;
+// console.log(JWT_SECRET);
+const JWT_LIFETIME = process.env.JWT_LIFETIME!;
 
 UserSchema.methods.generateToken = function () {
   const token = jwt.sign(
     { id: this._id, email: this.email, name: this.name },
-    JWT_SECRET,
+    JWT_ACCESS_SECRET,
     {
       expiresIn: JWT_LIFETIME,
     }

@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useStyles } from "../../context/NavBarStyleContext";
-import { authLogout } from "../../services/api/authService";
+import { signOut } from "../../services/api/authService";
 
 const SignOutBtn = () => {
-  const [status, setStatus] = useState<number>(500);
+  const [success, setSuccess] = useState<boolean>(false);
   const handleClick = () => {
-    authLogout()
-      .then((status) => setStatus(status))
+    signOut()
+      .then((success) => setSuccess(success))
       .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    if (status === 200) {
+    if (success) {
       window.location.reload();
     }
-  }, [status]);
+  }, [success]);
 
   const styles = useStyles();
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import loginLogo from "../../assets/images/login-svg.svg";
 import gLogo from "../../assets/images/google-svg.svg";
 import fbLogo from "../../assets/images/facebook-svg.svg";
@@ -6,6 +6,8 @@ import xLogo from "../../assets/images/twitter-x.svg";
 import "./Register.css";
 import { aouthLogin } from "../../services/api/authService";
 import checkPasswordValidity from "../../utils/Validations/passwordValidity";
+import { ToastContainer, toast } from "react-toastify";
+
 const Register = () => {
   const [oAuthType, setOauthType] = useState<string>("");
   const [fullname, setFullname] = useState<string>("");
@@ -22,9 +24,8 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (errors.length > 0) {
-      alert(errors.join("/n"));
+      errors.map((error) => toast(error));
     } else {
       setIsLoading(true);
       try {
@@ -41,6 +42,7 @@ const Register = () => {
               email,
               birthDate,
               password,
+              confirmPassword,
             }),
             credentials: "include",
           }
@@ -56,16 +58,6 @@ const Register = () => {
           credential_access_token,
           credential_refresh_token,
         } = await response.json();
-        console.log(
-          "Message: ",
-          message,
-          " Success: ",
-          success,
-          " Access Token: ",
-          credential_access_token,
-          " Refresh Token: ",
-          credential_refresh_token
-        );
 
         window.localStorage.setItem(
           "credential_access_token",
@@ -102,6 +94,7 @@ const Register = () => {
     }
 
     const msgStr: string = `Invalid email`;
+    const confirmPasswordFail = "Password must be the same";
 
     const emailValidity = () => {
       const validEmailRegex =
@@ -121,15 +114,23 @@ const Register = () => {
     passValidity();
 
     if (!validInput) {
+      if (password !== confirmPassword) {
+        setErrors((prev) => [confirmPasswordFail, ...prev]);
+      }
       setErrors((prev) => [msgStr, ...prev]);
     }
 
     setSuccess(success);
-  }, [success, email, oAuthType, password, validInput]);
+  }, [success, email, oAuthType, password, validInput, confirmPassword]);
 
   return (
     <div className="mainWrapper">
-      <main className="mainContainer">
+      <main
+        className="mainContainer"
+        style={isLoading ? { opacity: "0.5" } : { opacity: "1" }}
+      >
+        {errorMsg && (errorMsg as ReactNode[]).map((err, index) => toast(err))}
+        <ToastContainer />
         <div className="form_logo">
           <img width="50px" height="50px" src={loginLogo} alt="login" />
         </div>
@@ -245,6 +246,7 @@ const Register = () => {
                       onClick={() => {
                         setOauthType("google");
                       }}
+                      // disabled
                       type="button"
                     >
                       <img src={gLogo} alt="google logo" />

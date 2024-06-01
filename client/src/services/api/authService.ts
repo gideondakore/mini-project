@@ -28,9 +28,13 @@ const isAuthenticated = async () => {
       `http://localhost:8000/authentication-status`,
       {
         headers: new Headers({
+          "Content-Type": "application/json",
           "ngrok-skip-browser-warning": "12345",
           Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
         }),
+        // headers: {
+        //   Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
+        // },
         credentials: "include",
       }
     );
@@ -39,35 +43,78 @@ const isAuthenticated = async () => {
       return response?.ok;
     }
 
-    const { authenticated } = await response.json();
+    const { authenticated, credential_access, credential_refresh } =
+      await response.json();
+
+    console.log("Authenticated Status: ", authenticated);
+    if (credential_access && credential_refresh) {
+      console.log(
+        "New Access Token: ",
+        credential_access,
+        " New Refresh Token: ",
+        credential_refresh
+      );
+      window.localStorage.setItem("credential_access_token", credential_access);
+      window.localStorage.setItem(
+        "credential_refresh_token",
+        credential_refresh
+      );
+    }
     return authenticated;
   } catch (error) {
     throw new Error(`Error checking for authentication status: ${error}`);
   }
 };
 
-const authLogout = async () => {
+const signOut = async () => {
   try {
-    const response = await fetch(`http://localhost:8000/oauth-logout`, {
+    const response = await fetch(`http://localhost:8000/signout`, {
       headers: new Headers({
+        "Content-Type": "application/json",
         "ngrok-skip-browser-warning": "12345",
       }),
       credentials: "include",
     });
 
-    const { msg, status } = await response.json();
+    const { msg, status, success } = await response.json();
+
+    if (success) {
+      window.localStorage.removeItem("credential_access_token");
+      window.localStorage.removeItem("credential_refresh_token");
+    }
 
     console.log(msg, status);
-    return status;
+    return success;
   } catch (error) {
     throw new Error(`Error occur logging out: ${error}`);
   }
 };
 
+const signIn = async (body: { email: string; password: string }) => {
+  try {
+    console.log("Body: ", body);
+    const response = await fetch("http://localhost:8000/signin", {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/json",
+        "ngrok-skip-browswer-warning": "12345",
+      }),
+      credentials: "include",
+      body: JSON.stringify(body),
+    });
+
+    const data = await response.json();
+    console.log("data", data?.message);
+    return data;
+  } catch (error) {
+    throw new Error("Error occur signing you in!");
+  }
+};
 const authUserProfile = async () => {
   try {
     const response = await fetch("http://localhost:8000/user-profile", {
       headers: new Headers({
+        "Content-Type": "application/json",
         "ngrok-skip-browser-warning": "12345",
       }),
       credentials: "include",
@@ -82,4 +129,4 @@ const authUserProfile = async () => {
     console.error(`Network error: ${error}`);
   }
 };
-export { aouthLogin, isAuthenticated, authLogout, authUserProfile };
+export { aouthLogin, isAuthenticated, signOut, signIn, authUserProfile };

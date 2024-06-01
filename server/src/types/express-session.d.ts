@@ -1,10 +1,15 @@
 import session from "express-session";
+import mongoose from "mongoose";
 
 declare module "express-session" {
   interface SessionData {
-    user: { [key: string]: any };
-    [key: string]: string;
+    user: {
+      id?: mongoose.Types.ObjectId;
+      name?: string;
+      email?: string;
+    };
     refreshToken: string;
+    accessToken: string;
   }
 }
 

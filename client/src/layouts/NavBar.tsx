@@ -19,6 +19,7 @@ const NavBar = () => {
   useEffect(() => {
     isAuthenticated()
       .then((authenticated) => {
+        console.log("Is Authenticated in NaveBar: ", authenticated);
         setAuth(authenticated);
       })
       .catch((error) => console.error("Authentication check failed:", error));

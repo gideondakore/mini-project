@@ -9,9 +9,11 @@ import cookieVerificationAndRefresh from "./verifications/cookiesVerificationAnd
 import getUserProfile from "./utils/getUserProfile";
 import checkPasswordValidity from "./validations/checkPasswordValidity";
 import getUser from "./utils/getUser";
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { error } from "console";
+import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
+
 dotenv.config();
 
 interface CorsOptions {
@@ -32,12 +34,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
-app.use(cookieParser(process.env.COOKIES_SECRET_KEY));
+app.use(cookieParser(process.env.COOKIES_SECRET_KEY as string));
 app.use(
   session({
     secret: process.env.SESSION_SECRET_TOKEN as string,
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl:
+        "mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/sessionStore?retryWrites=true&w=majority&appName=merncrud",
+    }),
     cookie: {
       secure: false,
       httpOnly: true,
@@ -147,12 +153,31 @@ app.get(
   }
 );
 
-app.get("/oauth-logout", async (req: Request, res: Response) => {
+app.get("/signout", async (req: Request, res: Response) => {
   try {
-    const access_token = req.cookies["access_token"];
+    let deleteSuccess: boolean = false;
+    req.session.destroy((err) => {
+      if (err) {
+        console.log("Error occur deleting connect.sid in cookies");
+        deleteSuccess = true;
+        return;
+      }
+      return;
+    });
+
+    if (deleteSuccess) {
+      return res
+        .status(500)
+        .json({ message: "Logout failed", status: 500, success: false });
+    }
+
+    res.clearCookie("connect.sid");
     res.clearCookie("access_token");
     res.clearCookie("refresh_token");
-    res.status(200).json({ msg: "success", status: 200 });
+
+    return res
+      .status(200)
+      .json({ message: "success", status: 200, success: true });
   } catch (error) {
     console.error(`error occur while signing out: ${error}`);
   }
@@ -162,7 +187,6 @@ app.get("/oauth-logout", async (req: Request, res: Response) => {
 app.get("/user-profile", async (req: Request, res: Response) => {
   try {
     const { access_token } = req.cookies;
-    // console.log("ACCESS TOKEN: ", access_token);
     const userProfile = await getUserProfile(access_token);
 
     const { verify_access_token_data, verify_access_token_response } =
@@ -181,15 +205,14 @@ app.get("/user-profile", async (req: Request, res: Response) => {
 app.post("/credential-register", async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    const { fullname, email, birthDate, password } = body;
+    const { fullname, email, birthDate, password, confirmPassword } = body;
     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-
     let validatedCredentials: string[] = [];
 
-    if (password) {
+    if (password && password === confirmPassword) {
       validatedCredentials.push(...checkPasswordValidity(password));
     } else {
-      validatedCredentials.push("Valid password must be provided");
+      validatedCredentials.push("Valid passwords must be provided");
     }
 
     if (email) {
@@ -206,14 +229,13 @@ app.post("/credential-register", async (req: Request, res: Response) => {
     ) {
       const { message, success, user } = (await getUser(email, fullname))!;
 
-      // console.log(message, success, user);
       if (!success) {
         return res
           .status(201)
           .json({ message: message, success: success, user: user });
       }
 
-      const hashedPassword = bcryptjs.hashSync(password, 10);
+      const hashedPassword = bcrypt.hashSync(password, 10);
       const dbUser = await User.create({
         name: fullname,
         email: email,
@@ -221,23 +243,30 @@ app.post("/credential-register", async (req: Request, res: Response) => {
         birthday: birthDate,
       });
 
-      req.session.id = dbUser._id;
-      req.session.name = dbUser.name;
-      req.session.email = dbUser.email;
+      req.session.user = {
+        id: dbUser?._id,
+        name: dbUser?.name,
+        email: dbUser.email,
+      };
 
       const payload = {
         id: dbUser._id,
-        name: dbUser.name,
         email: dbUser.email,
+        name: dbUser.name,
       };
       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
-      // console.log("DB user: ", dbUser);
       if (dbUser) {
         const accessToken = dbUser.generateToken();
+        console.log("Acess token from model: ", accessToken);
         const refreshToken = jwt.sign(payload, jwtRefreshSecret);
-        //TODO: I have to store the refresh token for later use
         req.session.refreshToken = refreshToken;
-        // console.log("Access token generator", accessToken);
+
+        console.log(
+          "SESSION REFRESH TOKEN",
+          req.session.refreshToken,
+          "\n",
+          refreshToken
+        );
         return res.status(200).json({
           message: [message],
           success: success,
@@ -255,77 +284,73 @@ app.post("/credential-register", async (req: Request, res: Response) => {
   }
 });
 
-// ////////////////////////////////////////////////
-////////////////// JWT AUTHENTICATIONS //////////
+app.post("/signin", async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-//generating access token
-interface DBUser {
-  _id: string;
-  name: string;
-  email: string;
-}
-const generateAccessToken = (user: DBUser) => {
-  const payload = {
-    id: user._id,
-    name: user.name,
-    email: user.email,
-  };
+    const user = await User.findOne({ email });
 
-  const jwtAccessSecret = process.env.JWT_ACCESS_TOKEN_SECRET as string;
-  const option = { expiresIn: "10m" };
-  return jwt.sign(payload, jwtAccessSecret, option);
-};
+    if (user && bcrypt.compareSync(password, user.password)) {
+      const payload = {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      };
 
-//verifying access token
-// const verifyJwtAccessToken = (token: string) => {
-//   const jwtSecret = process.env.JWT_SECRET as string;
+      const new_access_token = jwt.sign(
+        payload,
+        process.env.JWT_ACCESS_TOKEN_SECRET as string
+      );
+      const new_refresh_token = jwt.sign(
+        payload,
+        process.env.JWT_REFRESH_TOKEN_SECRET as string
+      );
 
-//   try {
-//     const decoded = jwt.verify(token, jwtSecret, (err, payload) => {
-//       if (err) {
-//         return { success: false, error: error };
-//       }
-//     });
+      if (new_access_token && new_refresh_token) {
+        req.session.user = payload;
+        req.session.refreshToken = new_refresh_token;
+        req.session.accessToken = new_access_token;
+        return res.status(200).json({
+          message: ["Sign in successful"],
+          success: true,
+          status: 200,
+          access_token: new_access_token,
+          refresh_token: new_refresh_token,
+        });
+      } else {
+        return res.status(500).json({
+          message: ["Unexpected error occured :( . Try again later!"],
+          success: false,
+          status: 500,
+        });
+      }
+    } else {
+      return res.status(500).json({
+        message: ["Invalid email or password!"],
+        success: false,
+        status: 500,
+      });
+    }
+  } catch (error) {
+    if (error instanceof mongoose.Error.ValidationError) {
+      let errorList: string[] = [];
 
-//     return { success: true, data: decoded };
-//   } catch (error) {
-//     return { success: false, error: error };
-//   }
-// };
-
-//Authenticate jwt token
-// const authenticateJwtToken = (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   const authHeader = req.headers["authorization"];
-//   const token = authHeader && authHeader.split(" ")[1];
-
-//   if (!token) {
-//     return res.sendStatus(401);
-//   }
-
-//   const result = verifyJwtAccessToken(token);
-
-//   if (!result.success) {
-//     return res.status(403).json({ error: result.error });
-//   }
-
-//   req.user = result.data;
-//   next();
-// };
-
-app.post("/credential-refresh-token", async (req: Request, res: Response) => {
-  const refreshToken = req.body.credential_access_token;
-  if (refreshToken === null) {
-    return res.sendStatus(401);
-  }
-
-  if (refreshToken !== req.body.refreshToken) {
-    return res.sendStatus(403);
+      for (let e in error.errors) {
+        errorList.push(error.errors[e]?.message);
+      }
+      return res
+        .status(404)
+        .json({ message: errorList, success: false, status: 500 });
+    } else {
+      res.status(404).json({
+        message: ["Ooops!, unable to sign you in"],
+        success: false,
+        status: 500,
+      });
+    }
   }
 });
+
 const PORT = process.env.PORT || 5500;
 
 const start = (port: string | number) => {

@@ -1,9 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import verifyAccessToken from "./verifyAccessToken";
 import tokenRefresh from "./tokenRefresh";
-import jwt, { JwtPayload } from "jsonwebtoken";
 
-//session validation using cookies
+// session validation using cookies
 const cookieVerificationAndRefresh = async (
   req: Request,
   res: Response,
@@ -16,6 +16,10 @@ const cookieVerificationAndRefresh = async (
     const tokens = authHeader && authHeader.split(" ")[1].split(",");
     const credential_access_token = tokens?.at(0);
     const credential_refresh_token = tokens?.at(1);
+
+    console.log(
+      `Received tokens - Access: ${credential_access_token}, Refresh: ${credential_refresh_token}`
+    );
 
     if (accessToken || refreshToken) {
       const verify_access_token = await verifyAccessToken(accessToken);
@@ -34,7 +38,6 @@ const cookieVerificationAndRefresh = async (
       }
 
       const new_access_token_data = await tokenRefresh(refreshToken);
-
       const refresh_token_data = new_access_token_data?.refresh_token_data;
       const refresh_token_response =
         new_access_token_data?.refresh_token_response;
@@ -66,30 +69,29 @@ const cookieVerificationAndRefresh = async (
         credential_refresh_token !== "null"
       ) {
         try {
-          let decodeStateAcess: boolean = false;
-          let decodeStateRefresh: boolean = false;
-
           jwt.verify(
-            credential_access_token?.trim() as string,
+            credential_access_token as string,
             process.env.JWT_ACCESS_TOKEN_SECRET as string,
-            (error, decoded) => {
-              if (error) {
-                return;
+            (err, user) => {
+              if (err) {
+                console.error("Access Token Verification Error:", err);
+                return res.status(403).json({
+                  authenticated: false,
+                  message: "Invalid access token",
+                  status: 403,
+                });
               }
-              decodeStateAcess = true;
-              return;
+
+              console.log("Access token verified successfully");
+              // return next();
+              return res.status(200).json({
+                authenticated: true,
+                message: "Successful login",
+                status: 200,
+              });
             }
           );
 
-          if (decodeStateAcess) {
-            return res.status(200).json({
-              authenticated: true,
-              message: "Valid user",
-              status: 200,
-            });
-          }
-
-          console.log(req.session.user, " : ", decodeStateAcess);
           if (credential_refresh_token === req.session.refreshToken) {
             jwt.verify(
               credential_refresh_token as string,
@@ -98,7 +100,7 @@ const cookieVerificationAndRefresh = async (
                 if (err) {
                   return res.status(403).json({
                     authenticated: false,
-                    message: "Invalid token!",
+                    message: "User not logged in!",
                     status: 403,
                   });
                 }
@@ -110,6 +112,7 @@ const cookieVerificationAndRefresh = async (
                     status: 500,
                   });
                 }
+
                 const payload = {
                   id: (user as JwtPayload)?.id,
                   email: (user as JwtPayload)?.email,
@@ -127,29 +130,25 @@ const cookieVerificationAndRefresh = async (
                   process.env.JWT_REFRESH_TOKEN_SECRET as string
                 );
                 req.session.refreshToken = new_refresh_token;
-                req.session.accessToken = new_access_token;
 
-                decodeStateRefresh = true;
-                return;
+                return res.status(200).json({
+                  authenticated: true,
+                  message: "Success",
+                  status: 200,
+                  credential_access: new_access_token,
+                  credential_refresh: new_refresh_token,
+                });
               }
             );
-
-            return res.status(200).json({
-              authenticated: true,
-              message: "success",
-              status: 200,
-              credential_access: req.session.accessToken,
-              credential_refresh: req.session.refreshToken,
-            });
           } else {
-            return res.status(401).json({
+            return res.status(403).json({
               authenticated: false,
-              message: "No valid token provided",
-              status: 401,
+              message: "Invalid refresh token",
+              status: 403,
             });
           }
         } catch (error) {
-          console.error("Token verification error", error);
+          console.error("Token verification error:", error);
           return res.status(500).json({
             authenticated: false,
             message: "Internal server error",
@@ -157,17 +156,23 @@ const cookieVerificationAndRefresh = async (
           });
         }
       } else {
-        console.log("Invalid token received");
         return res.status(401).json({
           authenticated: false,
-          message: "No valid token provided",
+          message: "No valid tokens provided",
           status: 401,
         });
       }
+
+      return next();
     }
   } catch (error) {
-    console.error(`Error occur in the Middle ware: ${error}`);
+    console.error(`Error occurred in the middleware: ${error}`);
+    return res.status(500).json({
+      authenticated: false,
+      message: "Internal server error",
+      status: 500,
+    });
   }
 };
 
-export default cookieVerificationAndRefresh;
+// export default cookieVerificationAndRefresh;
