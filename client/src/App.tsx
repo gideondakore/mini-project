@@ -3,7 +3,7 @@ import "./App.css";
 import { HomeNewLook, Register } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import { UserInfo, SignIn } from "./pages";
-import ToastifyTest from "./pages/ToastifyTest";
+import MapContainer from "./pages/MapWorks/MapContainer";
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
       </Route>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/user" element={<UserInfo />} />
-      <Route path="/toast" element={<ToastifyTest />} />
+      <Route path="/map" element={<MapContainer />} />
     </Routes>
   );
 };
