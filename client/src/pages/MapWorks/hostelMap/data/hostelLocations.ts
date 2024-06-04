@@ -2663,14 +2663,14 @@ type Formatted = {
   thumbnail: string | null;
 };
 
-const formattedDataForMap: Formatted[] = hostelPositionsRaw
-  .slice(0, 10)
-  .map(({ name, fulladdr, latitude: lat, longitude: lng, thumbnail }) => ({
+const formattedDataForMap: Formatted[] = hostelPositionsRaw.map(
+  ({ name, fulladdr, latitude: lat, longitude: lng, thumbnail }) => ({
     name,
     fulladdr,
     lat,
     lng,
     thumbnail,
     key: JSON.stringify({ name, lat, lng }),
-  }));
+  })
+);
 export default formattedDataForMap;
