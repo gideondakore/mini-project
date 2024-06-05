@@ -2661,15 +2661,17 @@ type Formatted = {
   lat: number;
   lng: number;
   thumbnail: string | null;
+  rating: number | null;
 };
 
 const formattedDataForMap: Formatted[] = hostelPositionsRaw.map(
-  ({ name, fulladdr, latitude: lat, longitude: lng, thumbnail }) => ({
+  ({ name, fulladdr, latitude: lat, longitude: lng, thumbnail, rating }) => ({
     name,
     fulladdr,
     lat,
     lng,
     thumbnail,
+    rating,
     key: JSON.stringify({ name, lat, lng }),
   })
 );
