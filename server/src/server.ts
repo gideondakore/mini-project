@@ -94,7 +94,6 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     );
 
     const token_info_data = await token_info_response.json();
-    console.log("TOKEN INFO: ", token_info_data);
 
     const { email, name, picture } = token_info_data;
     let user = await User.findOne({ email }).select("-password");
@@ -158,7 +157,6 @@ app.get("/signout", async (req: Request, res: Response) => {
     let deleteSuccess: boolean = false;
     req.session.destroy((err) => {
       if (err) {
-        console.log("Error occur deleting connect.sid in cookies");
         deleteSuccess = true;
         return;
       }
@@ -257,16 +255,9 @@ app.post("/credential-register", async (req: Request, res: Response) => {
       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
       if (dbUser) {
         const accessToken = dbUser.generateToken();
-        console.log("Acess token from model: ", accessToken);
         const refreshToken = jwt.sign(payload, jwtRefreshSecret);
         req.session.refreshToken = refreshToken;
 
-        console.log(
-          "SESSION REFRESH TOKEN",
-          req.session.refreshToken,
-          "\n",
-          refreshToken
-        );
         return res.status(200).json({
           message: [message],
           success: success,

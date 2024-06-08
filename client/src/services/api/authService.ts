@@ -7,7 +7,6 @@ const aouthLogin = async () => {
   const GOOGLE_OAUTH_SCOPES = [
     "https%3A//www.googleapis.com/auth/userinfo.email",
     "https%3A//www.googleapis.com/auth/userinfo.profile",
-    "https://www.googleapis.com/auth/user.birthday.read",
   ];
 
   try {
@@ -27,14 +26,15 @@ const isAuthenticated = async () => {
     const response = await fetch(
       `http://localhost:8000/authentication-status`,
       {
-        headers: new Headers({
-          "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "12345",
-          Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
-        }),
-        // headers: {
+        // headers: new Headers({
+        //   "Content-Type": "application/json",
+        //   "ngrok-skip-browser-warning": "12345",
         //   Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
-        // },
+        // }),
+        headers: {
+          Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       }
     );
@@ -46,14 +46,7 @@ const isAuthenticated = async () => {
     const { authenticated, credential_access, credential_refresh } =
       await response.json();
 
-    console.log("Authenticated Status: ", authenticated);
     if (credential_access && credential_refresh) {
-      console.log(
-        "New Access Token: ",
-        credential_access,
-        " New Refresh Token: ",
-        credential_refresh
-      );
       window.localStorage.setItem("credential_access_token", credential_access);
       window.localStorage.setItem(
         "credential_refresh_token",
@@ -76,14 +69,13 @@ const signOut = async () => {
       credentials: "include",
     });
 
-    const { msg, status, success } = await response.json();
+    const { success } = await response.json();
 
     if (success) {
       window.localStorage.removeItem("credential_access_token");
       window.localStorage.removeItem("credential_refresh_token");
     }
 
-    console.log(msg, status);
     return success;
   } catch (error) {
     throw new Error(`Error occur logging out: ${error}`);
@@ -92,7 +84,6 @@ const signOut = async () => {
 
 const signIn = async (body: { email: string; password: string }) => {
   try {
-    console.log("Body: ", body);
     const response = await fetch("http://localhost:8000/signin", {
       method: "POST",
       headers: new Headers({
@@ -104,7 +95,6 @@ const signIn = async (body: { email: string; password: string }) => {
     });
 
     const data = await response.json();
-    console.log("data", data?.message);
     return data;
   } catch (error) {
     throw new Error("Error occur signing you in!");

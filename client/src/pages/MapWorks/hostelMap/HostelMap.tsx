@@ -1,5 +1,4 @@
 import React, {
-  ChangeEvent,
   useCallback,
   useEffect,
   useRef,
@@ -7,6 +6,7 @@ import React, {
   createContext,
   useContext,
   SetStateAction,
+  useMemo,
 } from "react";
 import formattedDataForMap from "./data/hostelLocations";
 import StarRate from "../../../utils/starRate";
@@ -16,12 +16,24 @@ import {
   AdvancedMarker,
   useMap,
   useMapsLibrary,
+  MapCameraProps,
+  MapCameraChangedEvent,
+  MapControl,
+  ControlPosition,
+  CollisionBehavior,
+  useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
+
 import knustLogoDark from "../../../assets/images/knust-logo.jpeg";
 import knustLogoLight from "../../../assets/images/KnustLogo.png";
-
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
+import { AppDispatch } from "../../../store/store";
+import { useDispatch } from "react-redux";
+import { setRoute } from "../../../store/features/mapRoutesSlice";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import { setDestination } from "../../../store/features/mapDestinationNameSlice";
 
 interface CurrentDestinationPositionProp {
   currentDestinationPosition: google.maps.LatLngLiteral;
@@ -39,22 +51,44 @@ const DestinationNameContext = createContext<{
 } | null>(null);
 
 const HostelMap = () => {
-  const position: google.maps.LatLngLiteral = { lat: 6.6745, lng: -1.5716 };
+  const INITIAL_CAMERA = useMemo(
+    () => ({ center: { lat: 6.6745, lng: -1.5716 }, zoom: 8 }),
+    []
+  );
+  const [cameraProp, setCameraProp] = useState<MapCameraProps>(INITIAL_CAMERA);
+  const handleCameraChange = (ev: MapCameraChangedEvent) => {
+    return setCameraProp(ev.detail);
+  };
 
   const [currentDestinationPosition, setCurrentDestinationPosition] =
-    useState<google.maps.LatLngLiteral>(position);
+    useState<google.maps.LatLngLiteral>(INITIAL_CAMERA.center);
   const [destinationName, setDestinationName] = useState<string>(
-    "Main campus entrance"
+    "KNUST administration building"
   );
+
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100vh", width: "80%" }}>
       <Map
         mapId={process.env.REACT_APP_GOOGLE_MAP_ID}
-        defaultZoom={14}
-        center={position}
-        fullscreenControl={false}
-        // zoom={16}
+        {...cameraProp}
+        onCameraChanged={handleCameraChange}
+        reuseMaps={true}
       >
+        <MapControl position={ControlPosition.BOTTOM_LEFT}>
+          <div
+            className="site-icon--wrapper"
+            style={{ backgroundColor: "#f4f2f3", borderRadius: "20%" }}
+          >
+            <img
+              src={require("../../../assets/images/app-logo.jpg")}
+              alt="app logo"
+              height={40}
+              width={40}
+              style={{ borderRadius: "50%" }}
+            />
+            <p style={{ fontWeight: "bold", fontSize: "1rem" }}>Duplex</p>
+          </div>
+        </MapControl>
         <CurrentDestinationPositionContext.Provider
           value={{ currentDestinationPosition, setCurrentDestinationPosition }}
         >
@@ -63,6 +97,7 @@ const HostelMap = () => {
           >
             <Markers points={formattedDataForMap} />
             <Directions />
+            <Places />
           </DestinationNameContext.Provider>
         </CurrentDestinationPositionContext.Provider>
       </Map>
@@ -92,9 +127,10 @@ const Markers = ({ points }: Prop) => {
   )!;
 
   const { setDestinationName } = useContext(DestinationNameContext)!;
-
-  const [open, setOpen] = useState<boolean>(false);
-  const position: google.maps.LatLngLiteral = { lat: 6.6745, lng: -1.5716 };
+  const position: google.maps.LatLngLiteral = useMemo(
+    () => ({ lat: 6.6747, lng: -1.5712 }),
+    []
+  );
   const map = useMap();
   const [markers, setMarkers] = useState<{ [key: string]: Marker }>({});
   const [openHostel, setOpenHostel] = useState<boolean>(false);
@@ -103,6 +139,18 @@ const Markers = ({ points }: Prop) => {
   const [openHostelDetails, setOpenHostelDetails] =
     useState<HostelDetailsProp>();
   const clusterer = useRef<MarkerClusterer | null>(null);
+  const [markerRef, marker] = useAdvancedMarkerRef();
+  const [infoWindowShowKnust, setInfoWindowShowKnust] =
+    useState<boolean>(false);
+
+  const handleMarkerClickKnust = useCallback(
+    () => setInfoWindowShowKnust((isShown) => !isShown),
+    []
+  );
+  const handleMarkerCloseKnust = useCallback(
+    () => setInfoWindowShowKnust(false),
+    []
+  );
 
   useEffect(() => {
     if (!map) return;
@@ -115,6 +163,7 @@ const Markers = ({ points }: Prop) => {
     clusterer.current?.clearMarkers();
     clusterer.current?.addMarkers(Object.values(markers));
   });
+
   const setMarkerRef = useCallback(
     (marker: Marker | null, key: string) => {
       if (marker && markers[key]) return;
@@ -130,6 +179,7 @@ const Markers = ({ points }: Prop) => {
         }
       });
     },
+
     [markers]
   );
 
@@ -138,14 +188,18 @@ const Markers = ({ points }: Prop) => {
       Math.random() * (8 - 1) + 1
     )}.jpg`);
   };
+
   return (
     <>
       <>
         {points.map((point, index) => (
           <AdvancedMarker
+            title={"Duplex"}
             position={point}
             key={point.key}
-            ref={(marker) => setMarkerRef(marker, point.key)}
+            ref={(marker) => {
+              setMarkerRef(marker, point.key);
+            }}
             onClick={(e) => {
               let position: google.maps.LatLngLiteral = {
                 lat: point.lat,
@@ -163,13 +217,25 @@ const Markers = ({ points }: Prop) => {
               setCurrentDestinationPosition(position);
               setDestinationName(point?.name);
             }}
-          ></AdvancedMarker>
+          >
+            <div className="site-icon--wrapper">
+              <img
+                src={require("../../../assets/images/app-logo.jpg")}
+                alt="app logo"
+                height={30}
+                width={30}
+                style={{ borderRadius: "50%" }}
+              />
+            </div>
+          </AdvancedMarker>
         ))}
 
         {openHostel && (
           <InfoWindow
             position={openHostelPosition}
             onCloseClick={() => setOpenHostel(false)}
+            shouldFocus={false}
+            headerContent={"Duplex ©2024"}
           >
             <div
               style={{
@@ -200,7 +266,7 @@ const Markers = ({ points }: Prop) => {
               <code>
                 Rating:
                 {openHostelDetails?.rating
-                  ? openHostelDetails?.rating
+                  ? (openHostelDetails?.rating).toFixed(1)
                   : "Not available 😞"}
               </code>
             </div>
@@ -209,10 +275,12 @@ const Markers = ({ points }: Prop) => {
       </>
 
       <AdvancedMarker
+        ref={markerRef}
+        collisionBehavior={CollisionBehavior.REQUIRED_AND_HIDES_OPTIONAL}
+        draggable={true}
+        title={"KNUST Administration building"}
         position={position}
-        onClick={() => {
-          setOpen(true);
-        }}
+        onClick={handleMarkerClickKnust}
       >
         <img
           src={knustLogoDark}
@@ -224,8 +292,12 @@ const Markers = ({ points }: Prop) => {
           }}
         />
       </AdvancedMarker>
-      {open && (
-        <InfoWindow onCloseClick={() => setOpen(false)} position={position}>
+      {infoWindowShowKnust && (
+        <InfoWindow
+          position={position}
+          anchor={marker}
+          onClose={handleMarkerCloseKnust}
+        >
           <div
             style={{
               display: "flex",
@@ -250,153 +322,263 @@ const Directions = () => {
     CurrentDestinationPositionContext
   )!;
 
-  const { destinationName } = useContext(DestinationNameContext)!;
-
   const map = useMap();
   const routeLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] =
     useState<google.maps.DirectionsService>();
   const [directionRenderer, setDirectionRenderer] =
     useState<google.maps.DirectionsRenderer>();
-  const [collegePosition, setCollegeLocation] =
-    useState<google.maps.LatLngLiteral>({ lat: 6.6732, lng: -1.5674 });
-  const [travelMode, setTravelMode] = useState<google.maps.TravelMode>(
-    google.maps.TravelMode.DRIVING
+
+  const mapRoutesIndex = useSelector(
+    (state: RootState) => state.routesIndex.setRouteIndex
   );
-  const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
-  const [routeIndex, setRouteIndex] = useState<number>(0);
-  const selected = routes.at(routeIndex);
-  const leg = selected?.legs.at(0);
 
-  const [collegeName, setCollegeName] = useState<string>("college of science");
-  const handleLocationChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const [lat, lng] = e.target?.value.split(",").map(Number);
+  const mapCollegePositions = useSelector(
+    (state: RootState) => state.collegePosition.position
+  );
 
-    setCollegeLocation({ lat, lng });
+  const mapTravelMode = useSelector(
+    (state: RootState) => state.travelMode.travelMode
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
-    setCollegeName(e.target?.selectedOptions[0]?.text);
-  };
+  const { destinationName } = useContext(DestinationNameContext)!;
+  dispatch(setDestination(destinationName));
+
   useEffect(() => {
     if (!map || !routeLibrary) return;
 
-    setDirectionsService(new google.maps.DirectionsService());
-    setDirectionRenderer(new google.maps.DirectionsRenderer({ map }));
+    setDirectionsService(new routeLibrary.DirectionsService());
+    setDirectionRenderer(new routeLibrary.DirectionsRenderer({ map }));
   }, [map, routeLibrary]);
 
   useEffect(() => {
-    if (!directionsService || !directionRenderer || !travelMode) return;
+    if (!directionsService || !directionRenderer) return;
 
     directionsService
       .route({
-        origin: collegePosition,
+        origin: mapCollegePositions,
         destination: currentDestinationPosition,
-        travelMode: travelMode,
+        travelMode: mapTravelMode,
         provideRouteAlternatives: true,
       })
       .then((response) => {
         directionRenderer.setDirections(response);
-        setRoutes(response.routes);
+
+        const responseRoute = response.routes.map(({ legs, summary }) => ({
+          legs,
+          summary,
+        }));
+        dispatch(setRoute({ routes: responseRoute }));
       });
   }, [
     directionRenderer,
     directionsService,
-    collegePosition,
-    travelMode,
+    mapCollegePositions,
+    mapTravelMode,
     currentDestinationPosition,
+    dispatch,
   ]);
 
   useEffect(() => {
     if (!directionRenderer) return;
 
-    directionRenderer.setRouteIndex(routeIndex);
-  }, [directionRenderer, routeIndex]);
+    directionRenderer.setRouteIndex(mapRoutesIndex);
+  }, [directionRenderer, mapRoutesIndex]);
+
+  return <></>;
+};
+
+const Places = () => {
+  const map = useMap();
+  const placeLibrary = useMapsLibrary("places");
+  const [selectedPlace, setSelectedPlace] =
+    useState<google.maps.places.PlaceResult | null>(null);
+
+  //////////////////////////////////////////////////
+  const [placesService, setPlacesService] =
+    useState<google.maps.places.PlacesService>();
+
+  const [predictions, setPredictions] = useState<
+    google.maps.places.AutocompletePrediction[] | null
+  >(null);
+
+  const [predictionSelected, setPredictionSelected] =
+    useState<google.maps.places.AutocompletePrediction | null>(null);
+
+  const [inputValue, setInputValue] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [showPredictions, setShowPredictions] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!map || !placeLibrary) return;
+
+    setPlacesService(new placeLibrary.PlacesService(map));
+  }, [placeLibrary, map]);
+
+  // useEffect(() => {
+  //   if (!placesService) return;
+
+  //   const request: google.maps.places.FindPlaceFromQueryRequest = {
+  //     query: "Wagyingo hostel",
+  //     fields: ["ALL"],
+  //   };
+
+  //   placesService.findPlaceFromQuery(
+  //     request,
+  //     (
+  //       results: google.maps.places.PlaceResult[] | null,
+  //       status: google.maps.places.PlacesServiceStatus
+  //     ) => {
+  //       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+  //         results.map((result, index) => console.log("RESULT: ", result));
+
+  //         // console.log("RESULTS: ", results);
+  //         setSearchResults(results);
+  //       }
+  //     }
+  //   );
+  // }, [placesService]);
+
+  useEffect(() => {
+    if (!predictionSelected || !placesService) return;
+    const request: google.maps.places.PlaceDetailsRequest = {
+      placeId: predictionSelected.place_id!,
+      fields: ["ALL"],
+    };
+    placesService.getDetails(
+      request,
+      (
+        result: google.maps.places.PlaceResult | null,
+        status: google.maps.places.PlacesServiceStatus
+      ) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+          console.log("RESULTS: ", result);
+          setSelectedPlace(result);
+          ////////
+
+          // map?.panTo();
+        }
+      }
+    );
+  }, [placesService, predictionSelected, map, selectedPlace]);
+
+  useEffect(() => {
+    if (!placeLibrary || !placesService) return;
+
+    const sw = new google.maps.LatLng(6.600071, -1.730783);
+    const ne = new google.maps.LatLng(6.800071, -1.530783);
+    const bounds = new google.maps.LatLngBounds(sw, ne);
+
+    const request: google.maps.places.AutocompletionRequest = {
+      input: inputValue,
+      region: "gh",
+      types: ["establishment"],
+      componentRestrictions: { country: ["GH"] },
+      locationRestriction: bounds,
+    };
+
+    const autoComplete = new placeLibrary.AutocompleteService();
+
+    autoComplete.getPlacePredictions(
+      request,
+      (
+        results: google.maps.places.AutocompletePrediction[] | null,
+        status: google.maps.places.PlacesServiceStatus
+      ) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && results) {
+          setPredictions(results);
+        }
+      }
+    );
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target?.value);
+    setShowPredictions(true);
+  };
+
+  useEffect(() => {}, [showPredictions]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = inputValue;
+    }
+  }, [inputValue]);
+
+  const handleButtonClick = (
+    prediction: google.maps.places.AutocompletePrediction
+  ) => {
+    // console.log("Prediction: ", prediction);
+    setInputValue(prediction?.description);
+    setShowPredictions(false);
+    setPredictionSelected(prediction);
+  };
 
   return (
     <div
       style={{
-        position: "absolute",
-        minHeight: "25rem",
+        height: "auto",
         width: "20rem",
-        backgroundColor: "#04125c",
-        left: "1rem",
-        top: "2rem",
-        display: "flex",
-        flexDirection: "column",
-        color: "white",
-        alignItems: "flex-start",
-        padding: "10px",
-        borderRadius: "10px",
-        gap: "5px",
+        // backgroundColor: "red",
+        zIndex: "100",
+        position: "absolute",
+        top: "10px",
+        right: "60px",
       }}
     >
-      <h4>{selected?.summary}</h4>
-      <p>
-        Distance:{" "}
-        {leg?.distance?.text ? leg?.distance?.text : "Not available 😞"}
-      </p>
-      <p>
-        Duration:{" "}
-        {leg?.duration?.text ? leg?.duration?.text : "Not available 😞"}
-      </p>
-      <h2>Other routes:</h2>
-      <menu
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-          gap: "5px",
-          marginTop: "1rem",
-        }}
-      >
-        {routes.map((route, index) => (
-          <button
-            style={{ cursor: "pointer" }}
-            onClick={() => setRouteIndex(index)}
-            key={index}
-          >
-            <li key={route?.summary}>
-              {route?.summary
-                ? route?.summary
-                : `Alternative route ${index + 1}`}
-            </li>
-          </button>
-        ))}
-      </menu>
+      <input
+        id="autocomplete"
+        type="text"
+        placeholder="search duplex"
+        style={{ width: "100%", height: "2rem" }}
+        onChange={handleChange}
+        ref={inputRef}
+      />
+      {showPredictions && (
+        <ul
+          className="searchBox"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            // gap: "10px",
+            alignItems: "flex-start",
+            backgroundColor: "#64766a",
+            width: "100%",
+            color: "white",
+          }}
+        >
+          {inputValue.length > 2 &&
+            predictions &&
+            predictions?.map((prediction) => (
+              <li
+                style={{ width: "100%", height: "4rem" }}
+                key={prediction.description}
+              >
+                <button
+                  style={{
+                    backgroundColor: "#ffffff",
+                    color: "#000000",
+                    border: "none",
+                    cursor: "pointer",
+                    width: "100%",
+                    borderRadius: "0px",
+                    fontSize: "1.2rem",
+                  }}
+                  onClick={() => handleButtonClick(prediction)}
+                >
+                  {prediction.description}
+                </button>
+              </li>
+            ))}
+        </ul>
+      )}
 
-      <h2 style={{ marginTop: "1rem" }}>Select college:</h2>
-      <select
-        value={`${collegePosition.lat},${collegePosition.lng}`}
-        onChange={handleLocationChange}
-      >
-        <option value="6.6732,-1.5674">college of science</option>
-        <option value="6.673175,-1.565423">college of engineering</option>
-        <option value="6.6774,-1.5647">
-          college of agriculture and natural resources
-        </option>
-        <option value="6.6743,-1.5648">
-          college of art and built environment
-        </option>
-        <option value="6.6665,-1.5687">
-          college of humanities and social sciences
-        </option>
-        <option value="6.6722,-1.5685">college of health sciences</option>
-      </select>
-
-      <h2 style={{ marginTop: "1rem" }}>Mode of Transport:</h2>
-      <select
-        value={travelMode}
-        onChange={({ target }) =>
-          setTravelMode(target?.value as google.maps.TravelMode)
-        }
-      >
-        <option value={google.maps.TravelMode.DRIVING}>Driving</option>
-        <option value={google.maps.TravelMode.WALKING}>Walking</option>
-      </select>
-
-      <h2 style={{ marginTop: "1rem" }}>Origin - Destination:</h2>
-      <p>
-        From {collegeName} to {destinationName}
-      </p>
+      <AdvancedMarker
+        position={selectedPlace?.geometry?.location}
+        title={"Duplex Testing"}
+      ></AdvancedMarker>
     </div>
   );
 };

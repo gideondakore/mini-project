@@ -73,7 +73,6 @@ const Register = () => {
           return;
         }
 
-        // console.log(message, success);
         window.location.href = "http://localhost:3000";
       } catch (error) {
         throw new Error(`Error: ${error}`);

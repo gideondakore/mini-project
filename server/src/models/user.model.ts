@@ -44,7 +44,6 @@ const UserSchema = new mongoose.Schema(
 );
 
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET!;
-// console.log(JWT_SECRET);
 const JWT_LIFETIME = process.env.JWT_LIFETIME!;
 
 UserSchema.methods.generateToken = function () {

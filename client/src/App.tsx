@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { HomeNewLook, Register } from "./pages";
+import { Home, Register } from "./pages";
 import { Routes, Route } from "react-router-dom";
 import { UserInfo, SignIn } from "./pages";
 import MapContainer from "./pages/MapWorks/MapContainer";
@@ -8,7 +8,7 @@ import MapContainer from "./pages/MapWorks/MapContainer";
 const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<HomeNewLook />} />
+      <Route path="/" element={<Home />} />
       <Route path="/register">
         <Route index element={<Register />} />
         <Route path=":id" element={<Register />} />

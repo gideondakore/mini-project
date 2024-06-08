@@ -20,7 +20,7 @@ const tokenRefresh = async (refreshToken: string) => {
 
     return { refresh_token_data, refresh_token_response };
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

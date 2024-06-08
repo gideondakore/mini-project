@@ -89,7 +89,6 @@ const cookieVerificationAndRefresh = async (
             });
           }
 
-          console.log(req.session.user, " : ", decodeStateAcess);
           if (credential_refresh_token === req.session.refreshToken) {
             jwt.verify(
               credential_refresh_token as string,
@@ -157,7 +156,6 @@ const cookieVerificationAndRefresh = async (
           });
         }
       } else {
-        console.log("Invalid token received");
         return res.status(401).json({
           authenticated: false,
           message: "No valid token provided",

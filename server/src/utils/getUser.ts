@@ -12,7 +12,6 @@ const getUser = async (email: string, name: string) => {
       };
     }
 
-    console.log("From getUser information: ", user);
     return { message: "User not found", success: true, user: user };
   } catch (error) {
     console.error(`Error occur accessing user from database`);

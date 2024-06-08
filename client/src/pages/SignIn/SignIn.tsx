@@ -18,7 +18,6 @@ const SignIn = () => {
     signIn({ email, password })
       .then((data) => {
         const { message, success, access_token, refresh_token } = data;
-        // console.log("Messge from signin: ", message);
         if (success) {
           window.localStorage.setItem("credential_access_token", access_token);
           window.localStorage.setItem(
@@ -28,7 +27,6 @@ const SignIn = () => {
           errorMsg.map((err, index) => toast(err));
           window.location.href = "http://localhost:3000";
         } else {
-          console.log("Messge from signin second: ", message);
           setErrorMsg(message);
           errorMsg.map((err, index) => toast(err));
         }
