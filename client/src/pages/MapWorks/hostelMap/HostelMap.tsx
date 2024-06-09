@@ -42,6 +42,7 @@ type Point = google.maps.LatLngLiteral & {
   thumbnail: string | null;
   fulladdr: string;
   rating: number | null;
+  placeId: string | null;
 };
 type Prop = { points: Point[] };
 
@@ -464,6 +465,7 @@ const Places = ({ points }: Prop) => {
         status: google.maps.places.PlacesServiceStatus
       ) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && result) {
+          // console.log("Place details: ", result);
           setSelectedPlace(result);
         }
       }

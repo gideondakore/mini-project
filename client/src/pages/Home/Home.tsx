@@ -13,6 +13,9 @@ import { IoCall } from "react-icons/io5";
 import { GrSend } from "react-icons/gr";
 import NavBar from "../../layouts/NavBar";
 import useInViewport from "../../hooks/useInViewport";
+import DisplayHostelSecond from "../../components/DisplayHostelSecond/DisplayHostelSecond";
+import { APIProvider } from "@vis.gl/react-google-maps";
+import MainHostelDisplay from "../../components/MainHostelDisplay/MainHostelDisplay";
 
 const Home = () => {
   const elementRef = useRef<HTMLDivElement>(null);
@@ -45,6 +48,7 @@ const Home = () => {
   let reviews = 12345;
   let rate: RateType = 4.5;
   let locationRate = 9.7;
+
   return (
     <>
       <main className="main-wrapper">
@@ -136,6 +140,7 @@ const Home = () => {
           </div>
           <ComprehensiveSearch />
         </section>
+        <MainHostelDisplay />
       </main>
     </>
   );
