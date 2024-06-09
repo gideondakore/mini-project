@@ -24,6 +24,7 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 
+import "../hostelMap/HostelMap.css";
 import knustLogoDark from "../../../assets/images/knust-logo.jpeg";
 import knustLogoLight from "../../../assets/images/KnustLogo.png";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
@@ -35,10 +36,35 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { setDestination } from "../../../store/features/mapDestinationNameSlice";
 
+type Point = google.maps.LatLngLiteral & {
+  key: string;
+  name: string;
+  thumbnail: string | null;
+  fulladdr: string;
+  rating: number | null;
+};
+type Prop = { points: Point[] };
+
+type HostelDetailsProp = {
+  name: string;
+  thumbnail: string | null;
+  address: string;
+  rating: number | null;
+};
+
 interface CurrentDestinationPositionProp {
-  currentDestinationPosition: google.maps.LatLngLiteral;
+  currentDestinationPosition:
+    | google.maps.LatLngLiteral
+    | google.maps.LatLng
+    | google.maps.Place
+    | string;
   setCurrentDestinationPosition: React.Dispatch<
-    React.SetStateAction<google.maps.LatLngLiteral>
+    React.SetStateAction<
+      | google.maps.LatLngLiteral
+      | google.maps.LatLng
+      | google.maps.Place
+      | string
+    >
   >;
 }
 
@@ -60,8 +86,9 @@ const HostelMap = () => {
     return setCameraProp(ev.detail);
   };
 
-  const [currentDestinationPosition, setCurrentDestinationPosition] =
-    useState<google.maps.LatLngLiteral>(INITIAL_CAMERA.center);
+  const [currentDestinationPosition, setCurrentDestinationPosition] = useState<
+    google.maps.LatLngLiteral | google.maps.LatLng | google.maps.Place | string
+  >(INITIAL_CAMERA.center);
   const [destinationName, setDestinationName] = useState<string>(
     "KNUST administration building"
   );
@@ -97,7 +124,7 @@ const HostelMap = () => {
           >
             <Markers points={formattedDataForMap} />
             <Directions />
-            <Places />
+            <Places points={formattedDataForMap} />
           </DestinationNameContext.Provider>
         </CurrentDestinationPositionContext.Provider>
       </Map>
@@ -105,21 +132,7 @@ const HostelMap = () => {
   );
 };
 
-type Point = google.maps.LatLngLiteral & {
-  key: string;
-  name: string;
-  thumbnail: string | null;
-  fulladdr: string;
-  rating: number | null;
-};
-type Prop = { points: Point[] };
-
-type HostelDetailsProp = {
-  name: string;
-  thumbnail: string | null;
-  address: string;
-  rating: number | null;
-};
+////////MARKERS//////////////////
 
 const Markers = ({ points }: Prop) => {
   const { setCurrentDestinationPosition } = useContext(
@@ -269,6 +282,7 @@ const Markers = ({ points }: Prop) => {
                   ? (openHostelDetails?.rating).toFixed(1)
                   : "Not available 😞"}
               </code>
+              <em>Registered ✅</em>
             </div>
           </InfoWindow>
         )}
@@ -316,6 +330,8 @@ const Markers = ({ points }: Prop) => {
     </>
   );
 };
+
+////////DIRECTIONS//////////////////
 
 const Directions = () => {
   const { currentDestinationPosition } = useContext(
@@ -370,6 +386,11 @@ const Directions = () => {
           summary,
         }));
         dispatch(setRoute({ routes: responseRoute }));
+      })
+      .catch((error) => {
+        console.error(
+          "Error occur in Direction component in HostelMap, specifically in the direction service functionality!"
+        );
       });
   }, [
     directionRenderer,
@@ -389,13 +410,23 @@ const Directions = () => {
   return <></>;
 };
 
-const Places = () => {
+////////PLACES//////////////////
+
+const Places = ({ points }: Prop) => {
   const map = useMap();
   const placeLibrary = useMapsLibrary("places");
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
 
-  //////////////////////////////////////////////////
+  const [markerRef, marker] = useAdvancedMarkerRef();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { setCurrentDestinationPosition } = useContext(
+    CurrentDestinationPositionContext
+  )!;
+
+  const { setDestinationName } = useContext(DestinationNameContext)!;
+
   const [placesService, setPlacesService] =
     useState<google.maps.places.PlacesService>();
 
@@ -410,36 +441,15 @@ const Places = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [showPredictions, setShowPredictions] = useState<boolean>(false);
+  const [present, setPresent] = useState<boolean>(false);
+
+  const [isPredictSelected, setIsPredictSelected] = useState<boolean>(false);
 
   useEffect(() => {
     if (!map || !placeLibrary) return;
 
     setPlacesService(new placeLibrary.PlacesService(map));
   }, [placeLibrary, map]);
-
-  // useEffect(() => {
-  //   if (!placesService) return;
-
-  //   const request: google.maps.places.FindPlaceFromQueryRequest = {
-  //     query: "Wagyingo hostel",
-  //     fields: ["ALL"],
-  //   };
-
-  //   placesService.findPlaceFromQuery(
-  //     request,
-  //     (
-  //       results: google.maps.places.PlaceResult[] | null,
-  //       status: google.maps.places.PlacesServiceStatus
-  //     ) => {
-  //       if (status === google.maps.places.PlacesServiceStatus.OK && results) {
-  //         results.map((result, index) => console.log("RESULT: ", result));
-
-  //         // console.log("RESULTS: ", results);
-  //         setSearchResults(results);
-  //       }
-  //     }
-  //   );
-  // }, [placesService]);
 
   useEffect(() => {
     if (!predictionSelected || !placesService) return;
@@ -454,15 +464,11 @@ const Places = () => {
         status: google.maps.places.PlacesServiceStatus
       ) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && result) {
-          console.log("RESULTS: ", result);
           setSelectedPlace(result);
-          ////////
-
-          // map?.panTo();
         }
       }
     );
-  }, [placesService, predictionSelected, map, selectedPlace]);
+  }, [placesService, predictionSelected]);
 
   useEffect(() => {
     if (!placeLibrary || !placesService) return;
@@ -499,7 +505,21 @@ const Places = () => {
     setShowPredictions(true);
   };
 
-  useEffect(() => {}, [showPredictions]);
+  useEffect(() => {
+    if (selectedPlace?.geometry?.location) {
+      if (!showPredictions && !selectedPlace) return;
+      setCurrentDestinationPosition(selectedPlace?.geometry?.location!);
+      setDestinationName(selectedPlace?.name!);
+      dispatch(setDestination(selectedPlace?.name!));
+    }
+  }, [
+    showPredictions,
+    present,
+    selectedPlace,
+    setCurrentDestinationPosition,
+    setDestinationName,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -510,76 +530,153 @@ const Places = () => {
   const handleButtonClick = (
     prediction: google.maps.places.AutocompletePrediction
   ) => {
-    // console.log("Prediction: ", prediction);
     setInputValue(prediction?.description);
     setShowPredictions(false);
     setPredictionSelected(prediction);
+
+    const tempBool = points.some(
+      (point) =>
+        point.name.toLowerCase() ===
+        prediction.structured_formatting.main_text.toLowerCase()
+    );
+
+    setPresent(tempBool);
+  };
+
+  const handleOpenMarker = useCallback(() => {
+    setIsPredictSelected((isShown) => !isShown);
+  }, []);
+
+  const handleCloseMarker = useCallback(() => {
+    setIsPredictSelected(false);
+  }, []);
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = require(`../../../assets/images/altHostel-${Math.floor(
+      Math.random() * (8 - 1) + 1
+    )}.jpg`);
   };
 
   return (
-    <div
-      style={{
-        height: "auto",
-        width: "20rem",
-        // backgroundColor: "red",
-        zIndex: "100",
-        position: "absolute",
-        top: "10px",
-        right: "60px",
-      }}
-    >
-      <input
-        id="autocomplete"
-        type="text"
-        placeholder="search duplex"
-        style={{ width: "100%", height: "2rem" }}
-        onChange={handleChange}
-        ref={inputRef}
-      />
-      {showPredictions && (
-        <ul
-          className="searchBox"
+    <>
+      <MapControl position={ControlPosition.BLOCK_START_INLINE_START}>
+        <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            // gap: "10px",
-            alignItems: "flex-start",
-            backgroundColor: "#64766a",
-            width: "100%",
-            color: "white",
+            height: "auto",
+            width: "20rem",
+            zIndex: "100",
+            marginTop: "10px",
           }}
         >
-          {inputValue.length > 2 &&
-            predictions &&
-            predictions?.map((prediction) => (
-              <li
-                style={{ width: "100%", height: "4rem" }}
-                key={prediction.description}
-              >
-                <button
-                  style={{
-                    backgroundColor: "#ffffff",
-                    color: "#000000",
-                    border: "none",
-                    cursor: "pointer",
-                    width: "100%",
-                    borderRadius: "0px",
-                    fontSize: "1.2rem",
-                  }}
-                  onClick={() => handleButtonClick(prediction)}
-                >
-                  {prediction.description}
-                </button>
-              </li>
-            ))}
-        </ul>
+          <input
+            id="autocomplete"
+            type="text"
+            placeholder="search duplex"
+            style={{
+              width: "100%",
+              height: "2.5rem",
+              fontSize: "1.1rem",
+              fontWeight: "600",
+              padding: "10px",
+            }}
+            onChange={handleChange}
+            ref={inputRef}
+          />
+          {showPredictions && (
+            <ul
+              className="searchBox"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                backgroundColor: "#64766a",
+                width: "100%",
+                color: "white",
+              }}
+            >
+              {inputValue.length > 2 &&
+                predictions &&
+                predictions?.map((prediction) => (
+                  <li
+                    className="mapPredictionList"
+                    style={{
+                      width: "100%",
+                      height: "4rem",
+                    }}
+                    key={prediction.description}
+                  >
+                    <button
+                      style={{
+                        backgroundColor: "#ffffff",
+                        color: "#000000",
+                        border: "none",
+                        cursor: "pointer",
+                        width: "100%",
+                        borderRadius: "0px",
+                        fontSize: "1.2rem",
+                      }}
+                      onClick={() => handleButtonClick(prediction)}
+                    >
+                      {prediction.description}
+                    </button>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+      </MapControl>
+
+      {present === false && (
+        <AdvancedMarker
+          position={selectedPlace?.geometry?.location}
+          ref={markerRef}
+          onClick={handleOpenMarker}
+        ></AdvancedMarker>
       )}
 
-      <AdvancedMarker
-        position={selectedPlace?.geometry?.location}
-        title={"Duplex Testing"}
-      ></AdvancedMarker>
-    </div>
+      {isPredictSelected && (
+        <InfoWindow
+          position={selectedPlace?.geometry?.location}
+          onClose={handleCloseMarker}
+          anchor={marker}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "5px",
+              backgroundColor: "#ffff",
+              height: "10rem",
+              width: "8rem",
+            }}
+          >
+            <h3>{selectedPlace?.name}</h3>
+            <img
+              src={`${selectedPlace?.photos}`}
+              alt="logo"
+              style={{ height: "5rem", width: "100%" }}
+              onError={handleError}
+            />
+
+            <p>
+              Address:
+              {selectedPlace?.formatted_address
+                ? selectedPlace?.formatted_address
+                : `${selectedPlace?.name} street`}
+            </p>
+
+            <StarRate rating={selectedPlace?.rating} />
+            <code>
+              Rating:
+              {selectedPlace?.rating
+                ? (selectedPlace?.rating).toFixed(1)
+                : "Not available 😞"}
+            </code>
+            <em>Not registered ❌</em>
+          </div>
+        </InfoWindow>
+      )}
+    </>
   );
 };
 export default HostelMap;
