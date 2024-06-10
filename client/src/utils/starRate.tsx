@@ -2,7 +2,7 @@ import React from "react";
 import { Rating } from "react-simple-star-rating";
 const starRate = ({ rating }: { rating: number | null | undefined }) => {
   return (
-    <div>
+    <>
       {rating && (
         <Rating
           initialValue={rating}
@@ -11,7 +11,7 @@ const starRate = ({ rating }: { rating: number | null | undefined }) => {
           size={25}
         />
       )}
-    </div>
+    </>
   );
 };
 

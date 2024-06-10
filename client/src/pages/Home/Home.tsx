@@ -4,50 +4,42 @@ import { Link } from "react-router-dom";
 import {
   SideBar,
   DisplayHostels,
-  StarType,
-  RemarkType,
-  RateType,
+  // StarType,
+  // RemarkType,
+  // RateType,
   ComprehensiveSearch,
 } from "../../components";
 import { IoCall } from "react-icons/io5";
 import { GrSend } from "react-icons/gr";
 import NavBar from "../../layouts/NavBar";
 import useInViewport from "../../hooks/useInViewport";
-import DisplayHostelSecond from "../../components/DisplayHostelSecond/DisplayHostelSecond";
-import { APIProvider } from "@vis.gl/react-google-maps";
-import MainHostelDisplay from "../../components/MainHostelDisplay/MainHostelDisplay";
+// import MainHostelDisplay from "../../components/MainHostelDisplay/MainHostelDisplay";
+
+import formattedDataForMap from "../../pages/MapWorks/hostelMap/data/hostelLocations";
+import hostelDetailsJson from "../../pages/MapWorks/hostelMap/data/detailMapData.json";
 
 const Home = () => {
   const elementRef = useRef<HTMLDivElement>(null);
   const isInView = useInViewport(elementRef, { threshold: 0.0 });
 
-  const imgFormats = [
-    "webp",
-    "webp",
-    "webp",
-    "avif",
-    "avif",
-    "avif",
-    "avif",
-    "avif",
-    "webp",
-    "avif",
-  ];
-  let name = "the prince hostel";
-  let star: StarType = 5;
-  let street = "Ayeduase gate road block 8884";
-  let distance = 2;
-  let remark: RemarkType = "Good";
-  let description = `Nestled amidst the serene hills, our hostel is a tranquil
-  retreat for travelers seeking solace and adventure. Located just
-  a stone's throw away from the bustling city center, our hostel
-  offers the perfect blend of convenience and escapism. Surrounded
-  by lush greenery and panoramic views, guests can unwind in our
-  cozy accommodations after a day of exploring nearby attractions.
-  `;
-  let reviews = 12345;
-  let rate: RateType = 4.5;
-  let locationRate = 9.7;
+  const Remarks = ["Fair", "Good", "Very good", "Excellent", "Superb"] as const;
+
+  const remarks = (index: number) => {
+    switch (true) {
+      case index <= 1 && index >= 0:
+        return Remarks.at(1);
+      case index <= 2 && index >= 1:
+        return Remarks.at(2);
+      case index <= 3 && index >= 2:
+        return Remarks.at(3);
+      case index <= 4 && index >= 3:
+        return Remarks.at(4);
+      case index <= 5 && index >= 4:
+        return Remarks.at(5);
+      default:
+        return Remarks.at(1);
+    }
+  };
 
   return (
     <>
@@ -116,31 +108,30 @@ const Home = () => {
         <section className="right">
           <NavBar />
           <div className="hostel-name-count">
-            <p>Hostel name</p>
-            <p>369 properties</p>
+            <p>Duplex</p>
+            <p>{hostelDetailsJson.length} properties</p>
           </div>
           <div className="display-wrapper">
-            {imgFormats.map((imgFormat, i) => (
-              <DisplayHostels
-                imgUrl={require(`../../assets/images/hostel-${
-                  i + 1
-                }.${imgFormat}`)}
-                name={name}
-                stars={star}
-                street={street}
-                distance={distance}
-                remark={remark}
-                description={description}
-                reviews={reviews}
-                rate={rate}
-                locationRate={locationRate}
-                key={i}
-              />
-            ))}
+            {hostelDetailsJson.map((hostel, index) => {
+              return (
+                <DisplayHostels
+                  key={index}
+                  imgUrl={formattedDataForMap.at(index)?.thumbnail as string}
+                  name={hostel.name}
+                  full_address={
+                    formattedDataForMap.at(index)?.fulladdr as string
+                  }
+                  remark={remarks(hostel.rating as number) as string}
+                  reviews={hostel.user_ratings_total as number}
+                  rate={hostel.rating as number}
+                  icon={hostel.icon}
+                />
+              );
+            })}
           </div>
           <ComprehensiveSearch />
         </section>
-        <MainHostelDisplay />
+        {/* <MainHostelDisplay /> */}
       </main>
     </>
   );

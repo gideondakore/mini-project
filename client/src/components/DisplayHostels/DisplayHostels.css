@@ -11,6 +11,7 @@
   gap: 0.5rem;
   border-radius: 10px;
   background-color: var(--backgroundColor);
+  max-height: 20rem;
 }
 
 .hostelInfoWrapper:hover {

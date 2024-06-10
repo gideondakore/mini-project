@@ -10,11 +10,7 @@ import ProfilePhoto from "./ProfilePhoto/ProfilePhoto";
 // import MapController from "./MapController/MapController";
 // import SignOutBtn from "./SignOutBtn/SignOut";
 
-import type {
-  StarType,
-  RemarkType,
-  RateType,
-} from "./DisplayHostels/DisplayHostels";
+// import type { StarType, RemarkType } from "./DisplayHostels/DisplayHostels";
 
 export {
   RegisterBtn,
@@ -27,7 +23,6 @@ export {
   SignOutBtn,
   ProfilePhoto,
   // MapController,
-  StarType,
-  RemarkType,
-  RateType,
+  // StarType,
+  // RemarkType,
 };
