@@ -2268,6 +2268,7 @@ type Formatted = {
   rating: number | null;
   reviews: number | null;
   placeId: string | null;
+  categories: string[];
 };
 
 const formattedDataForMap: Formatted[] = hostelPositionsRaw.map(
@@ -2280,6 +2281,7 @@ const formattedDataForMap: Formatted[] = hostelPositionsRaw.map(
     rating,
     reviews,
     placeId,
+    categories,
   }) => ({
     name,
     fulladdr,
@@ -2290,6 +2292,7 @@ const formattedDataForMap: Formatted[] = hostelPositionsRaw.map(
     key: JSON.stringify({ name, lat, lng }),
     reviews,
     placeId,
+    categories,
   })
 );
 

@@ -1,9 +1,12 @@
 import React, { useRef } from "react";
 import { CiSearch } from "react-icons/ci";
 import "./SearchAreaInput.css";
-
+import formattedDataForMap from "../../pages/MapWorks/hostelMap/data/hostelLocations";
+import { useHostelSearchInput } from "../../context/HostelSearchInputContext";
 const SearchAreaInput = () => {
   const inputRef = useRef<HTMLInputElement>(null!);
+
+  const { setSearchInput } = useHostelSearchInput();
 
   return (
     <>
@@ -18,17 +21,15 @@ const SearchAreaInput = () => {
           ref={inputRef}
           className="hostelFilterByAreaName"
           type="text"
-          placeholder="Filter hostel by area name"
-          list="areas-available"
+          placeholder="Search Duplex"
+          onChange={({ target }) => setSearchInput(target?.value)}
+          list="hostel-available"
         />
       </div>
-      <datalist id="areas-available">
-        <option value="Bomso"></option>
-        <option value="Ayeduase"></option>
-        <option value="Kotei"></option>
-        <option value="Ayeduase New Site"></option>
-        <option value="Boadi"></option>
-        <option value="Boadi New Site"></option>
+      <datalist id="hostel-available">
+        {formattedDataForMap.map((hostel, index) => (
+          <option key={index} value={hostel.name}></option>
+        ))}
       </datalist>
     </>
   );

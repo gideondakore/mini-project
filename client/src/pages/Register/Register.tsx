@@ -1,8 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import loginLogo from "../../assets/images/login-svg.svg";
 import gLogo from "../../assets/images/google-svg.svg";
-import fbLogo from "../../assets/images/facebook-svg.svg";
-import xLogo from "../../assets/images/twitter-x.svg";
 import "./Register.css";
 import { aouthLogin } from "../../services/api/authService";
 import checkPasswordValidity from "../../utils/Validations/passwordValidity";
@@ -251,19 +249,8 @@ const Register = () => {
                       <img src={gLogo} alt="google logo" />
                     </button>
                   </li>
-                  <li>
-                    <button type="button">
-                      <img src={fbLogo} alt="facebook logo" />
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button">
-                      <img src={xLogo} alt="x logo" />
-                    </button>
-                  </li>
                 </ul>
               </div>
-
               <div id="signup">
                 <p>Already have an account?</p>
                 <a href="/register.html">sign in</a>

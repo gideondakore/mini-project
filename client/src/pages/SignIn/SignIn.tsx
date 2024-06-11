@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import loginLogo from "../../assets/images/login-svg.svg";
 import gLogo from "../../assets/images/google-svg.svg";
-import fbLogo from "../../assets/images/facebook-svg.svg";
-import xLogo from "../../assets/images/twitter-x.svg";
 import "./SignIn.css";
 import { aouthLogin, signIn } from "../../services/api/authService";
 import { ToastContainer, toast } from "react-toastify";
@@ -110,16 +108,6 @@ const SignIn = () => {
                       type="button"
                     >
                       <img src={gLogo} alt="google logo" />
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button">
-                      <img src={fbLogo} alt="facebook logo" />
-                    </button>
-                  </li>
-                  <li>
-                    <button type="button">
-                      <img src={xLogo} alt="x logo" />
                     </button>
                   </li>
                 </ul>

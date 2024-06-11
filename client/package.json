@@ -59,6 +59,7 @@
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react": "^7.34.1",
     "globals": "^15.2.0",
+    "lucide-react": "^0.391.0",
     "react-router-dom": "^6.23.1",
     "react-simple-star-rating": "^5.1.7",
     "react-toastify": "^10.0.5",
