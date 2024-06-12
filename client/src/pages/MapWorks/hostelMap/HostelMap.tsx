@@ -465,7 +465,6 @@ const Places = ({ points }: Prop) => {
         status: google.maps.places.PlacesServiceStatus
       ) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && result) {
-          // console.log("Place details: ", result);
           setSelectedPlace(result);
         }
       }

@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { RiArrowRightSLine, RiArrowDownSLine } from "react-icons/ri";
 import "./SideBar.css";
 
-const SideBar = () => {
+const SideBar = ({
+  singleFilter,
+  handlePaymentCash,
+  handleCardMomo,
+}: {
+  singleFilter: (newData: string, serviceName: string) => void;
+  handlePaymentCash: (cash: string) => void;
+  handleCardMomo: (card_momo: string) => void;
+}) => {
   const [isArrowDownHomeType, setIsArrowDownHomeType] =
     useState<boolean>(false);
   const [isArrowDownServiceType, setIsArrowDownServiceType] =
@@ -12,6 +20,7 @@ const SideBar = () => {
     useState<boolean>(false);
 
   const [card, setCard] = useState<string>("");
+  const [, setSearchParams] = useSearchParams();
 
   const handleClicks = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -19,8 +28,6 @@ const SideBar = () => {
     const currentTarget = event.currentTarget;
     const target = event.target as HTMLElement;
     const hostelType = currentTarget.dataset.type;
-
-    console.log(currentTarget, target);
 
     if (
       hostelType === "hostel" &&
@@ -46,6 +53,28 @@ const SideBar = () => {
     }
   };
 
+  const handleMouseClick = () => {
+    window.location.href = "http://localhost:3000/map";
+  };
+
+  const handleLinkClick = (
+    serviceType: string,
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    setSearchParams(
+      { search_type: serviceType, service_name: event.currentTarget.innerText },
+      { replace: true }
+    );
+    singleFilter(serviceType, event.currentTarget.innerText);
+  };
+
+  const handlePayment = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
+    e.preventDefault();
+    handlePaymentCash(e.currentTarget.innerText);
+  };
   return (
     <div className="nav-details">
       <div className="hostel-types" onClick={handleClicks} data-type="hostel">
@@ -62,22 +91,37 @@ const SideBar = () => {
         {isArrowDownHomeType && (
           <ul className="hostel-types--list">
             <li>
-              <Link to="/">Our top picks</Link>
+              <Link to="/" onClick={(e) => handleLinkClick("top_picks", e)}>
+                Our top picks
+              </Link>
             </li>
             <li>
-              <Link to="/">Hostels & apartment first</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("boarding_apartment", e)}
+              >
+                Boarding & apartment
+              </Link>
             </li>
             <li>
-              <Link to="/">Property rating (high to low)</Link>
+              <Link to="/" onClick={(e) => handleLinkClick("high_low", e)}>
+                Property rating (high to low)
+              </Link>
             </li>
             <li>
-              <Link to="/">Property rating (low to high)</Link>
+              <Link to="/" onClick={(e) => handleLinkClick("low_high", e)}>
+                Property rating (low to high)
+              </Link>
             </li>
             <li>
-              <Link to="/">Distance from KNUST main campus</Link>
+              <Link to="/" onClick={(e) => handleLinkClick("distance", e)}>
+                Distance from KNUST main campus
+              </Link>
             </li>
             <li>
-              <Link to="/">Top reviewed</Link>
+              <Link to="/" onClick={(e) => handleLinkClick("top_reviewed", e)}>
+                Top reviewed
+              </Link>
             </li>
           </ul>
         )}
@@ -98,22 +142,57 @@ const SideBar = () => {
         {isArrowDownServiceType && (
           <ul className="service-types--list">
             <li>
-              <Link to="/">Luggage storage</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_hostel", e)}
+              >
+                Hostel
+              </Link>
             </li>
             <li>
-              <Link to="/">Laundry</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_boarding", e)}
+              >
+                Boarding
+              </Link>
             </li>
             <li>
-              <Link to="/">Game room & recreational</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_coffee", e)}
+              >
+                Coffee Shop
+              </Link>
             </li>
             <li>
-              <Link to="/">Book exchange & libraries</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_lunch_restaurant", e)}
+              >
+                Lunch Restaurant
+              </Link>
             </li>
             <li>
-              <Link to="/">Security cameras</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_restaurant", e)}
+              >
+                Restaurant
+              </Link>
             </li>
             <li>
-              <Link to="/">Key card access</Link>
+              <Link
+                to="/"
+                onClick={(e) => handleLinkClick("service_souvenir", e)}
+              >
+                Souvenir Store
+              </Link>
+            </li>
+            <li>
+              <Link to="/" onClick={(e) => handleLinkClick("service_wifi", e)}>
+                Wi-Fi Spot
+              </Link>
             </li>
           </ul>
         )}
@@ -134,14 +213,19 @@ const SideBar = () => {
         {isArrowDownPaymentType && (
           <ul className="payment-types--list">
             <li>
-              <Link to="/">Cash</Link>
+              <Link to="/" onClick={handlePayment}>
+                Cash
+              </Link>
             </li>
             <li>
               <div className="sortedByContainer">
                 <span className="card-span">Card:</span>
                 <select
                   value={card}
-                  onChange={({ target }) => setCard(target?.value)}
+                  onChange={({ target }) => {
+                    setCard(target?.value);
+                    handleCardMomo(target?.selectedOptions[0]?.text);
+                  }}
                 >
                   <option value="" disabled>
                     You can select the type of card
@@ -156,7 +240,10 @@ const SideBar = () => {
                 <span className="momo-span">Momo:</span>
                 <select
                   value={card}
-                  onChange={({ target }) => setCard(target?.value)}
+                  onChange={({ target }) => {
+                    setCard(target?.value);
+                    handleCardMomo(target?.selectedOptions[0]?.text);
+                  }}
                 >
                   <option value="" disabled>
                     Mobile money
@@ -173,16 +260,22 @@ const SideBar = () => {
       <div style={{ paddingLeft: "2rem", paddingRight: "10px" }}>
         <p className="smart-map">Smart map</p>
         <div className="showMap">
-          <button title="Show all available hostel on map">Show on map</button>
+          <button
+            title="Show all available hostel on map"
+            onClick={handleMouseClick}
+            type="button"
+          >
+            Show on map
+          </button>
         </div>
       </div>
       <div style={{ paddingLeft: "2rem" }}>
-        <Link to="/" className="about">
+        <Link to="/about" className="about">
           About
         </Link>
       </div>
       <div style={{ paddingLeft: "2rem", paddingRight: "10px" }}>
-        <Link to="/" className="contacts">
+        <Link to="/contact" className="contacts">
           Contacts
         </Link>
       </div>

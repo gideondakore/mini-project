@@ -2,14 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import "./DisplayHostels.css";
 import { RiHeartAdd2Line } from "react-icons/ri";
 import starRate from "../../utils/starRate";
-import { Sparkles } from "lucide-react";
-import { BedSingle } from "lucide-react";
-import { Coffee } from "lucide-react";
-import { Soup } from "lucide-react";
-import { Utensils } from "lucide-react";
-import { ShoppingBag } from "lucide-react";
-import { Wifi } from "lucide-react";
-import { LocateFixed } from "lucide-react";
+import {
+  Sparkles,
+  BedSingle,
+  Coffee,
+  Soup,
+  Utensils,
+  ShoppingBag,
+  Home,
+  Wifi,
+  LocateFixed,
+} from "lucide-react";
+
+import { FaPersonWalking } from "react-icons/fa6";
+import { IoIosTimer } from "react-icons/io";
 
 interface hostelDetailsProp {
   imgUrl: string;
@@ -21,6 +27,8 @@ interface hostelDetailsProp {
   icon: string;
   categories: string[];
   user_review: { author_name: string; profile_photo_url: string; text: string };
+  distance: string;
+  duration: string;
 }
 
 const DisplayHostels = ({
@@ -33,6 +41,8 @@ const DisplayHostels = ({
   icon,
   categories,
   user_review,
+  distance,
+  duration,
 }: hostelDetailsProp) => {
   const [isSave, setIsSave] = useState<boolean>(false);
   const iconRef = useRef<HTMLButtonElement>(null);
@@ -42,7 +52,7 @@ const DisplayHostels = ({
       e.preventDefault();
       setIsSave(!isSave);
 
-      console.log(e.target);
+      // console.log(e.target);
     });
   }, [isSave]);
 
@@ -95,26 +105,37 @@ const DisplayHostels = ({
           <div className="hostelInfo">
             <div className="hostelInfo-info">
               <p className="hostel-name">{name}</p>
-              <p className="hostel-ratings">{starRate({ rating: rate })}</p>
-              <p
-                style={{ marginTop: "10px", marginBottom: "10px" }}
-                className="hostel-address"
-              >
+              {/*  */}
+
+              <div className="hostel-ratings-reviews">
+                <p className="hostel-ratings">{starRate({ rating: rate })}</p>
+                <div className="ratingsReviews">
+                  <div className="sparkleRating">
+                    <Sparkles size={35} />
+                    <p style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
+                      {rate ? rate.toFixed(1) : 1.0}/5
+                    </p>
+                  </div>
+                  <div className="remarkRate">
+                    <p style={{ fontWeight: "bold" }}>
+                      {remark ? remark : "Good"}
+                    </p>
+                    <p>({reviews ? reviews.toLocaleString() : 0} reviews)</p>
+                  </div>
+                </div>
+              </div>
+              <p className="hostel-address">
                 <a href="/">{full_address}</a>
               </p>
 
-              <div className="ratingsReviews">
-                <div className="sparkleRating">
-                  <Sparkles size={35} />
-                  <p style={{ fontSize: "1.1rem", fontWeight: "bold" }}>
-                    {rate ? rate.toFixed(1) : 1.0}/5
-                  </p>
+              <div className="distace-duration">
+                <div className="distanceContainer">
+                  <FaPersonWalking size={30} />
+                  <p>Distance: {distance}</p>
                 </div>
-                <div className="remarkRate">
-                  <p style={{ fontWeight: "bold" }}>
-                    {remark ? remark : "Good"}
-                  </p>
-                  <p>({reviews ? reviews.toLocaleString() : 0} reviews)</p>
+                <div className="durationContainer">
+                  <IoIosTimer size={30} />
+                  <p>Duration: {duration}</p>
                 </div>
               </div>
               <div className="showOnMap">
@@ -182,6 +203,12 @@ const DisplayHostels = ({
                         {category.toLowerCase().includes("store") && (
                           <div>
                             <ShoppingBag size={30} />
+                            <p>{category}</p>
+                          </div>
+                        )}
+                        {category.toLowerCase().includes("boarding") && (
+                          <div>
+                            <Home size={30} />
                             <p>{category}</p>
                           </div>
                         )}

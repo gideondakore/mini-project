@@ -53,7 +53,7 @@
   flex-direction: column;
   padding-left: 1rem;
   display: grid;
-  grid-template-rows: 11% 11% 11% 16% 10% 41%;
+  grid-template-rows: 11% 11% 11% 10% 16% 41%;
 }
 
 .hostel-name {
@@ -66,14 +66,25 @@
   grid-column: 1 / span 1;
 }
 
-.hostel-ratings {
+/* .hostel-ratings {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   grid-row: 2 / span 1;
   grid-column: 1 / span 1;
-}
+  align-self: flex-end;
+} */
 
+.hostel-ratings-reviews {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  grid-row: 2 / span 1;
+  grid-column: 1 / span 1;
+  align-self: flex-end;
+  justify-content: space-between;
+  align-items: center;
+}
 .hostel-address {
   grid-row: 3 / span 1;
   grid-column: 1 / span 1;
@@ -125,11 +136,13 @@
 
 .ratingsReviews {
   display: flex;
+  height: 100%;
   align-items: center;
-  height: 3rem;
+  height: 2.2rem;
   gap: 1rem;
   grid-row: 4 / span 1;
   grid-column: 1 / span 1;
+  align-self: center;
 }
 
 .sparkleRating {
@@ -169,11 +182,11 @@
   align-items: center;
 }
 .showOnMap {
-  height: 4rem;
   display: flex;
   gap: 10px;
   grid-row: 5 / span 1;
   grid-column: 1 / span 1;
+  align-items: center;
 }
 
 .show-location {
@@ -241,4 +254,23 @@
   font-family: var(--fontFamily);
   font-size: 600;
   font-weight: bold;
+}
+
+.hostel-ratings-reviews {
+  display: flex;
+}
+
+.distace-duration {
+  display: flex;
+  font-family: var(--fontFamily);
+  font-weight: 600;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.distanceContainer,
+.durationContainer {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }

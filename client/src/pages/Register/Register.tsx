@@ -5,6 +5,7 @@ import "./Register.css";
 import { aouthLogin } from "../../services/api/authService";
 import checkPasswordValidity from "../../utils/Validations/passwordValidity";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [oAuthType, setOauthType] = useState<string>("");

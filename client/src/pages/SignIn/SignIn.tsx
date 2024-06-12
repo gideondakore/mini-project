@@ -4,6 +4,7 @@ import gLogo from "../../assets/images/google-svg.svg";
 import "./SignIn.css";
 import { aouthLogin, signIn } from "../../services/api/authService";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = () => {
   const [oAuthType, setOauthType] = useState<string>("");

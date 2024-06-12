@@ -1,0 +1,1124 @@
+[
+  {
+    "name": "American House Hostel",
+    "distance": {
+      "text": "2.6 km",
+      "value": 2645
+    },
+    "duration": {
+      "text": "37 mins",
+      "value": 2249
+    }
+  },
+  {
+    "name": "TUMI Hostel - Asokwa",
+    "distance": {
+      "text": "4.8 km",
+      "value": 4827
+    },
+    "duration": {
+      "text": "1 hour 7 mins",
+      "value": 4008
+    }
+  },
+  {
+    "name": "URBAN PLATINUM HOSTEL",
+    "distance": {
+      "text": "3.8 km",
+      "value": 3800
+    },
+    "duration": {
+      "text": "54 mins",
+      "value": 3219
+    }
+  },
+  {
+    "name": "Old Brunei Hostel",
+    "distance": {
+      "text": "0.8 km",
+      "value": 803
+    },
+    "duration": {
+      "text": "11 mins",
+      "value": 677
+    }
+  },
+  {
+    "name": "Royal Gate Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1502
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1300
+    }
+  },
+  {
+    "name": "Victory Towers Hostel",
+    "distance": {
+      "text": "1.2 km",
+      "value": 1238
+    },
+    "duration": {
+      "text": "18 mins",
+      "value": 1077
+    }
+  },
+  {
+    "name": "GUSSS Hostels",
+    "distance": {
+      "text": "0.7 km",
+      "value": 741
+    },
+    "duration": {
+      "text": "10 mins",
+      "value": 611
+    }
+  },
+  {
+    "name": "Prestige Hostel",
+    "distance": {
+      "text": "2.9 km",
+      "value": 2907
+    },
+    "duration": {
+      "text": "41 mins",
+      "value": 2463
+    }
+  },
+  {
+    "name": "Good News Hostel Kumasi",
+    "distance": {
+      "text": "3.5 km",
+      "value": 3523
+    },
+    "duration": {
+      "text": "48 mins",
+      "value": 2900
+    }
+  },
+  {
+    "name": "Hydes Hostel",
+    "distance": {
+      "text": "1.9 km",
+      "value": 1884
+    },
+    "duration": {
+      "text": "27 mins",
+      "value": 1593
+    }
+  },
+  {
+    "name": "Liberty hostel",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2407
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2047
+    }
+  },
+  {
+    "name": "Flint Hostel",
+    "distance": {
+      "text": "1.8 km",
+      "value": 1771
+    },
+    "duration": {
+      "text": "25 mins",
+      "value": 1500
+    }
+  },
+  {
+    "name": "Standard Hostel",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2432
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2036
+    }
+  },
+  {
+    "name": "Providence Hostel",
+    "distance": {
+      "text": "1.8 km",
+      "value": 1798
+    },
+    "duration": {
+      "text": "25 mins",
+      "value": 1526
+    }
+  },
+  {
+    "name": "Evandy Hostel",
+    "distance": {
+      "text": "2.0 km",
+      "value": 2026
+    },
+    "duration": {
+      "text": "29 mins",
+      "value": 1735
+    }
+  },
+  {
+    "name": "Besco Hostel",
+    "distance": {
+      "text": "1.7 km",
+      "value": 1660
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1392
+    }
+  },
+  {
+    "name": "DAKENS International Hostel",
+    "distance": {
+      "text": "2.2 km",
+      "value": 2247
+    },
+    "duration": {
+      "text": "32 mins",
+      "value": 1932
+    }
+  },
+  {
+    "name": "B.K. HOSTEL",
+    "distance": {
+      "text": "2.9 km",
+      "value": 2888
+    },
+    "duration": {
+      "text": "39 mins",
+      "value": 2360
+    }
+  },
+  {
+    "name": "J & J hostel",
+    "distance": {
+      "text": "2.7 km",
+      "value": 2658
+    },
+    "duration": {
+      "text": "37 mins",
+      "value": 2228
+    }
+  },
+  {
+    "name": "Ultimate Hostel",
+    "distance": {
+      "text": "2.0 km",
+      "value": 2023
+    },
+    "duration": {
+      "text": "29 mins",
+      "value": 1733
+    }
+  },
+  {
+    "name": "Christlike Hostel",
+    "distance": {
+      "text": "1.1 km",
+      "value": 1094
+    },
+    "duration": {
+      "text": "15 mins",
+      "value": 922
+    }
+  },
+  {
+    "name": "Wagyingo Hostel",
+    "distance": {
+      "text": "1.3 km",
+      "value": 1343
+    },
+    "duration": {
+      "text": "19 mins",
+      "value": 1148
+    }
+  },
+  {
+    "name": "St. Theresa's Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1506
+    },
+    "duration": {
+      "text": "21 mins",
+      "value": 1270
+    }
+  },
+  {
+    "name": "Afirim Hostel",
+    "distance": {
+      "text": "1.0 km",
+      "value": 1035
+    },
+    "duration": {
+      "text": "15 mins",
+      "value": 876
+    }
+  },
+  {
+    "name": "J & G HOSTEL",
+    "distance": {
+      "text": "4.2 km",
+      "value": 4197
+    },
+    "duration": {
+      "text": "57 mins",
+      "value": 3437
+    }
+  },
+  {
+    "name": "Fortune Royal hostels",
+    "distance": {
+      "text": "2.1 km",
+      "value": 2051
+    },
+    "duration": {
+      "text": "29 mins",
+      "value": 1751
+    }
+  },
+  {
+    "name": "Splendor Hostel",
+    "distance": {
+      "text": "1.9 km",
+      "value": 1949
+    },
+    "duration": {
+      "text": "28 mins",
+      "value": 1687
+    }
+  },
+  {
+    "name": "The Yale Hostel",
+    "distance": {
+      "text": "3.3 km",
+      "value": 3274
+    },
+    "duration": {
+      "text": "46 mins",
+      "value": 2730
+    }
+  },
+  {
+    "name": "Perfect Lines Hostel",
+    "distance": {
+      "text": "2.5 km",
+      "value": 2478
+    },
+    "duration": {
+      "text": "35 mins",
+      "value": 2099
+    }
+  },
+  {
+    "name": "Georgia hostel",
+    "distance": {
+      "text": "2.6 km",
+      "value": 2582
+    },
+    "duration": {
+      "text": "36 mins",
+      "value": 2177
+    }
+  },
+  {
+    "name": "De Nad Hostel.",
+    "distance": {
+      "text": "2.5 km",
+      "value": 2484
+    },
+    "duration": {
+      "text": "35 mins",
+      "value": 2103
+    }
+  },
+  {
+    "name": "Banivillas Hostel",
+    "distance": {
+      "text": "3.3 km",
+      "value": 3302
+    },
+    "duration": {
+      "text": "46 mins",
+      "value": 2782
+    }
+  },
+  {
+    "name": "Eunivic Hostel",
+    "distance": {
+      "text": "2.0 km",
+      "value": 2001
+    },
+    "duration": {
+      "text": "29 mins",
+      "value": 1711
+    }
+  },
+  {
+    "name": "Whitpam B Hostel",
+    "distance": {
+      "text": "2.8 km",
+      "value": 2791
+    },
+    "duration": {
+      "text": "39 mins",
+      "value": 2363
+    }
+  },
+  {
+    "name": "Gaza Hostel",
+    "distance": {
+      "text": "2.8 km",
+      "value": 2772
+    },
+    "duration": {
+      "text": "39 mins",
+      "value": 2352
+    }
+  },
+  {
+    "name": "Lienda Ville Hostel",
+    "distance": {
+      "text": "2.2 km",
+      "value": 2233
+    },
+    "duration": {
+      "text": "32 mins",
+      "value": 1917
+    }
+  },
+  {
+    "name": "Dr Sarfo Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1629
+    },
+    "duration": {
+      "text": "24 mins",
+      "value": 1413
+    }
+  },
+  {
+    "name": "Baanova Hostel",
+    "distance": {
+      "text": "3.0 km",
+      "value": 3048
+    },
+    "duration": {
+      "text": "44 mins",
+      "value": 2614
+    }
+  },
+  {
+    "name": "Jecado Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1553
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1296
+    }
+  },
+  {
+    "name": "Anarosa Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1556
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1310
+    }
+  },
+  {
+    "name": "Nyantakyi hostel",
+    "distance": {
+      "text": "2.7 km",
+      "value": 2725
+    },
+    "duration": {
+      "text": "38 mins",
+      "value": 2297
+    }
+  },
+  {
+    "name": "Wagyingo Onyx Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1592
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1324
+    }
+  },
+  {
+    "name": "4 Seasons hostel",
+    "distance": {
+      "text": "4.2 km",
+      "value": 4164
+    },
+    "duration": {
+      "text": "58 mins",
+      "value": 3484
+    }
+  },
+  {
+    "name": "Sims Hostel",
+    "distance": {
+      "text": "10.5 km",
+      "value": 10539
+    },
+    "duration": {
+      "text": "2 hours 26 mins",
+      "value": 8771
+    }
+  },
+  {
+    "name": "Brunei Complex",
+    "distance": {
+      "text": "0.8 km",
+      "value": 847
+    },
+    "duration": {
+      "text": "12 mins",
+      "value": 690
+    }
+  },
+  {
+    "name": "Trinity hostel",
+    "distance": {
+      "text": "9.3 km",
+      "value": 9317
+    },
+    "duration": {
+      "text": "2 hours 10 mins",
+      "value": 7810
+    }
+  },
+  {
+    "name": "MasterCard Foundation International Hostel",
+    "distance": {
+      "text": "0.9 km",
+      "value": 899
+    },
+    "duration": {
+      "text": "13 mins",
+      "value": 800
+    }
+  },
+  {
+    "name": "Dr Nap Arthur Block",
+    "distance": {
+      "text": "1.8 km",
+      "value": 1790
+    },
+    "duration": {
+      "text": "26 mins",
+      "value": 1538
+    }
+  },
+  {
+    "name": "Kwakyewaa",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2373
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2025
+    }
+  },
+  {
+    "name": "Liberty Hall ksTU",
+    "distance": {
+      "text": "5.8 km",
+      "value": 5801
+    },
+    "duration": {
+      "text": "1 hour 21 mins",
+      "value": 4886
+    }
+  },
+  {
+    "name": "Kosados Hotel",
+    "distance": {
+      "text": "5.9 km",
+      "value": 5922
+    },
+    "duration": {
+      "text": "1 hour 23 mins",
+      "value": 4959
+    }
+  },
+  {
+    "name": "TEK Credit",
+    "distance": {
+      "text": "1.0 km",
+      "value": 950
+    },
+    "duration": {
+      "text": "13 mins",
+      "value": 804
+    }
+  },
+  {
+    "name": "JOEMAT LUXURY HOSTEL- Kenyasi",
+    "distance": {
+      "text": "9.8 km",
+      "value": 9763
+    },
+    "duration": {
+      "text": "2 hours 16 mins",
+      "value": 8151
+    }
+  },
+  {
+    "name": "Baby Brunei",
+    "distance": {
+      "text": "1.1 km",
+      "value": 1056
+    },
+    "duration": {
+      "text": "15 mins",
+      "value": 891
+    }
+  },
+  {
+    "name": "Rasayan Vidhya",
+    "distance": {
+      "text": "11,743 km",
+      "value": 11743148
+    },
+    "duration": {
+      "text": "109 days 15 hours",
+      "value": 9472807
+    }
+  },
+  {
+    "name": "THE BEST HOSTEL",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2412
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2049
+    }
+  },
+  {
+    "name": "WestEnd Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1388
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1184
+    }
+  },
+  {
+    "name": "Nyame-Mireku Plaza Hostel",
+    "distance": {
+      "text": "1.7 km",
+      "value": 1746
+    },
+    "duration": {
+      "text": "24 mins",
+      "value": 1451
+    }
+  },
+  {
+    "name": "Buadi Executive Hostel",
+    "distance": {
+      "text": "3.9 km",
+      "value": 3912
+    },
+    "duration": {
+      "text": "55 mins",
+      "value": 3297
+    }
+  },
+  {
+    "name": "Nevada Hostel Limited",
+    "distance": {
+      "text": "2.3 km",
+      "value": 2327
+    },
+    "duration": {
+      "text": "33 mins",
+      "value": 1954
+    }
+  },
+  {
+    "name": "Fosua Homes Hostel",
+    "distance": {
+      "text": "2.5 km",
+      "value": 2541
+    },
+    "duration": {
+      "text": "36 mins",
+      "value": 2132
+    }
+  },
+  {
+    "name": "Morning Star Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1391
+    },
+    "duration": {
+      "text": "19 mins",
+      "value": 1151
+    }
+  },
+  {
+    "name": "Orange Hostel",
+    "distance": {
+      "text": "2.5 km",
+      "value": 2469
+    },
+    "duration": {
+      "text": "35 mins",
+      "value": 2087
+    }
+  },
+  {
+    "name": "Beacon Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1453
+    },
+    "duration": {
+      "text": "21 mins",
+      "value": 1239
+    }
+  },
+  {
+    "name": "Outlook Hostel",
+    "distance": {
+      "text": "2.3 km",
+      "value": 2346
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2010
+    }
+  },
+  {
+    "name": "Peace Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1531
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1292
+    }
+  },
+  {
+    "name": "By His Grace Hostel",
+    "distance": {
+      "text": "1.3 km",
+      "value": 1309
+    },
+    "duration": {
+      "text": "19 mins",
+      "value": 1127
+    }
+  },
+  {
+    "name": "Rising Sun Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1419
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1190
+    }
+  },
+  {
+    "name": "Nyberg Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1567
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1310
+    }
+  },
+  {
+    "name": "Amandah Hostel",
+    "distance": {
+      "text": "1.3 km",
+      "value": 1318
+    },
+    "duration": {
+      "text": "18 mins",
+      "value": 1097
+    }
+  },
+  {
+    "name": "Johannes Hostel",
+    "distance": {
+      "text": "1.8 km",
+      "value": 1838
+    },
+    "duration": {
+      "text": "26 mins",
+      "value": 1543
+    }
+  },
+  {
+    "name": "Mass Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1592
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1330
+    }
+  },
+  {
+    "name": "BO Executive Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1421
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1223
+    }
+  },
+  {
+    "name": "Laing Hostel",
+    "distance": {
+      "text": "8.1 km",
+      "value": 8112
+    },
+    "duration": {
+      "text": "1 hour 55 mins",
+      "value": 6887
+    }
+  },
+  {
+    "name": "Whitpam A Hostel",
+    "distance": {
+      "text": "1.7 km",
+      "value": 1659
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1404
+    }
+  },
+  {
+    "name": "Millenium Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1458
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1229
+    }
+  },
+  {
+    "name": "Amstel Hostel",
+    "distance": {
+      "text": "2.1 km",
+      "value": 2083
+    },
+    "duration": {
+      "text": "30 mins",
+      "value": 1771
+    }
+  },
+  {
+    "name": "Delisa Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1648
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1379
+    }
+  },
+  {
+    "name": "Amen Main Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1612
+    },
+    "duration": {
+      "text": "22 mins",
+      "value": 1344
+    }
+  },
+  {
+    "name": "Saab Hostel",
+    "distance": {
+      "text": "2.6 km",
+      "value": 2609
+    },
+    "duration": {
+      "text": "37 mins",
+      "value": 2221
+    }
+  },
+  {
+    "name": "JITA Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1423
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1214
+    }
+  },
+  {
+    "name": "Shepherdsville Hostel",
+    "distance": {
+      "text": "1.7 km",
+      "value": 1668
+    },
+    "duration": {
+      "text": "24 mins",
+      "value": 1412
+    }
+  },
+  {
+    "name": "Happy Family Hostel",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1515
+    },
+    "duration": {
+      "text": "21 mins",
+      "value": 1275
+    }
+  },
+  {
+    "name": "Long Island Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1635
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1387
+    }
+  },
+  {
+    "name": "Sun City hostel",
+    "distance": {
+      "text": "3.1 km",
+      "value": 3090
+    },
+    "duration": {
+      "text": "43 mins",
+      "value": 2602
+    }
+  },
+  {
+    "name": "Otumfo Osei Tutu II Hostel (SRC Hostel)",
+    "distance": {
+      "text": "0.9 km",
+      "value": 865
+    },
+    "duration": {
+      "text": "13 mins",
+      "value": 754
+    }
+  },
+  {
+    "name": "Orizen Hostel",
+    "distance": {
+      "text": "1.3 km",
+      "value": 1331
+    },
+    "duration": {
+      "text": "18 mins",
+      "value": 1105
+    }
+  },
+  {
+    "name": "High Achievers Hostel",
+    "distance": {
+      "text": "2.8 km",
+      "value": 2811
+    },
+    "duration": {
+      "text": "40 mins",
+      "value": 2380
+    }
+  },
+  {
+    "name": "Minka Hostel",
+    "distance": {
+      "text": "2.9 km",
+      "value": 2889
+    },
+    "duration": {
+      "text": "40 mins",
+      "value": 2417
+    }
+  },
+  {
+    "name": "Adom Bi Heights",
+    "distance": {
+      "text": "1.5 km",
+      "value": 1494
+    },
+    "duration": {
+      "text": "21 mins",
+      "value": 1247
+    }
+  },
+  {
+    "name": "Afrane Hostel",
+    "distance": {
+      "text": "2.7 km",
+      "value": 2710
+    },
+    "duration": {
+      "text": "38 mins",
+      "value": 2292
+    }
+  },
+  {
+    "name": "Viamens Hostel",
+    "distance": {
+      "text": "2.7 km",
+      "value": 2743
+    },
+    "duration": {
+      "text": "39 mins",
+      "value": 2330
+    }
+  },
+  {
+    "name": "Crystal Hostel",
+    "distance": {
+      "text": "5.4 km",
+      "value": 5389
+    },
+    "duration": {
+      "text": "1 hour 16 mins",
+      "value": 4546
+    }
+  },
+  {
+    "name": "Wilkado Hostel",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2371
+    },
+    "duration": {
+      "text": "33 mins",
+      "value": 1968
+    }
+  },
+  {
+    "name": "Canam Hostel",
+    "distance": {
+      "text": "1.4 km",
+      "value": 1450
+    },
+    "duration": {
+      "text": "20 mins",
+      "value": 1198
+    }
+  },
+  {
+    "name": "Amen Annex",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1624
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1368
+    }
+  },
+  {
+    "name": "Yvonna Hostel",
+    "distance": {
+      "text": "1.7 km",
+      "value": 1722
+    },
+    "duration": {
+      "text": "24 mins",
+      "value": 1434
+    }
+  },
+  {
+    "name": "No Weapon Hostel",
+    "distance": {
+      "text": "2.4 km",
+      "value": 2423
+    },
+    "duration": {
+      "text": "34 mins",
+      "value": 2061
+    }
+  },
+  {
+    "name": "Franco Hostel",
+    "distance": {
+      "text": "1.6 km",
+      "value": 1643
+    },
+    "duration": {
+      "text": "23 mins",
+      "value": 1405
+    }
+  },
+  {
+    "name": "Frontline INN hostel",
+    "distance": {
+      "text": "1.3 km",
+      "value": 1336
+    },
+    "duration": {
+      "text": "18 mins",
+      "value": 1109
+    }
+  },
+  {
+    "name": "Getfund Hostel",
+    "distance": {
+      "text": "8.2 km",
+      "value": 8202
+    },
+    "duration": {
+      "text": "1 hour 56 mins",
+      "value": 6988
+    }
+  },
+  {
+    "name": "Valco Hostel",
+    "distance": {
+      "text": "8.1 km",
+      "value": 8148
+    },
+    "duration": {
+      "text": "1 hour 55 mins",
+      "value": 6919
+    }
+  }
+]

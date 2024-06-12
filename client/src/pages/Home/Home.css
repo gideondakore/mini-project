@@ -98,7 +98,8 @@
   font-weight: 600;
 }
 
-.hostel-name-count > p:nth-child(2) {
+.hostel-name-count > p:nth-child(2),
+.hostel-name-count > p:nth-child(3) {
   color: var(--fontColor);
   font-family: var(--fontFamily);
   font-size: 1.2rem;
