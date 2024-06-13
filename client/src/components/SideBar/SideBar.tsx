@@ -4,11 +4,11 @@ import { RiArrowRightSLine, RiArrowDownSLine } from "react-icons/ri";
 import "./SideBar.css";
 
 const SideBar = ({
-  singleFilter,
+  Filter,
   handlePaymentCash,
   handleCardMomo,
 }: {
-  singleFilter: (newData: string, serviceName: string) => void;
+  Filter: (newData: string, serviceName: string, serviceText: string) => void;
   handlePaymentCash: (cash: string) => void;
   handleCardMomo: (card_momo: string) => void;
 }) => {
@@ -66,7 +66,7 @@ const SideBar = ({
       { search_type: serviceType, service_name: event.currentTarget.innerText },
       { replace: true }
     );
-    singleFilter(serviceType, event.currentTarget.innerText);
+    Filter(serviceType, event.currentTarget.innerText, "");
   };
 
   const handlePayment = (

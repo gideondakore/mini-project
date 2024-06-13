@@ -1,21 +1,71 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import { TbArrowsUpDown } from "react-icons/tb";
 import { CiFilter } from "react-icons/ci";
 import "./ComprehensiveSearch.css";
+// import { useSearchParams } from "react-router-dom";
+import type { ComprehensiveSearchprop } from "../../pages/Home/Home";
 
-const ComprehensiveSearch = () => {
+const ComprehensiveSearch = ({
+  Filter,
+  handleComprehensiveSearch,
+  setComprehensiveSearchArray,
+}: {
+  Filter: (newData: string, serviceName: string, serviceText: string) => void;
+  handleComprehensiveSearch: (isClicked: string) => void;
+  setComprehensiveSearchArray: React.Dispatch<
+    SetStateAction<Array<ComprehensiveSearchprop>>
+  >;
+}) => {
   const [location, setLocation] = useState<string>("");
   const [price, setPrice] = useState<string>("");
   const [area, setArea] = useState<string>("");
   const [rooms, setRooms] = useState<string>("");
 
+  const handleSelectionClick = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    kind: string
+  ) => {
+    // setSearchParams(
+    //   {
+    //     search_type: kind,
+    //     service_name: e?.target.value,
+    //     service_name_text: e?.currentTarget.selectedOptions[0]?.text,
+    //   },
+    //   { replace: true }
+    // );
+
+    const service_type = kind;
+    const service_name = e?.target.value;
+    const service_name_text = e?.currentTarget.selectedOptions[0]?.text;
+    Filter(service_type, service_name, service_name_text);
+    setComprehensiveSearchArray((prev) => {
+      if (service_name.includes("price")) return prev;
+      const updatedArray = prev.filter(
+        (service) => service.service_type !== service_type
+      );
+
+      return [
+        ...updatedArray,
+        { service_type, service_name, service_name_text },
+      ];
+    });
+  };
+
   return (
     <div className="sort-filter-bar">
-      <button className="sort-icon--wrapper">
+      <button
+        className="sort-icon--wrapper"
+        type="button"
+        onClick={() => handleComprehensiveSearch("sort")}
+      >
         <TbArrowsUpDown />
         <p>Sort</p>
       </button>
-      <button className="filter-icon--wrapper">
+      <button
+        className="filter-icon--wrapper"
+        type="button"
+        onClick={() => handleComprehensiveSearch("filter")}
+      >
         <CiFilter />
         <p>Filter</p>
       </button>
@@ -23,7 +73,10 @@ const ComprehensiveSearch = () => {
         <select
           className="location-selection"
           value={location}
-          onChange={({ target }) => setLocation(target?.value)}
+          onChange={(e) => {
+            setLocation(e.target?.value);
+            handleSelectionClick(e, "location");
+          }}
         >
           <option value="" disabled>
             Location
@@ -38,7 +91,10 @@ const ComprehensiveSearch = () => {
         <select
           className="price-selection"
           value={price}
-          onChange={({ target }) => setPrice(target?.value)}
+          onChange={(e) => {
+            setPrice(e.target?.value);
+            handleSelectionClick(e, "price");
+          }}
         >
           <option value="" disabled>
             Price range
@@ -55,24 +111,29 @@ const ComprehensiveSearch = () => {
         <select
           className="area-selection"
           value={area}
-          onChange={({ target }) => setArea(target?.value)}
+          onChange={(e) => {
+            setArea(e.target?.value);
+            handleSelectionClick(e, "distance_multi");
+          }}
         >
           <option value="" disabled>
             Area,km
           </option>
-          <option value="area13">1 - 3</option>
-          <option value="area35">3 - 5</option>
-          <option value="area57">5 - 7</option>
-          <option value="area79">7 - 9</option>
-          <option value="area97">9 - 11</option>
-          <option value="area1113">11 - 13</option>
-          <option value="area1315">13 - 15</option>
+          <option value="area01">0-1</option>
+          <option value="area13">1-3</option>
+          <option value="area35">3-5</option>
+          <option value="area57">5-7</option>
+          <option value="area79">7-9</option>
+          <option value="area97">9-11</option>
         </select>
 
         <select
           className="rooms-selection"
           value={rooms}
-          onChange={({ target }) => setRooms(target?.value)}
+          onChange={(e) => {
+            setRooms(e.target?.value);
+            handleSelectionClick(e, "room");
+          }}
         >
           <option value="" disabled>
             Rooms
@@ -81,10 +142,6 @@ const ComprehensiveSearch = () => {
           <option value="room2">2 in a room</option>
           <option value="room3">3 in a room</option>
           <option value="room4">4 in a room</option>
-          <option value="room5">5 in a room</option>
-          <option value="room6">6 in a room</option>
-          <option value="room7">7 in a room</option>
-          <option value="room8">8 in a room</option>
         </select>
       </div>
     </div>

@@ -6,10 +6,16 @@ import React, {
   useState,
 } from "react";
 import "./Home.css";
-import { Link, useLocation } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { SideBar, DisplayHostels, ComprehensiveSearch } from "../../components";
 import { IoCall } from "react-icons/io5";
-import { GrSend } from "react-icons/gr";
+import { MessageCircleMore } from "lucide-react";
+
 import NavBar from "../../layouts/NavBar";
 import useInViewport from "../../hooks/useInViewport";
 import formattedDataForMap from "../../pages/MapWorks/hostelMap/data/hostelLocations";
@@ -19,6 +25,7 @@ import useDebounced from "../../hooks/useDebounced";
 import routeData from "../../pages/MapWorks/hostelMap/data/routeResponse.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { isAuthenticated } from "../../services/api/authService";
 
 type HostelDataType = {
   name: string;
@@ -36,6 +43,11 @@ type HostelDataType = {
 
 type HostelDataTypeProp = HostelDataType[];
 
+export interface ComprehensiveSearchprop {
+  service_type: string;
+  service_name: string;
+  service_name_text: string;
+}
 const Home = () => {
   const formattedHostel: HostelDataTypeProp = hostelDetailsJson.map(
     ({ name, rating, user_ratings_total, icon, reviews }) => {
@@ -53,14 +65,17 @@ const Home = () => {
     }
   );
 
+  const [auth, setAuth] = useState<boolean>(false);
   const elementRef = useRef<HTMLDivElement>(null);
   const isInView = useInViewport(elementRef, { threshold: 0.0 });
+  const navigate = useNavigate();
 
   const [searchInput, setSearchInput] = useState<string>("");
   const [filteredHostel, setFilteredHostel] =
     useState<HostelDataTypeProp>(formattedHostel);
 
   const debouncedSearchValue = useDebounced(searchInput, 500);
+  const [, setSearchParams] = useSearchParams();
 
   const Remarks = ["Fair", "Good", "Very good", "Excellent", "Superb"] as const;
 
@@ -70,7 +85,18 @@ const Home = () => {
     [location.search]
   );
 
+  const [comprehensiveSearchArray, setComprehensiveSearchArray] = useState<
+    Array<ComprehensiveSearchprop>
+  >([]);
+  const [comprehensiveSearchType, setComprehensiveSearchType] =
+    useState<string>("");
+
+  const [comprehensiveSearchBool, setComprehensiveSearchBool] =
+    useState<boolean>(false);
+
+  const comprehensiveSearchSearchNames: Array<string> = useMemo(() => [""], []);
   const [serviceName, setServiceName] = useState<string>("");
+
   const remarks = (index: number) => {
     switch (true) {
       case index <= 1 && index >= 0:
@@ -87,17 +113,30 @@ const Home = () => {
         return Remarks.at(1);
     }
   };
+  useEffect(() => {
+    isAuthenticated()
+      .then((authenticated) => {
+        setAuth(authenticated);
+      })
+      .catch((error) => console.error("Authentication check failed:", error));
+  }, [auth]);
 
-  const singleFilter = useCallback(
-    (searchType: string, serviceName: string) => {
-      setServiceName(serviceName);
+  const Filter = useCallback(
+    (searchType: string, serviceName: string, serviceText: string) => {
+      // console.log(searchType);
 
       if (searchType === "top_picks") {
         const newData = formattedHostel.filter((hostel) => hostel);
-        setFilteredHostel(newData);
-      }
+        console.log("||||||||||||||||||||||||||||||||||");
 
-      if (searchType === "boarding_apartment") {
+        setFilteredHostel(newData);
+        setServiceName(serviceName);
+        // console.log(searchType, serviceName, serviceText);
+        navigate(
+          `${location.pathname}?search_type=${searchType}&service_name=${serviceName}&service_name_text=${serviceText}`,
+          { replace: true }
+        );
+      } else if (searchType === "boarding_apartment") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -111,23 +150,20 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "high_low") {
+        setServiceName(serviceName);
+      } else if (searchType === "high_low") {
         const newData = formattedHostel.sort(
           (a, b) => (b?.rating as number) - (a?.rating as number)
         );
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "low_high") {
+        setServiceName(serviceName);
+      } else if (searchType === "low_high") {
         const newData = formattedHostel.sort(
           (a, b) => (a?.rating as number) - (b?.rating as number)
         );
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "distance") {
+        setServiceName(serviceName);
+      } else if (searchType === "distance") {
         const sortedData = routeData.sort(
           (a, b) => a?.distance.value - b?.distance.value
         );
@@ -136,11 +172,6 @@ const Home = () => {
           sortedData.map((route, index) => [route.name, index])
         );
 
-        const reference = new Map(
-          sortedData.map((route, index) => [route.name, index])
-        );
-
-        console.log(reference);
         const newData = formattedHostel.sort((a, b): number => {
           if (referenceMap.has(a.name) && referenceMap.has(b.name)) {
             return (
@@ -159,24 +190,22 @@ const Home = () => {
 
           return 0;
         });
-        setFilteredHostel(newData);
-      }
 
-      if (searchType === "top_reviewed") {
+        setFilteredHostel(newData);
+        setServiceName(serviceName);
+      } else if (searchType === "top_reviewed") {
         const newData = formattedHostel.sort(
           (a, b) =>
             (b?.user_ratings_total as number) -
             (a?.user_ratings_total as number)
         );
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_hostel") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_hostel") {
         const newData = formattedHostel.filter((hostel) => hostel);
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_boarding") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_boarding") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -188,9 +217,7 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_coffee") {
+      } else if (searchType === "service_coffee") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -202,9 +229,8 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_lunch_restaurant") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_lunch_restaurant") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -216,9 +242,8 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_restaurant") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_restaurant") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -230,9 +255,8 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_souvenir") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_souvenir") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -244,9 +268,8 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
-      }
-
-      if (searchType === "service_wifi") {
+        setServiceName(serviceName);
+      } else if (searchType === "service_wifi") {
         const newData = formattedHostel.filter((hostel) => {
           const tempHostel = formattedDataForMap.find(
             (property) =>
@@ -258,21 +281,83 @@ const Home = () => {
           return hostel.name === (tempHostel?.name as string);
         });
         setFilteredHostel(newData);
+        setServiceName(serviceName);
+      } else if (serviceName.includes("price")) {
+        if (!auth) {
+          setSearchParams(
+            {
+              search_type: "top_picks",
+              service_name: "Our top picks",
+            },
+            { replace: true }
+          );
+          setServiceName("Our top picks");
+          toast("🥹 You must Sign In or Register to show this feature", {
+            type: "info",
+            theme: "dark",
+          });
+          return;
+        } else {
+          toast(
+            "🙆‍♀️ Oops! Sorry for the inconvenience. Prices of the hostel are not available on the website for now",
+            { type: "info", theme: "dark" }
+          );
+          toast(
+            "Press the Dial 📞 or the Telegram 💬 symbol to get in touch with the hostel managers",
+            {
+              type: "info",
+              theme: "colored",
+              delay: 6000,
+            }
+          );
+          setSearchParams(
+            {
+              search_type: "top_picks",
+              service_name: "Our top picks",
+            },
+            { replace: true }
+          );
+          setServiceName("Our top picks");
+        }
       }
     },
-    [formattedHostel]
+    [formattedHostel, setSearchParams, auth, location, navigate]
   );
 
   useEffect(() => {
     const handleWindow = () => {
+      console.log("HEAT!!!");
+      if (
+        (searchParams.get("search_type") === "location" ||
+          searchParams.get("search_type") === "price" ||
+          searchParams.get("search_type") === "distance_multi") &&
+        comprehensiveSearchArray.length === 0
+      ) {
+        searchParams.set("service_type", "top_picks");
+        searchParams.set("service_name", "Our top picks");
+        searchParams.set("service_name_text", "");
+        navigate(`${location.pathname}?${searchParams.toString()}`, {
+          replace: true,
+        });
+      }
+      console.log("HEAT: ", location.pathname);
+
       const service_type = searchParams.get("search_type")
         ? searchParams.get("search_type")
-        : "";
+        : "top_picks";
       const service_name = searchParams.get("service_name")
         ? searchParams.get("service_name")
+        : "Our top picks";
+      const service_name_text = searchParams.get("service_name_text")
+        ? searchParams.get("service_name_text")
         : "";
-      // console.log(service_name);
-      singleFilter(service_type as string, service_name as string);
+
+      Filter(
+        service_type as string,
+        service_name as string,
+        service_name_text as string
+      );
+
       setServiceName(service_name as string);
     };
 
@@ -281,7 +366,124 @@ const Home = () => {
     return () => {
       window.removeEventListener("load", handleWindow);
     };
-  }, [singleFilter, searchParams, serviceName]);
+  }, [
+    Filter,
+    searchParams,
+    serviceName,
+    navigate,
+    comprehensiveSearchArray,
+    location,
+  ]);
+
+  useEffect(() => {
+    if (!comprehensiveSearchBool || comprehensiveSearchArray.length === 0)
+      return;
+
+    if (comprehensiveSearchArray.length === 0) return;
+
+    let newData = filteredHostel;
+
+    if (comprehensiveSearchType === "sort" || comprehensiveSearchBool) {
+      const search_type = comprehensiveSearchArray.at(-1)?.service_type;
+      const service_name = comprehensiveSearchArray.at(-1)?.service_name;
+      const service_name_text =
+        comprehensiveSearchArray.at(-1)?.service_name_text;
+
+      setSearchParams(
+        {
+          search_type: search_type as string,
+          service_name: service_name as string,
+          service_name_text: service_name_text as string,
+        },
+        { replace: true }
+      );
+      setServiceName(service_name_text as string);
+
+      comprehensiveSearchArray.map((search_type) => {
+        comprehensiveSearchSearchNames.push(search_type.service_name_text);
+        if (search_type.service_type === "location") {
+          if (search_type.service_name === "RatingHigh") {
+            newData = filteredHostel.sort(
+              (a, b) => (b?.rating as number) - (a?.rating as number)
+            );
+          }
+
+          if (search_type.service_name === "RatingLow") {
+            newData = filteredHostel.sort(
+              (a, b) => (a?.rating as number) - (b?.rating as number)
+            );
+          }
+
+          if (search_type.service_name === "alphabeticalOrder") {
+            newData = filteredHostel.sort((a, b) =>
+              a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+            );
+          }
+        }
+
+        if (search_type.service_type === "distance_multi") {
+          newData = formattedHostel;
+          const [start_distance_str, end_distance_str] =
+            search_type.service_name_text.split("-");
+
+          const start_distance = +start_distance_str.trim();
+          const end_distance = +end_distance_str.trim();
+
+          const filteredData = routeData.filter(
+            (data) =>
+              +data.distance.text.split("km")[0].trim() >= start_distance &&
+              +data.distance.text.split("km")[0].trim() <= end_distance
+          );
+
+          const sortedData = filteredData.sort(
+            (a, b) => a?.distance.value - b?.distance.value
+          );
+
+          const filteredDataFromNewData = newData.filter(
+            (value) =>
+              value.name ===
+              sortedData.find((item) => item.name === value.name)?.name
+          );
+
+          const referenceMap = new Map(
+            sortedData.map((route, index) => [route.name, index])
+          );
+
+          newData = filteredDataFromNewData.sort((a, b): number => {
+            if (referenceMap.has(a.name) && referenceMap.has(b.name)) {
+              return (
+                (referenceMap.get(a.name) as number) -
+                (referenceMap.get(b.name) as number)
+              );
+            }
+
+            if (referenceMap.has(a.name)) {
+              return -1;
+            }
+
+            if (referenceMap.has(b.name)) {
+              return 1;
+            }
+
+            return 0;
+          });
+        }
+
+        return null;
+      });
+
+      setFilteredHostel(newData);
+      setComprehensiveSearchBool(false);
+    }
+  }, [
+    comprehensiveSearchArray,
+    comprehensiveSearchBool,
+    filteredHostel,
+    comprehensiveSearchType,
+    comprehensiveSearchSearchNames,
+    setSearchParams,
+    formattedHostel,
+  ]);
 
   const handlePaymentCash = (cash: string) => {
     toast(`${cash.toUpperCase()} as payment method noted successfully!`, {
@@ -296,6 +498,14 @@ const Home = () => {
       theme: "dark",
     });
   };
+
+  const handleComprehensiveSearch = (isClickedType: string) => {
+    setComprehensiveSearchType(isClickedType);
+    setComprehensiveSearchBool(true);
+  };
+
+  console.log(comprehensiveSearchArray);
+
   return (
     <>
       <HostelSearchInputContext state={{ searchInput, setSearchInput }}>
@@ -337,7 +547,7 @@ const Home = () => {
             </Link>
             <div className="side-bar-wrapper" ref={elementRef}>
               <SideBar
-                singleFilter={singleFilter}
+                Filter={Filter}
                 handlePaymentCash={handlePaymentCash}
                 handleCardMomo={handleCardMomo}
               />
@@ -346,14 +556,14 @@ const Home = () => {
                   <IoCall />
                 </button>
                 <button title="Real time chat with hostels managers">
-                  <GrSend />
+                  <MessageCircleMore />
                 </button>
               </div>
             </div>
             {!isInView && (
               <div className="side-bar-wrapper--sticky">
                 <SideBar
-                  singleFilter={singleFilter}
+                  Filter={Filter}
                   handlePaymentCash={handlePaymentCash}
                   handleCardMomo={handleCardMomo}
                 />
@@ -362,7 +572,7 @@ const Home = () => {
                     <IoCall />
                   </button>
                   <button title="Real time chat with hostels managers">
-                    <GrSend />
+                    <MessageCircleMore />
                   </button>
                 </div>
               </div>
@@ -440,7 +650,11 @@ const Home = () => {
                   );
                 })}
             </div>
-            <ComprehensiveSearch />
+            <ComprehensiveSearch
+              Filter={Filter}
+              handleComprehensiveSearch={handleComprehensiveSearch}
+              setComprehensiveSearchArray={setComprehensiveSearchArray}
+            />
           </section>
         </main>
       </HostelSearchInputContext>
