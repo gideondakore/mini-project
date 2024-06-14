@@ -127,11 +127,9 @@ const Home = () => {
 
       if (searchType === "top_picks") {
         const newData = formattedHostel.filter((hostel) => hostel);
-        console.log("||||||||||||||||||||||||||||||||||");
 
         setFilteredHostel(newData);
         setServiceName(serviceName);
-        // console.log(searchType, serviceName, serviceText);
         navigate(
           `${location.pathname}?search_type=${searchType}&service_name=${serviceName}&service_name_text=${serviceText}`,
           { replace: true }
@@ -383,7 +381,11 @@ const Home = () => {
 
     let newData = filteredHostel;
 
-    if (comprehensiveSearchType === "sort" || comprehensiveSearchBool) {
+    if (
+      comprehensiveSearchType === "sort" ||
+      comprehensiveSearchType === "filter" ||
+      comprehensiveSearchBool
+    ) {
       const search_type = comprehensiveSearchArray.at(-1)?.service_type;
       const service_name = comprehensiveSearchArray.at(-1)?.service_name;
       const service_name_text =
@@ -467,6 +469,11 @@ const Home = () => {
 
             return 0;
           });
+        }
+
+        if (search_type.service_type === "room") {
+          // setServiceName(search_type.service_name_text);
+          return newData;
         }
 
         return null;
