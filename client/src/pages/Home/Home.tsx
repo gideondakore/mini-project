@@ -123,8 +123,6 @@ const Home = () => {
 
   const Filter = useCallback(
     (searchType: string, serviceName: string, serviceText: string) => {
-      // console.log(searchType);
-
       if (searchType === "top_picks") {
         const newData = formattedHostel.filter((hostel) => hostel);
 
@@ -324,7 +322,6 @@ const Home = () => {
 
   useEffect(() => {
     const handleWindow = () => {
-      console.log("HEAT!!!");
       if (
         (searchParams.get("search_type") === "location" ||
           searchParams.get("search_type") === "price" ||
@@ -338,7 +335,6 @@ const Home = () => {
           replace: true,
         });
       }
-      console.log("HEAT: ", location.pathname);
 
       const service_type = searchParams.get("search_type")
         ? searchParams.get("search_type")
@@ -510,8 +506,6 @@ const Home = () => {
     setComprehensiveSearchType(isClickedType);
     setComprehensiveSearchBool(true);
   };
-
-  console.log(comprehensiveSearchArray);
 
   return (
     <>
