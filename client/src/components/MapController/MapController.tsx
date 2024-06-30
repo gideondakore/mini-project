@@ -31,7 +31,7 @@ const MapController = () => {
   const leg = selected?.legs.at(0);
 
   const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const [lat, lng] = e.target?.value.split(",").map(Number);
+    const [lat, lng] = e.target.value.split(",").map(Number);
     const position = {
       lat,
       lng,
@@ -124,9 +124,14 @@ const MapController = () => {
         <option value={google.maps.TravelMode.WALKING}>Walking</option>
       </select>
 
-      <h2 style={{ marginTop: "1rem" }}>Origin - Destination:</h2>
-      <p>
-        From {mapCollegeNames} to {mapCollegeDestination}
+      <h2 style={{ marginTop: "2rem" }}>Origin - Destination:</h2>
+      <p
+        style={{
+          textTransform: "capitalize",
+          fontWeight: "bold",
+        }}
+      >
+        {`From "${mapCollegeNames}"`} &mdash; {`"${mapCollegeDestination}"`}
       </p>
     </div>
   );

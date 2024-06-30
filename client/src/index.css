@@ -5,6 +5,11 @@
   --accent: #64766a;
   --fontColor: #050315;
   --fontFamily: "Inter", sans-serif;
+
+  /* ////////////////// */
+  --primarySwiper: #6a59ff;
+  --whiteSwiper: #ffffff;
+  --bgSwiper: #f5f5f5;
 }
 
 * {

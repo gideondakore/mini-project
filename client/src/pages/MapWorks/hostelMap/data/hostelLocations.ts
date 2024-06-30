@@ -20,6 +20,7 @@ const hostelPositionsRaw = [
     claimed: false,
     workingDays: null,
   },
+
   {
     searchQuery: "Best hostel booking sites",
     placeId: "ChIJpySbo6CW2w8RbDcEyT-_Foo",

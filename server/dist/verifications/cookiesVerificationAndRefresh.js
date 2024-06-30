@@ -81,7 +81,6 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
                             status: 200,
                         });
                     }
-                    console.log(req.session.user, " : ", decodeStateAcess);
                     if (credential_refresh_token === req.session.refreshToken) {
                         jsonwebtoken_1.default.verify(credential_refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, user) => {
                             if (err) {
@@ -136,7 +135,6 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
                 }
             }
             else {
-                console.log("Invalid token received");
                 return res.status(401).json({
                     authenticated: false,
                     message: "No valid token provided",

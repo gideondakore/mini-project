@@ -12,7 +12,7 @@ const routesIndex = createSlice({
   name: "routeIndex",
   initialState,
   reducers: {
-    setRoutesIndex: (state, action: PayloadAction<number>) => {
+    setRoutesIndex: (state: RoutesIndex, action: PayloadAction<number>) => {
       state.setRouteIndex = action.payload;
     },
   },

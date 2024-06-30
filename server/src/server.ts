@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response } from "express";
 import User from "./models/user.model";
 import cors from "cors";
 import session from "express-session";
@@ -51,7 +51,7 @@ app.use(
   })
 );
 
-const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
+// const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
@@ -187,8 +187,7 @@ app.get("/user-profile", async (req: Request, res: Response) => {
     const { access_token } = req.cookies;
     const userProfile = await getUserProfile(access_token);
 
-    const { verify_access_token_data, verify_access_token_response } =
-      userProfile!;
+    const { verify_access_token_data } = userProfile!;
     const { email } = verify_access_token_data;
     const user = await User.findOne({ email: email }).select("-password");
     res.status(200).json({ picture: user?.picture });
@@ -205,7 +204,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
     const body = req.body;
     const { fullname, email, birthDate, password, confirmPassword } = body;
     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-    let validatedCredentials: string[] = [];
+    const validatedCredentials: string[] = [];
 
     if (password && password === confirmPassword) {
       validatedCredentials.push(...checkPasswordValidity(password));
@@ -324,9 +323,9 @@ app.post("/signin", async (req: Request, res: Response) => {
     }
   } catch (error) {
     if (error instanceof mongoose.Error.ValidationError) {
-      let errorList: string[] = [];
+      const errorList: string[] = [];
 
-      for (let e in error.errors) {
+      for (const e in error.errors) {
         errorList.push(error.errors[e]?.message);
       }
       return res

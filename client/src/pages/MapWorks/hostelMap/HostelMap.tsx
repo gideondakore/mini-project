@@ -35,6 +35,7 @@ import { setRoute } from "../../../store/features/mapRoutesSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { setDestination } from "../../../store/features/mapDestinationNameSlice";
+import { useLocation } from "react-router-dom";
 
 type Point = google.maps.LatLngLiteral & {
   key: string;
@@ -78,9 +79,25 @@ const DestinationNameContext = createContext<{
 } | null>(null);
 
 const HostelMap = () => {
+  const location = useLocation();
+
+  const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location]
+  );
+  const latitude = Number(searchParams.get("lat"));
+  const longitude = Number(searchParams.get("lng"));
+  const hostelName = searchParams.get("name");
+
   const INITIAL_CAMERA = useMemo(
-    () => ({ center: { lat: 6.6745, lng: -1.5716 }, zoom: 8 }),
-    []
+    () => ({
+      center: {
+        lat: latitude ? latitude : 6.6745,
+        lng: longitude ? longitude : -1.5716,
+      },
+      zoom: 8,
+    }),
+    [latitude, longitude]
   );
   const [cameraProp, setCameraProp] = useState<MapCameraProps>(INITIAL_CAMERA);
   const handleCameraChange = (ev: MapCameraChangedEvent) => {
@@ -91,7 +108,7 @@ const HostelMap = () => {
     google.maps.LatLngLiteral | google.maps.LatLng | google.maps.Place | string
   >(INITIAL_CAMERA.center);
   const [destinationName, setDestinationName] = useState<string>(
-    "KNUST administration building"
+    hostelName ? hostelName : "KNUST administration building"
   );
 
   return (
@@ -206,7 +223,7 @@ const Markers = ({ points }: Prop) => {
   return (
     <>
       <>
-        {points.map((point, index) => (
+        {points.map((point) => (
           <AdvancedMarker
             title={"Duplex"}
             position={point}
@@ -214,12 +231,12 @@ const Markers = ({ points }: Prop) => {
             ref={(marker) => {
               setMarkerRef(marker, point.key);
             }}
-            onClick={(e) => {
-              let position: google.maps.LatLngLiteral = {
+            onClick={() => {
+              const position: google.maps.LatLngLiteral = {
                 lat: point.lat,
                 lng: point.lng,
               };
-              let details: HostelDetailsProp = {
+              const details: HostelDetailsProp = {
                 name: point.name,
                 thumbnail: point.thumbnail,
                 address: point.fulladdr,
@@ -280,7 +297,7 @@ const Markers = ({ points }: Prop) => {
               <code>
                 Rating:
                 {openHostelDetails?.rating
-                  ? (openHostelDetails?.rating).toFixed(1)
+                  ? openHostelDetails.rating.toFixed(1)
                   : "Not available 😞"}
               </code>
               <em>Registered ✅</em>
@@ -388,7 +405,7 @@ const Directions = () => {
         }));
         dispatch(setRoute({ routes: responseRoute }));
       })
-      .catch((error) => {
+      .catch(() => {
         console.error(
           "Error occur in Direction component in HostelMap, specifically in the direction service functionality!"
         );
@@ -454,6 +471,7 @@ const Places = ({ points }: Prop) => {
 
   useEffect(() => {
     if (!predictionSelected || !placesService) return;
+
     const request: google.maps.places.PlaceDetailsRequest = {
       placeId: predictionSelected.place_id!,
       fields: ["ALL"],
@@ -509,9 +527,9 @@ const Places = ({ points }: Prop) => {
   useEffect(() => {
     if (selectedPlace?.geometry?.location) {
       if (!showPredictions && !selectedPlace) return;
-      setCurrentDestinationPosition(selectedPlace?.geometry?.location!);
-      setDestinationName(selectedPlace?.name!);
-      dispatch(setDestination(selectedPlace?.name!));
+      setCurrentDestinationPosition(selectedPlace.geometry.location!);
+      setDestinationName(selectedPlace.name!);
+      dispatch(setDestination(selectedPlace.name!));
     }
   }, [
     showPredictions,
@@ -670,7 +688,7 @@ const Places = ({ points }: Prop) => {
             <code>
               Rating:
               {selectedPlace?.rating
-                ? (selectedPlace?.rating).toFixed(1)
+                ? selectedPlace.rating.toFixed(1)
                 : "Not available 😞"}
             </code>
             <em>Not registered ❌</em>

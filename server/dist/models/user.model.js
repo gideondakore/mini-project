@@ -40,7 +40,6 @@ const UserSchema = new mongoose_1.default.Schema({
     timestamps: true,
 });
 const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET;
-// console.log(JWT_SECRET);
 const JWT_LIFETIME = process.env.JWT_LIFETIME;
 UserSchema.methods.generateToken = function () {
     const token = jsonwebtoken_1.default.sign({ id: this._id, email: this.email, name: this.name }, JWT_ACCESS_SECRET, {

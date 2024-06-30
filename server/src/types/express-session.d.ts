@@ -1,4 +1,4 @@
-import session from "express-session";
+import "express-session";
 import mongoose from "mongoose";
 
 declare module "express-session" {

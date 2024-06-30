@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import "./DisplayHostels.css";
 import { RiHeartAdd2Line } from "react-icons/ri";
 import starRate from "../../utils/starRate";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// import HostelDetail from "../HostelDetail.tsx/HostelDetail";
 import {
   Sparkles,
   BedSingle,
@@ -17,6 +19,9 @@ import {
 import { FaPersonWalking } from "react-icons/fa6";
 import { IoIosTimer } from "react-icons/io";
 
+////////////////////
+// import formattedDtata from "../../pages/MapWorks/hostelMap/data/hostelsDetailData";
+
 interface hostelDetailsProp {
   imgUrl: string;
   name: string;
@@ -29,6 +34,8 @@ interface hostelDetailsProp {
   user_review: { author_name: string; profile_photo_url: string; text: string };
   distance: string;
   duration: string;
+  lat: string;
+  lng: string;
 }
 
 const DisplayHostels = ({
@@ -43,10 +50,13 @@ const DisplayHostels = ({
   user_review,
   distance,
   duration,
+  lat,
+  lng,
 }: hostelDetailsProp) => {
   const [isSave, setIsSave] = useState<boolean>(false);
   const iconRef = useRef<HTMLButtonElement>(null);
 
+  // const [hostelDetail, setHostelDetail] = useState<boolean>(false);
   useEffect(() => {
     (iconRef.current as HTMLButtonElement).addEventListener("click", (e) => {
       e.preventDefault();
@@ -68,9 +78,31 @@ const DisplayHostels = ({
     event.currentTarget.src = require(`../../assets/images/altHostel-1.jpg`);
   };
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleShowMap = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    navigate(`${location.pathname}map?lat=${lat}&lng=${lng}&name=${name}`);
+  };
+
+  const handleDisplayContainer = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    window.location.href = "http://localhost:3000/hostel-details";
+    // setHostelDetail((prev) => !prev);
+  };
+
+  //////////////////////////
+  // const format = useCallback(formattedDtata(), []);
+  // console.log("FORMAT: ", format);
+
   return (
     <>
-      <div className="displayHostelContainer">
+      <div className="displayHostelContainer" onClick={handleDisplayContainer}>
+        {/* {hostelDetail && <HostelDetail />} */}
         <div className="hostelInfoWrapper">
           <div className="imageContainer">
             <a href="/" className="imageBody">
@@ -140,9 +172,13 @@ const DisplayHostels = ({
               </div>
               <div className="showOnMap">
                 <LocateFixed size={35} color="#64766a" />
-                <a className="show-location" href="/">
+                <Link
+                  className="show-location"
+                  to={`http://locahost:3000/map/?lat=${lat}&lng=${lng}`}
+                  onClick={handleShowMap}
+                >
                   Show on map
-                </a>
+                </Link>
               </div>
               <div className="userReview">
                 <div className="testimony">

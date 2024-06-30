@@ -5,7 +5,7 @@ const useDebounced = (value: string, delay: number = 500) => {
 
   useEffect(() => {
     ((value: string, delay: number) => {
-      return new Promise((resolve) => {
+      return new Promise(() => {
         setTimeout(() => {
           setDebounced(value);
         }, delay);

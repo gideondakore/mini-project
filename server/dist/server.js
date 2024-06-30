@@ -74,7 +74,7 @@ app.use((0, express_session_1.default)({
         httpOnly: true,
     },
 }));
-const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
+// const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL;
@@ -99,7 +99,6 @@ app.get("/google/callback", (req, res) => __awaiter(void 0, void 0, void 0, func
         const { access_token, refresh_token, id_token, expires_in } = access_token_data;
         const token_info_response = yield fetch(`${GOOGLE_TOKEN_INFO_URL}?id_token=${id_token}`);
         const token_info_data = yield token_info_response.json();
-        console.log("TOKEN INFO: ", token_info_data);
         const { email, name, picture } = token_info_data;
         let user = yield user_model_1.default.findOne({ email }).select("-password");
         if (!user) {
@@ -151,7 +150,6 @@ app.get("/signout", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         let deleteSuccess = false;
         req.session.destroy((err) => {
             if (err) {
-                console.log("Error occur deleting connect.sid in cookies");
                 deleteSuccess = true;
                 return;
             }
@@ -178,7 +176,7 @@ app.get("/user-profile", (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { access_token } = req.cookies;
         const userProfile = yield (0, getUserProfile_1.default)(access_token);
-        const { verify_access_token_data, verify_access_token_response } = userProfile;
+        const { verify_access_token_data } = userProfile;
         const { email } = verify_access_token_data;
         const user = yield user_model_1.default.findOne({ email: email }).select("-password");
         res.status(200).json({ picture: user === null || user === void 0 ? void 0 : user.picture });
@@ -194,7 +192,7 @@ app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0,
         const body = req.body;
         const { fullname, email, birthDate, password, confirmPassword } = body;
         const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-        let validatedCredentials = [];
+        const validatedCredentials = [];
         if (password && password === confirmPassword) {
             validatedCredentials.push(...(0, checkPasswordValidity_1.default)(password));
         }
@@ -237,10 +235,8 @@ app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0,
             const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
             if (dbUser) {
                 const accessToken = dbUser.generateToken();
-                console.log("Acess token from model: ", accessToken);
                 const refreshToken = jsonwebtoken_1.default.sign(payload, jwtRefreshSecret);
                 req.session.refreshToken = refreshToken;
-                console.log("SESSION REFRESH TOKEN", req.session.refreshToken, "\n", refreshToken);
                 return res.status(200).json({
                     message: [message],
                     success: success,
@@ -300,8 +296,8 @@ app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         if (error instanceof mongoose_1.default.Error.ValidationError) {
-            let errorList = [];
-            for (let e in error.errors) {
+            const errorList = [];
+            for (const e in error.errors) {
                 errorList.push((_a = error.errors[e]) === null || _a === void 0 ? void 0 : _a.message);
             }
             return res

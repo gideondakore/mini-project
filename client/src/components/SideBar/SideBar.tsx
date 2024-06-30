@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { RiArrowRightSLine, RiArrowDownSLine } from "react-icons/ri";
 import "./SideBar.css";
 
@@ -21,6 +26,9 @@ const SideBar = ({
 
   const [card, setCard] = useState<string>("");
   const [, setSearchParams] = useSearchParams();
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClicks = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -54,7 +62,7 @@ const SideBar = ({
   };
 
   const handleMouseClick = () => {
-    window.location.href = "http://localhost:3000/map";
+    navigate(`${location.pathname}map/?lat=6.6745&lng=-1.5716`);
   };
 
   const handleLinkClick = (

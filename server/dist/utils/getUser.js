@@ -23,7 +23,6 @@ const getUser = (email, name) => __awaiter(void 0, void 0, void 0, function* () 
                 user: user,
             };
         }
-        console.log("From getUser information: ", user);
         return { message: "User not found", success: true, user: user };
     }
     catch (error) {

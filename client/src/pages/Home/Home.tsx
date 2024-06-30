@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+
 import "./Home.css";
 import {
   Link,
@@ -646,6 +647,24 @@ const Home = () => {
                         routeData
                           .filter((route) => route.name === hostel.name)
                           .at(0)?.duration.text as string
+                      }
+                      lat={
+                        formattedDataForMap.find(
+                          (item) => item.name === hostel.name
+                        )?.lat
+                          ? (formattedDataForMap
+                              .find((item) => item.name === hostel.name)
+                              ?.lat.toString() as string)
+                          : ""
+                      }
+                      lng={
+                        formattedDataForMap.find(
+                          (item) => item.name === hostel.name
+                        )?.lng
+                          ? (formattedDataForMap
+                              .find((item) => item.name === hostel.name)
+                              ?.lng.toString() as string)
+                          : ""
                       }
                     />
                   );
