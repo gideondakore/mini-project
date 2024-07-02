@@ -13,6 +13,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
+import axios from "axios";
 
 dotenv.config();
 
@@ -338,6 +339,19 @@ app.post("/signin", async (req: Request, res: Response) => {
         status: 500,
       });
     }
+  }
+});
+
+const apiKey = process.env.GOOGLE_MAP_ID;
+
+app.get("/maps-api", async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`
+    );
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send("Error fetching the Google Maps API");
   }
 });
 
