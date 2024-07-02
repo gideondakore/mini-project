@@ -170,7 +170,7 @@
     },
     "rating": 4,
     "reference": "ChIJZf-O0I-U2w8Ri6lutOGMoHw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Shekinah Agbozo",
         "author_url": "https://www.google.com/maps/contrib/117041527779771940186/reviews",
@@ -409,7 +409,7 @@
     },
     "rating": 4.4,
     "reference": "ChIJpySbo6CW2w8RbDcEyT-_Foo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Hannah Resch",
         "author_url": "https://www.google.com/maps/contrib/109708449848228552321/reviews",
@@ -656,7 +656,7 @@
     },
     "rating": 4,
     "reference": "ChIJ1TZ9MliV2w8RwHqu0KJlTew",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Azinga Thelma",
         "author_url": "https://www.google.com/maps/contrib/102232922523039375465/reviews",
@@ -849,7 +849,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJx5zyiHGU2w8RAe-ALfPTHbg",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Abiiro Douglas",
         "author_url": "https://www.google.com/maps/contrib/113859886911589800033/reviews",
@@ -1043,7 +1043,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJ60UY4aCV2w8R8AcyBmaBjis",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Essel William",
         "author_url": "https://www.google.com/maps/contrib/101953253767761097117/reviews",
@@ -1226,7 +1226,7 @@
     },
     "rating": 4.2,
     "reference": "ChIJqc52tmOU2w8Rv_0zNXXR_Qw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Xenda Stark",
         "author_url": "https://www.google.com/maps/contrib/114264186002889439159/reviews",
@@ -1372,7 +1372,7 @@
     },
     "rating": 4,
     "reference": "ChIJydenh3GU2w8RL50owMTUutI",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Matthews Azidizian",
         "author_url": "https://www.google.com/maps/contrib/101492109113463919204/reviews",
@@ -1561,7 +1561,7 @@
     "place_id": "ChIJA_03j4GU2w8RAZVoH_RK5qE",
     "rating": 4,
     "reference": "ChIJA_03j4GU2w8RAZVoH_RK5qE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Solomon Anane",
         "author_url": "https://www.google.com/maps/contrib/115614978072017049812/reviews",
@@ -1677,7 +1677,7 @@
     },
     "rating": 5,
     "reference": "ChIJiyaCj8aV2w8R750hmaybLBI",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Danny Daniel",
         "author_url": "https://www.google.com/maps/contrib/103133585727320136252/reviews",
@@ -1838,7 +1838,7 @@
     },
     "rating": 4.2,
     "reference": "ChIJ9Yxi7YeU2w8RhvYIDglwkIw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Sagoe Eric (CAPTAIN SAGOE)",
         "author_url": "https://www.google.com/maps/contrib/103791023257505798739/reviews",
@@ -1953,7 +1953,7 @@
     "place_id": "ChIJ1QxcXk-V2w8Rkype6lJDvXY",
     "rating": 5,
     "reference": "ChIJ1QxcXk-V2w8Rkype6lJDvXY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "ebenezer annan",
         "author_url": "https://www.google.com/maps/contrib/100622081980838859826/reviews",
@@ -2101,7 +2101,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJlVT2on6U2w8RWgcledhw7a0",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Nana Kojo",
         "author_url": "https://www.google.com/maps/contrib/107871938913183467996/reviews",
@@ -2289,7 +2289,7 @@
     },
     "rating": 4,
     "reference": "ChIJ9VNnLxaU2w8RY0jIltRmKjw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Benjamin Betey Campion",
         "author_url": "https://www.google.com/maps/contrib/116325874825174059260/reviews",
@@ -2472,7 +2472,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJeYkYWXyU2w8RXrh-z4ZpbCs",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Doreen Adwoa Owusu-Afriyie",
         "author_url": "https://www.google.com/maps/contrib/116230138705405910699/reviews",
@@ -2660,7 +2660,7 @@
     },
     "rating": 4,
     "reference": "ChIJS3KbuD-U2w8Rvz0T38iqbVI",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Joel Kirk Kwablah Odonkor",
         "author_url": "https://www.google.com/maps/contrib/114625359652207187698/reviews",
@@ -2843,7 +2843,7 @@
     },
     "rating": 4.2,
     "reference": "ChIJl4eUDjqV2w8Rj0W8pe6Yw5U",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "malik halid",
         "author_url": "https://www.google.com/maps/contrib/103427176330334132226/reviews",
@@ -3012,7 +3012,7 @@
     },
     "rating": 4,
     "reference": "ChIJwXUhB4yU2w8RLZXAu4HgGd4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Precious Mary Opoku",
         "author_url": "https://www.google.com/maps/contrib/114841380209732656085/reviews",
@@ -3179,7 +3179,7 @@
     },
     "rating": 4.8,
     "reference": "ChIJZW-q6rGV2w8R_Ubjpax8Ydo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Trailblazer Sportz Global",
         "author_url": "https://www.google.com/maps/contrib/117092896801692213000/reviews",
@@ -3311,7 +3311,7 @@
     "place_id": "ChIJgbNd1TeV2w8RNMD0v-j_d8M",
     "rating": 4.4,
     "reference": "ChIJgbNd1TeV2w8RNMD0v-j_d8M",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Sutures Gh",
         "author_url": "https://www.google.com/maps/contrib/114619702262630689574/reviews",
@@ -3439,7 +3439,7 @@
     "place_id": "ChIJc9T5gxqV2w8RnBnxW8DiV5Q",
     "rating": 4.1,
     "reference": "ChIJc9T5gxqV2w8RnBnxW8DiV5Q",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Florence Kwakye",
         "author_url": "https://www.google.com/maps/contrib/115274025628704701168/reviews",
@@ -3554,7 +3554,7 @@
     "place_id": "ChIJ39THBGmV2w8RnyjuPsN2F8o",
     "rating": 4,
     "reference": "ChIJ39THBGmV2w8RnyjuPsN2F8o",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Michael Seer",
         "author_url": "https://www.google.com/maps/contrib/112464408063511325540/reviews",
@@ -3697,7 +3697,7 @@
     },
     "rating": 4.2,
     "reference": "ChIJhczeVWKU2w8RROfesHT1aEc",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Amos Kwao-Asare",
         "author_url": "https://www.google.com/maps/contrib/113098218811513658925/reviews",
@@ -3890,7 +3890,7 @@
     },
     "rating": 4.5,
     "reference": "ChIJuX1n8MaV2w8RJg-ooSEE1aY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Emmanuella Addo",
         "author_url": "https://www.google.com/maps/contrib/112767682888346813590/reviews",
@@ -4076,7 +4076,7 @@
     },
     "rating": 4,
     "reference": "ChIJz2yra2OU2w8RauoebgEbIws",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Yawstreet Wifi",
         "author_url": "https://www.google.com/maps/contrib/113065793982402815176/reviews",
@@ -4186,7 +4186,7 @@
     "place_id": "ChIJb93cx92T2w8RDvyK3YfTRhw",
     "rating": 4.5,
     "reference": "ChIJb93cx92T2w8RDvyK3YfTRhw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Barbara Osei",
         "author_url": "https://www.google.com/maps/contrib/101227821851040113951/reviews",
@@ -4357,7 +4357,7 @@
     "place_id": "ChIJ4f1RznSV2w8RZ5GiQbDIb0M",
     "rating": 4.1,
     "reference": "ChIJ4f1RznSV2w8RZ5GiQbDIb0M",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ankamah Dennis",
         "author_url": "https://www.google.com/maps/contrib/100754375294202506147/reviews",
@@ -4504,7 +4504,7 @@
     "place_id": "ChIJWeBmHwSV2w8RW0kYL0G1UMY",
     "rating": 4,
     "reference": "ChIJWeBmHwSV2w8RW0kYL0G1UMY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ankamah Dennis",
         "author_url": "https://www.google.com/maps/contrib/100754375294202506147/reviews",
@@ -4664,7 +4664,7 @@
     },
     "rating": 4.5,
     "reference": "ChIJHYGgv7qV2w8RLvvfSwrirvU",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "brian adjei",
         "author_url": "https://www.google.com/maps/contrib/102106862731051428058/reviews",
@@ -4800,7 +4800,7 @@
     },
     "rating": 4,
     "reference": "ChIJIVyrvIiU2w8Rw11ZRzwZ12I",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Yasmin Mohammed",
         "author_url": "https://www.google.com/maps/contrib/118442868231557217189/reviews",
@@ -4981,7 +4981,7 @@
     },
     "rating": 4,
     "reference": "ChIJZ8NtOvSU2w8R7tBerKYJ3uA",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "California Boggar",
         "author_url": "https://www.google.com/maps/contrib/104586988984551614932/reviews",
@@ -5165,7 +5165,7 @@
     "place_id": "ChIJR0rZ22qV2w8RnK5u3gPTjPI",
     "rating": 4.2,
     "reference": "ChIJR0rZ22qV2w8RnK5u3gPTjPI",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Mxta Amoh",
         "author_url": "https://www.google.com/maps/contrib/106834019576750565520/reviews",
@@ -5348,7 +5348,7 @@
     },
     "rating": 4.2,
     "reference": "ChIJO1FwDvGU2w8R_PbSyf_4NuY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Joshua Wumbee",
         "author_url": "https://www.google.com/maps/contrib/109594223414452766644/reviews",
@@ -5492,7 +5492,7 @@
     },
     "rating": 4.4,
     "reference": "ChIJCe57gf-V2w8RQkygnxvJbco",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Millicent Botwe",
         "author_url": "https://www.google.com/maps/contrib/105404177797523875609/reviews",
@@ -5673,7 +5673,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJhS-c_ZGU2w8RuBcxywratkw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Kwame Worae Atta-Owusu",
         "author_url": "https://www.google.com/maps/contrib/118406365854543948049/reviews",
@@ -5856,7 +5856,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJbWRYnvaU2w8Ri4-5C6YSTEo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "david nyame",
         "author_url": "https://www.google.com/maps/contrib/104781732348756062857/reviews",
@@ -6044,7 +6044,7 @@
     },
     "rating": 4.4,
     "reference": "ChIJva_b5ZqV2w8RLGPtn23jJqs",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Stephen Otoo Danzerl",
         "author_url": "https://www.google.com/maps/contrib/113334042194135191356/reviews",
@@ -6232,7 +6232,7 @@
     },
     "rating": 4,
     "reference": "ChIJj7uxlWGU2w8RgX6jww2_QeI",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Vitus Amenorpe",
         "author_url": "https://www.google.com/maps/contrib/103562931425358029647/reviews",
@@ -6397,7 +6397,7 @@
     },
     "rating": 5,
     "reference": "ChIJddwiwbmV2w8RGCaUjvy8H1k",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Egbert Sebuabeh",
         "author_url": "https://www.google.com/maps/contrib/116257316687216785234/reviews",
@@ -6560,7 +6560,7 @@
     },
     "rating": 4,
     "reference": "ChIJlS5fZnyU2w8R0UgxhJ_OfhA",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Scott Sarfo",
         "author_url": "https://www.google.com/maps/contrib/116825590246272745242/reviews",
@@ -6744,7 +6744,7 @@
     "place_id": "ChIJjbZ9a3yU2w8R_dxsgJPW6OE",
     "rating": 4.1,
     "reference": "ChIJjbZ9a3yU2w8R_dxsgJPW6OE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Clement Adjei Peprah",
         "author_url": "https://www.google.com/maps/contrib/101463560583751182730/reviews",
@@ -6926,7 +6926,7 @@
     "place_id": "ChIJdcC4HeqV2w8RwLIfJnWu3Jk",
     "rating": 4.3,
     "reference": "ChIJdcC4HeqV2w8RwLIfJnWu3Jk",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Farouk Annan (Ingenious genius)",
         "author_url": "https://www.google.com/maps/contrib/113184928492203315145/reviews",
@@ -7114,7 +7114,7 @@
     },
     "rating": 4.4,
     "reference": "ChIJrW3emzWV2w8RPUt0e_r8xss",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ernest Yaw",
         "author_url": "https://www.google.com/maps/contrib/111234141400152357766/reviews",
@@ -7284,7 +7284,7 @@
     },
     "rating": 4,
     "reference": "ChIJtyuEkeOV2w8R5KQOiirtMx0",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "California Boggar",
         "author_url": "https://www.google.com/maps/contrib/104586988984551614932/reviews",
@@ -7393,7 +7393,7 @@
     },
     "rating": 5,
     "reference": "ChIJd2OsnzGX2w8ROEeNKkAN2Ho",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Abigail Asiedu Bona",
         "author_url": "https://www.google.com/maps/contrib/108797243040438363792/reviews",
@@ -7539,7 +7539,7 @@
     },
     "rating": 4.1,
     "reference": "ChIJYxNh2nOU2w8Rnn_yCWQeJ8Y",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Elikem Attah",
         "author_url": "https://www.google.com/maps/contrib/112432734825394234721/reviews",
@@ -7723,7 +7723,7 @@
     },
     "rating": 4,
     "reference": "ChIJCzcl08KV2w8Rt_DkWdX65n4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Hassan Abdul-Hamid",
         "author_url": "https://www.google.com/maps/contrib/107632931585424141573/reviews",
@@ -7916,7 +7916,7 @@
     },
     "rating": 4.6,
     "reference": "ChIJbfZdcn-V2w8RgTvDp0Ayzgo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Matthews Azidizian",
         "author_url": "https://www.google.com/maps/contrib/101492109113463919204/reviews",
@@ -8056,7 +8056,7 @@
     "place_id": "ChIJJ2RwjO-V2w8RckV5928hohE",
     "rating": 4,
     "reference": "ChIJJ2RwjO-V2w8RckV5928hohE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Isaac danso",
         "author_url": "https://www.google.com/maps/contrib/112798357694408203748/reviews",
@@ -8184,7 +8184,7 @@
     "place_id": "ChIJfQ6tvrqV2w8RlHNZ0ZS756c",
     "rating": 4,
     "reference": "ChIJfQ6tvrqV2w8RlHNZ0ZS756c",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Vitus Amenorpe",
         "author_url": "https://www.google.com/maps/contrib/103562931425358029647/reviews",
@@ -8421,7 +8421,7 @@
     },
     "rating": 4,
     "reference": "ChIJizW2sJGW2w8Rv2ArCNnqH14",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Winny Wref",
         "author_url": "https://www.google.com/maps/contrib/118420697116814102207/reviews",
@@ -8670,7 +8670,7 @@
     },
     "rating": 4,
     "reference": "ChIJAUUQW9iU2w8Rv2yqAIg3ALo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Stephen Yankson",
         "author_url": "https://www.google.com/maps/contrib/103877829767619314197/reviews",
@@ -8864,7 +8864,7 @@
     "place_id": "ChIJ_0K3FXKU2w8RDYMYjNBOJxY",
     "rating": 4.1,
     "reference": "ChIJ_0K3FXKU2w8RDYMYjNBOJxY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Matthews Azidizian",
         "author_url": "https://www.google.com/maps/contrib/101492109113463919204/reviews",
@@ -9046,7 +9046,7 @@
     "place_id": "ChIJbZSEme-V2w8RcQhKFsfLyOQ",
     "rating": 4.8,
     "reference": "ChIJbZSEme-V2w8RcQhKFsfLyOQ",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Frank Asumadu",
         "author_url": "https://www.google.com/maps/contrib/113776213545715891713/reviews",
@@ -9212,7 +9212,7 @@
     "place_id": "ChIJ3wDMO3KU2w8Rkqx3o2LIVx4",
     "rating": 5,
     "reference": "ChIJ3wDMO3KU2w8Rkqx3o2LIVx4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Moses Kwesi Osah",
         "author_url": "https://www.google.com/maps/contrib/109704796263231056995/reviews",
@@ -9555,7 +9555,7 @@
     "place_id": "ChIJq6M-WSeV2w8RvD1TT6yHPG0",
     "rating": 3.9,
     "reference": "ChIJq6M-WSeV2w8RvD1TT6yHPG0",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Sarah Acquah",
         "author_url": "https://www.google.com/maps/contrib/109640162494528565827/reviews",
@@ -9948,7 +9948,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJLd4IXWGU2w8RSKPfOUmz7Nw",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Christy Bamfo",
         "author_url": "https://www.google.com/maps/contrib/114649296719336629865/reviews",
@@ -10184,7 +10184,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJpej_EYiU2w8RdZic8tqcDDE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Annor Wilson Oliver",
         "author_url": "https://www.google.com/maps/contrib/112543914866698485893/reviews",
@@ -10423,7 +10423,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJqS0fab2U2w8R7ODRDOUucxc",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "STEPHEN ASANTE OPOKU",
         "author_url": "https://www.google.com/maps/contrib/102490998092052729829/reviews",
@@ -10661,7 +10661,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJb66Aj-eV2w8RhVTFf9R-E8w",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Vanessa Princess",
         "author_url": "https://www.google.com/maps/contrib/117069398091098493394/reviews",
@@ -10895,7 +10895,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJmQm1l4WU2w8RNSsh5Zauyd0",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Yasmin Mohammed",
         "author_url": "https://www.google.com/maps/contrib/118442868231557217189/reviews",
@@ -11079,7 +11079,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJhfRAxGKU2w8RC6Uc2thlbdU",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Doreen Adwoa Owusu-Afriyie",
         "author_url": "https://www.google.com/maps/contrib/116230138705405910699/reviews",
@@ -11220,7 +11220,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJz5mfZ4CT2w8REv6sV1oWUyo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Calvin Klein Jeremy",
         "author_url": "https://www.google.com/maps/contrib/102430256884831143918/reviews",
@@ -11403,7 +11403,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJQ-kxaWGU2w8R39ZCwWQPsdE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Nana Kwaku Dua Osei-Owusu",
         "author_url": "https://www.google.com/maps/contrib/103233294754867028720/reviews",
@@ -11530,7 +11530,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJL7m2E4yU2w8R-D3g2SB3JOk",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "phee 99",
         "author_url": "https://www.google.com/maps/contrib/116608843345898658513/reviews",
@@ -11665,7 +11665,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJkUbLB82V2w8RRyNB7eMjEVM",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Lantec Securities",
         "author_url": "https://www.google.com/maps/contrib/106038759667920810136/reviews",
@@ -11844,7 +11844,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJve7v22OU2w8RSk1EEDPX-40",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Jacinta Harrison -Acquah",
         "author_url": "https://www.google.com/maps/contrib/107874025751484066691/reviews",
@@ -12025,7 +12025,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJ_YyY7HyU2w8RrSDLA5gzXbc",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ansah Ofei",
         "author_url": "https://www.google.com/maps/contrib/102220065868964243659/reviews",
@@ -12167,7 +12167,7 @@
     "place_id": "ChIJ12hRszKV2w8RhLdnnuwkZVM",
     "rating": 3.9,
     "reference": "ChIJ12hRszKV2w8RhLdnnuwkZVM",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Bezalel Arthur",
         "author_url": "https://www.google.com/maps/contrib/104514118633124962506/reviews",
@@ -12350,7 +12350,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJVdKpLmOU2w8RFW-xoC_O9o8",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Alfred Essel",
         "author_url": "https://www.google.com/maps/contrib/107636665738365596434/reviews",
@@ -12534,7 +12534,7 @@
     },
     "rating": 3.8,
     "reference": "ChIJLwsj1X2U2w8RhpAQIOPfOn8",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Emmanuel Boateng Amoako",
         "author_url": "https://www.google.com/maps/contrib/113175447918878937432/reviews",
@@ -12718,7 +12718,7 @@
     "place_id": "ChIJA43o9HyU2w8Rm8wv1ka6mOo",
     "rating": 3.6,
     "reference": "ChIJA43o9HyU2w8Rm8wv1ka6mOo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Isaac Freeman Mensah",
         "author_url": "https://www.google.com/maps/contrib/112382530462075410307/reviews",
@@ -12881,7 +12881,7 @@
     "place_id": "ChIJOedZNmKU2w8R2LLE2g0cGx4",
     "rating": 3.5,
     "reference": "ChIJOedZNmKU2w8R2LLE2g0cGx4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Bekoe Bestbrain",
         "author_url": "https://www.google.com/maps/contrib/114482201436574217511/reviews",
@@ -13123,7 +13123,7 @@
     "place_id": "ChIJ____P_qW2w8RT9IAtIV3ia8",
     "rating": 3.8,
     "reference": "ChIJ____P_qW2w8RT9IAtIV3ia8",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ngmentiru Martin Kaakpedomo",
         "author_url": "https://www.google.com/maps/contrib/118104314030898937224/reviews",
@@ -13312,7 +13312,7 @@
     "place_id": "ChIJp6otDn2U2w8RvabiHMbnLWo",
     "rating": 3.8,
     "reference": "ChIJp6otDn2U2w8RvabiHMbnLWo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Michael Adusei",
         "author_url": "https://www.google.com/maps/contrib/102298218996170487809/reviews",
@@ -13461,7 +13461,7 @@
     "place_id": "ChIJhZHgh2KU2w8RmuR-QNMYpXU",
     "rating": 3.7,
     "reference": "ChIJhZHgh2KU2w8RmuR-QNMYpXU",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Samuel Darkwah Manu",
         "author_url": "https://www.google.com/maps/contrib/108543216539264607593/reviews",
@@ -13586,7 +13586,7 @@
     },
     "rating": 3.5,
     "reference": "ChIJ5-40t4eU2w8REJpzmSvoi0w",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Kassim Abdul-Manaf",
         "author_url": "https://www.google.com/maps/contrib/115923478714853038110/reviews",
@@ -13741,7 +13741,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJmRtytYmU2w8RtWRVLMO2a24",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Olumide Timilehin",
         "author_url": "https://www.google.com/maps/contrib/118401801279402655300/reviews",
@@ -13925,7 +13925,7 @@
     "place_id": "ChIJzR0-VH2U2w8R5U1Qz9XoFQ4",
     "rating": 3.5,
     "reference": "ChIJzR0-VH2U2w8R5U1Qz9XoFQ4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ronny Writes",
         "author_url": "https://www.google.com/maps/contrib/114703035006800116371/reviews",
@@ -14107,7 +14107,7 @@
     "place_id": "ChIJE0S4rYWU2w8RqmzoYn5OOhQ",
     "rating": 3.5,
     "reference": "ChIJE0S4rYWU2w8RqmzoYn5OOhQ",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Lewis Kadzahlo",
         "author_url": "https://www.google.com/maps/contrib/113134981854111838013/reviews",
@@ -14235,7 +14235,7 @@
     "place_id": "ChIJO-u0aWGU2w8R7PKz5x_FDS0",
     "rating": 3.5,
     "reference": "ChIJO-u0aWGU2w8R7PKz5x_FDS0",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Roselyn Eyram Nukpe",
         "author_url": "https://www.google.com/maps/contrib/111864689098097193332/reviews",
@@ -14420,7 +14420,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJpSjmt4mU2w8RGKWpDigSUes",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "JOHNSON GYAU",
         "author_url": "https://www.google.com/maps/contrib/107296839497115737089/reviews",
@@ -14605,7 +14605,7 @@
     "place_id": "ChIJH9-MMn2U2w8RnyvnhuBZ30E",
     "rating": 3.7,
     "reference": "ChIJH9-MMn2U2w8RnyvnhuBZ30E",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Obed Nyavor",
         "author_url": "https://www.google.com/maps/contrib/106507646649816588823/reviews",
@@ -14793,7 +14793,7 @@
     },
     "rating": 3.8,
     "reference": "ChIJi5qyq32U2w8RdZ2LXdqJpWY",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Jonas Asamanin Barnie",
         "author_url": "https://www.google.com/maps/contrib/117213989637137662039/reviews",
@@ -14977,7 +14977,7 @@
     "place_id": "ChIJDwUzU_GU2w8RPiFFye3Lr7s",
     "rating": 4,
     "reference": "ChIJDwUzU_GU2w8RPiFFye3Lr7s",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Nana Appiah Niama III Baamu Hene",
         "author_url": "https://www.google.com/maps/contrib/109466300009581750545/reviews",
@@ -15165,7 +15165,7 @@
     },
     "rating": 3.6,
     "reference": "ChIJDQJES2iU2w8RlL1MsdNmB-U",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Matthews Azidizian",
         "author_url": "https://www.google.com/maps/contrib/101492109113463919204/reviews",
@@ -15312,7 +15312,7 @@
     },
     "rating": 3.6,
     "reference": "ChIJEfhCz3yU2w8RhG74v0QYiBE",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Pius Ayorna",
         "author_url": "https://www.google.com/maps/contrib/101307720082729481026/reviews",
@@ -15437,7 +15437,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJvUORxkCV2w8R-TcRqQCsdm4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Maxwell Egyir",
         "author_url": "https://www.google.com/maps/contrib/105783325259141744702/reviews",
@@ -15676,7 +15676,7 @@
     },
     "rating": 3.9,
     "reference": "ChIJoYBTtWKU2w8ROxAtBXxBce8",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Bless Elikem Krapah",
         "author_url": "https://www.google.com/maps/contrib/103501210359593771133/reviews",
@@ -15859,7 +15859,7 @@
     },
     "rating": 3.6,
     "reference": "ChIJD1CGqYWU2w8Ru2MRh10bWW8",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Samuel Whyte",
         "author_url": "https://www.google.com/maps/contrib/109955777575920046366/reviews",
@@ -15974,7 +15974,7 @@
     "place_id": "ChIJWWI_xo-U2w8RpEMYAHJGoP4",
     "rating": 3.6,
     "reference": "ChIJWWI_xo-U2w8RpEMYAHJGoP4",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Raymond Reddington",
         "author_url": "https://www.google.com/maps/contrib/116383738599896695925/reviews",
@@ -16145,7 +16145,7 @@
     "place_id": "ChIJydsvok-X2w8RU51uSuJSQ-w",
     "rating": 3.5,
     "reference": "ChIJydsvok-X2w8RU51uSuJSQ-w",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Prodi Perry",
         "author_url": "https://www.google.com/maps/contrib/104509568634018296182/reviews",
@@ -16326,7 +16326,7 @@
     },
     "rating": 3.8,
     "reference": "ChIJc-21A_WU2w8Ri6tGhWoPgEA",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Lawyer Drake",
         "author_url": "https://www.google.com/maps/contrib/107837081490801987948/reviews",
@@ -16515,7 +16515,7 @@
     "place_id": "ChIJg4wQjHyU2w8RplrT_aZMC-k",
     "rating": 3.6,
     "reference": "ChIJg4wQjHyU2w8RplrT_aZMC-k",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Ebenezer Ekuful",
         "author_url": "https://www.google.com/maps/contrib/100497910685263940633/reviews",
@@ -16699,7 +16699,7 @@
     "place_id": "ChIJs8OOSH2U2w8RsOiCkM77-gQ",
     "rating": 3.5,
     "reference": "ChIJs8OOSH2U2w8RsOiCkM77-gQ",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Harriet Kyerewah Dwomoh",
         "author_url": "https://www.google.com/maps/contrib/105750958056718119982/reviews",
@@ -16845,7 +16845,7 @@
     },
     "rating": 3.5,
     "reference": "ChIJL8zPBYiU2w8Re6LpcwEn3lc",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "FELIX ACHEAMPONG",
         "author_url": "https://www.google.com/maps/contrib/112106129180559258023/reviews",
@@ -17035,7 +17035,7 @@
     "place_id": "ChIJI81EzoaU2w8RfKgZfx9GSAo",
     "rating": 3.7,
     "reference": "ChIJI81EzoaU2w8RfKgZfx9GSAo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Beatrice Owusu Ansah",
         "author_url": "https://www.google.com/maps/contrib/117275932834980772790/reviews",
@@ -17230,7 +17230,7 @@
     "place_id": "ChIJZ9A-DH2U2w8RmR07zPC-tGQ",
     "rating": 3.9,
     "reference": "ChIJZ9A-DH2U2w8RmR07zPC-tGQ",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "BLESSING CHIDINMA MARK",
         "author_url": "https://www.google.com/maps/contrib/116219046713587506630/reviews",
@@ -17597,7 +17597,7 @@
     },
     "rating": 3.8,
     "reference": "ChIJBxxJK2OU2w8RofF4hiixvvo",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Lord Ivan Adotey",
         "author_url": "https://www.google.com/maps/contrib/101147856109588950978/reviews",
@@ -17781,7 +17781,7 @@
     },
     "rating": 3.8,
     "reference": "ChIJ-wcloPCW2w8RBz1vSOVKl0A",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Louis Oteng-Gyimah",
         "author_url": "https://www.google.com/maps/contrib/109217523621462723002/reviews",
@@ -17964,7 +17964,7 @@
     },
     "rating": 3.7,
     "reference": "ChIJnWJvqvCW2w8Rsu0GMgziWRU",
-    "reviews": [
+    "reviews_by_person": [
       {
         "author_name": "Miss Bee",
         "author_url": "https://www.google.com/maps/contrib/114025613526682103833/reviews",

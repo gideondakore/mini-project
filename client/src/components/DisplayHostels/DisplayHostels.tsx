@@ -3,7 +3,6 @@ import "./DisplayHostels.css";
 import { RiHeartAdd2Line } from "react-icons/ri";
 import starRate from "../../utils/starRate";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// import HostelDetail from "../HostelDetail.tsx/HostelDetail";
 import {
   Sparkles,
   BedSingle,
@@ -18,9 +17,10 @@ import {
 
 import { FaPersonWalking } from "react-icons/fa6";
 import { IoIosTimer } from "react-icons/io";
-
-////////////////////
-// import formattedDtata from "../../pages/MapWorks/hostelMap/data/hostelsDetailData";
+import hostelsDetailData from "../../pages/MapWorks/hostelMap/data/HostelsDetailData.json";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { setHostelsDetailData } from "../../store/features/hostelDetailDataSlice";
 
 interface hostelDetailsProp {
   imgUrl: string;
@@ -56,13 +56,10 @@ const DisplayHostels = ({
   const [isSave, setIsSave] = useState<boolean>(false);
   const iconRef = useRef<HTMLButtonElement>(null);
 
-  // const [hostelDetail, setHostelDetail] = useState<boolean>(false);
   useEffect(() => {
     (iconRef.current as HTMLButtonElement).addEventListener("click", (e) => {
       e.preventDefault();
       setIsSave(!isSave);
-
-      // console.log(e.target);
     });
   }, [isSave]);
 
@@ -80,6 +77,7 @@ const DisplayHostels = ({
 
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleShowMap = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -91,19 +89,64 @@ const DisplayHostels = ({
   const handleDisplayContainer = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    window.location.href = "http://localhost:3000/hostel-details";
-    // setHostelDetail((prev) => !prev);
-  };
 
-  //////////////////////////
-  // const format = useCallback(formattedDtata(), []);
-  // console.log("FORMAT: ", format);
+    const targetName = name;
+
+    type FormattedHostelsData = {
+      name: string;
+      fulladdr: string;
+      categories: string[];
+      photos?: string[] | undefined;
+      distance: { text: string; value: number };
+      duration: { text: string; value: number };
+      lat: number;
+      lng: number;
+      rating: number | null;
+      reviews: number | null;
+      reviews_by_person?: Array<{ [key: string]: string | number }>;
+      user_ratings_total?: number;
+      vicinity: string;
+      formatted_address: string;
+      icons: string;
+    };
+
+    const hostel = hostelsDetailData.find(
+      (hostel) => hostel.name === targetName
+    );
+
+    if (hostel) {
+      const hostelsData: FormattedHostelsData = {
+        name: hostel.name,
+        fulladdr: hostel.fulladdr,
+        categories: hostel.categories,
+        photos: hostel.photos as string[],
+        distance: hostel.distance,
+        duration: hostel.duration,
+        lat: hostel.lat,
+        lng: hostel.lng,
+        rating: hostel.rating,
+        reviews: hostel.reviews,
+        reviews_by_person: hostel.reviews_by_person as Array<{
+          [key: string]: string | number;
+        }>,
+        user_ratings_total: hostel.user_ratings_total,
+        vicinity: hostel.vicinity,
+        formatted_address: hostel.formatted_address,
+        icons: hostel.icon,
+      };
+
+      dispatch(setHostelsDetailData(hostelsData));
+    } else {
+      console.error("Hostel not found");
+    }
+
+    window.location.href = "http://localhost:3000/hostel-details";
+  };
 
   return (
     <>
-      <div className="displayHostelContainer" onClick={handleDisplayContainer}>
-        {/* {hostelDetail && <HostelDetail />} */}
-        <div className="hostelInfoWrapper">
+      <div className="displayHostelContainer">
+        <div className="hostelInfoWrapper" onClick={handleDisplayContainer}>
           <div className="imageContainer">
             <a href="/" className="imageBody">
               <img
@@ -203,6 +246,7 @@ const DisplayHostels = ({
                 </div>
               </div>
             </div>
+
             <div className="hostelInfo-review">
               <div className="hostelInfo-review--rate">
                 <h2 style={{ height: "10%" }}>Services Include</h2>

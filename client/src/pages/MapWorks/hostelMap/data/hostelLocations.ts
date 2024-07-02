@@ -44,7 +44,7 @@ const hostelPositionsRaw = [
       "Wi-Fi spot",
     ],
     thumbnail:
-      "https://lh3.googleusercontent.com/gps-proxy/ALd4DhHP061ura1CUIUN_yF7V0g3dfvEh4G_vz8lGYZQUDFtE1dbWfD279YF6NVPQick0RqnwVoQlm0_2_W7U3EYuuO5N-GQdQO0U7IgWMHGNhEsF6fEvO6IjQwDwN1ZuCT8fzJ_dqtfRbKofgCO6NY9rQP9sG38hZWfvRKCJhZKyq5C-ltc3tzMTfB00w",
+      "https://maps.googleapis.com/maps/api/place/js/PhotoService.GetPhoto?1sAUc7tXUeAvNvf54Ej-gOlkVZnMkrWx48BQVO9iRMAt_K8KrNvfyxDZbcW7tiqurYv05j1n4DBN7URveBtyF4QnMTd-mez7rz6-3VCuLAkJDAMjO73cIjb4eb_3jpTLdKZiNZftFoRsbeXW8miYRkJrzG9jj7HFsjh8UdHa8-E_QzZ54AkkFx&3u500&4u500&5m1&2e1&callback=none&r_url=http%3A%2F%2Flocalhost%3A3000%2Fmap&key=AIzaSyCJTJ7EL6qHtDs0NV8iDUw7_91ZgqStdsQ&token=57265",
     phoneNumbers: "+233 55 397 7756",
     emails: null,
     claimed: false,

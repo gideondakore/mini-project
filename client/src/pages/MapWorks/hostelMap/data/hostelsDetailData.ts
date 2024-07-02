@@ -5,55 +5,55 @@
 // import routeResponse from "./routeResponse.json";
 
 // const formattedDtata = () => {
-//   const formattedDtat = formattedDataForMap.map(
-//     ({ name, fulladdr, categories }) => {
-//       const dat = {
-//         name,
-//         fulladdr,
-//         categories,
-//       };
+//   //   const formattedDtat = formattedDataForMap.map(
+//   //     ({ name, fulladdr, categories }) => {
+//   //       const dat = {
+//   //         name,
+//   //         fulladdr,
+//   //         categories,
+//   //       };
 
-//       return dat;
-//     }
-//   );
+//   //       return dat;
+//   //     }
+//   //   );
 
-//   const photos = gallery.map(({ photos, name }) => {
-//     // console.log(photos);
-//     return {
-//       name,
-//       photos,
-//     };
-//   });
+//   //   const photos = gallery.map(({ photos, name }) => {
+//   //     // console.log(photos);
+//   //     return {
+//   //       name,
+//   //       photos,
+//   //     };
+//   //   });
 
-//   const routes = routeResponse.map(({ name, distance, duration }) => {
-//     return {
-//       name,
-//       distance,
-//       duration,
-//     };
-//   });
+//   //   const routes = routeResponse.map(({ name, distance, duration }) => {
+//   //     return {
+//   //       name,
+//   //       distance,
+//   //       duration,
+//   //     };
+//   //   });
 
-//   const details = detailMapData.map(
-//     ({
-//       name,
-//       geometry,
-//       rating,
-//       reviews,
-//       user_ratings_total,
-//       vicinity,
-//       formatted_address,
-//     }) => {
-//       return {
-//         geometry,
-//         name,
-//         rating,
-//         reviews,
-//         user_ratings_total,
-//         vicinity,
-//         formatted_address,
-//       };
-//     }
-//   );
+//   //   const details = detailMapData.map(
+//   //     ({
+//   //       name,
+//   //       geometry,
+//   //       rating,
+//   //       reviews_by_person,
+//   //       user_ratings_total,
+//   //       vicinity,
+//   //       formatted_address,
+//   //     }) => {
+//   //       return {
+//   //         geometry,
+//   //         name,
+//   //         rating,
+//   //         reviews_by_person,
+//   //         user_ratings_total,
+//   //         vicinity,
+//   //         formatted_address,
+//   //       };
+//   //     }
+//   //   );
 
 //   const combinedData = [
 //     ...detailMapData,
@@ -71,13 +71,13 @@
 //   }, {} as { [key: string]: any });
 
 //   const resultArray = Object.values(combinedData);
-//   //   console.log(resultArray);
+//   console.log(resultArray);
 
-//   //   const blob = new Blob([JSON.stringify(resultArray, null, 2)], {
-//   //     type: "application/json",
-//   //   });
+//   const blob = new Blob([JSON.stringify(resultArray, null, 2)], {
+//     type: "application/json",
+//   });
 
-//   //   saveAs(blob, "HostelsDetailData.json");
+//   saveAs(blob, "HostelsDetailData.json");
 // };
 
 // export default formattedDtata;

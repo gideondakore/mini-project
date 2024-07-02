@@ -27,13 +27,14 @@ import routeData from "../../pages/MapWorks/hostelMap/data/routeResponse.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isAuthenticated } from "../../services/api/authService";
+// import formattedDtata from "../MapWorks/hostelMap/data/hostelsDetailData";
 
 type HostelDataType = {
   name: string;
   rating: number | undefined;
   user_ratings_total: number | undefined;
   icon: string | undefined;
-  reviews:
+  reviews_by_person:
     | Array<{
         author_name: string;
         profile_photo_url: string;
@@ -51,17 +52,19 @@ export interface ComprehensiveSearchprop {
 }
 const Home = () => {
   const formattedHostel: HostelDataTypeProp = hostelDetailsJson.map(
-    ({ name, rating, user_ratings_total, icon, reviews }) => {
+    ({ name, rating, user_ratings_total, icon, reviews_by_person }) => {
       return {
         name,
         rating,
         user_ratings_total,
         icon,
-        reviews: reviews?.map(({ author_name, profile_photo_url, text }) => ({
-          author_name,
-          profile_photo_url,
-          text,
-        })),
+        reviews_by_person: reviews_by_person?.map(
+          ({ author_name, profile_photo_url, text }) => ({
+            author_name,
+            profile_photo_url,
+            text,
+          })
+        ),
       };
     }
   );
@@ -632,11 +635,11 @@ const Home = () => {
                           : ["Hostel"]
                       }
                       user_review={{
-                        author_name: hostel.reviews?.at(0)
+                        author_name: hostel.reviews_by_person?.at(0)
                           ?.author_name as string,
-                        profile_photo_url: hostel.reviews?.at(0)
+                        profile_photo_url: hostel.reviews_by_person?.at(0)
                           ?.profile_photo_url as string,
-                        text: hostel.reviews?.at(0)?.text as string,
+                        text: hostel.reviews_by_person?.at(0)?.text as string,
                       }}
                       distance={
                         routeData

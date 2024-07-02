@@ -1,10 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 import mapRoutes from "./features/mapRoutesSlice";
 import mapRoutesIndex from "./features/mapRoutesIndexSlice";
 import mapCollegeNames from "./features/mapCollegeNamesSlice";
 import mapCollegeLocations from "./features/mapCollegeLocationsSlice";
 import mapDestinationName from "./features/mapDestinationNameSlice";
 import mapTraveModes from "./features/mapTraveModesSlice";
+import hostelsDetailData from "./features/hostelDetailDataSlice";
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, hostelsDetailData);
 
 export const store = configureStore({
   reducer: {
@@ -14,25 +24,11 @@ export const store = configureStore({
     collegePosition: mapCollegeLocations,
     collegeDestination: mapDestinationName,
     travelMode: mapTraveModes,
+    hostelsDetailData: persistedReducer,
   },
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: {
-  //       ignoredActions: [
-  //         // "routes/setRoute",
-  //         // "collegeDestination/setDestination",
-  //         "hostel/setRoute",
-  //       ],
-  //       ignoredActionPaths: [
-  //         // "payload.routes.legs.start_location",
-  //         // "payload.routes.legs.end_location",
-  //         "routes.routes.0.bounds",
-  //         // "payload.routes.0.bounds",
-  //       ],
-  //       // ignoredPaths: ['items.dates'],
-  //     },
-  //   }),
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export const persistor = persistStore(store);
