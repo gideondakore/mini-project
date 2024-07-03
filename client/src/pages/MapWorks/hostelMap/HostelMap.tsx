@@ -36,6 +36,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { setDestination } from "../../../store/features/mapDestinationNameSlice";
 import { useLocation } from "react-router-dom";
+import useDebounced from "../../../hooks/useDebounced";
 
 type Point = google.maps.LatLngLiteral & {
   key: string;
@@ -403,6 +404,7 @@ const Directions = () => {
           legs,
           summary,
         }));
+
         dispatch(setRoute({ routes: responseRoute }));
       })
       .catch(() => {
@@ -463,6 +465,8 @@ const Places = ({ points }: Prop) => {
 
   const [isPredictSelected, setIsPredictSelected] = useState<boolean>(false);
 
+  const debouncedSearchValue = useDebounced(inputValue, 500);
+
   useEffect(() => {
     if (!map || !placeLibrary) return;
 
@@ -497,7 +501,7 @@ const Places = ({ points }: Prop) => {
     const bounds = new google.maps.LatLngBounds(sw, ne);
 
     const request: google.maps.places.AutocompletionRequest = {
-      input: inputValue,
+      input: debouncedSearchValue,
       region: "gh",
       types: ["establishment"],
       componentRestrictions: { country: ["GH"] },
@@ -613,7 +617,7 @@ const Places = ({ points }: Prop) => {
                 color: "white",
               }}
             >
-              {inputValue.length > 2 &&
+              {debouncedSearchValue.length > 2 &&
                 predictions &&
                 predictions?.map((prediction) => (
                   <li

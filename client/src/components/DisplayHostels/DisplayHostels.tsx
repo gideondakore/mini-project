@@ -69,11 +69,11 @@ const DisplayHostels = ({
     e.currentTarget.src = icon;
   };
 
-  const handleUserProfile = (
-    event: React.SyntheticEvent<HTMLImageElement, Event>
-  ) => {
-    event.currentTarget.src = require(`../../assets/images/altHostel-1.jpg`);
-  };
+  // const handleUserProfile = (
+  //   event: React.SyntheticEvent<HTMLImageElement, Event>
+  // ) => {
+  //   event.currentTarget.src = require(`../../assets/images/altHostel-1.jpg`);
+  // };
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -229,14 +229,14 @@ const DisplayHostels = ({
                     <img
                       src={
                         user_review.profile_photo_url
-                          ? user_review.profile_photo_url
-                          : `../../assets/images/altHostel-${Math.floor(
-                              Math.random() * (7 - 1) + 1
-                            )}.jpg`
+                        // ? user_review.profile_photo_url
+                        // : `../../assets/images/altHostel-${Math.floor(
+                        //     Math.random() * (7 - 1) + 1
+                        //   )}.jpg`
                       }
                       alt="user profile"
                       className="userProfile"
-                      onError={handleUserProfile}
+                      // onError={handleUserProfile}
                     />
                   </div>
                   <div className="userInfo">

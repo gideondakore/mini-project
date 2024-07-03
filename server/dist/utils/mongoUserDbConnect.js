@@ -30,6 +30,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const mongoUserDbConnect = () => {
+    var _a;
     try {
         const mongoUri = process.env.MONGO_DB_URI;
         if (!mongoUri) {
@@ -39,7 +40,17 @@ const mongoUserDbConnect = () => {
         return { conn };
     }
     catch (error) {
-        throw new Error("Unable to connect database");
+        if (error instanceof mongoose_1.default.Error.ValidationError) {
+            const errorList = [];
+            for (const e in error.errors) {
+                errorList.push((_a = error.errors[e]) === null || _a === void 0 ? void 0 : _a.message);
+            }
+            console.error("Mongoose Error: ", errorList);
+        }
+        else {
+            console.error("Ooops!, something out of normal flow happen :(");
+        }
+        return {};
     }
 };
 exports.default = mongoUserDbConnect;

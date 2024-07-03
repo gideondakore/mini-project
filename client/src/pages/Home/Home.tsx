@@ -511,6 +511,11 @@ const Home = () => {
     setComprehensiveSearchBool(true);
   };
 
+  // useEffect(() => {
+  //   const data = formattedDtata();
+  //   console.log(data);
+  // }, [formattedDtata]);
+
   return (
     <>
       <HostelSearchInputContext state={{ searchInput, setSearchInput }}>

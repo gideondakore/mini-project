@@ -50,6 +50,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const axios_1 = __importDefault(require("axios"));
 dotenv.config();
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -313,6 +314,36 @@ app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 }));
+const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+app.get("/maps-api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get(`https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`);
+        res.send(response.data);
+    }
+    catch (error) {
+        res.status(500).send("Error fetching the Google Maps API");
+    }
+}));
+// app.get("/maps-api", async (req: Request, res: Response) => {
+//   try {
+//     const response = await fetch(
+//       `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
+//       // {
+//       //   headers: {
+//       //     "Content-Type": "application/json",
+//       //   },
+//       // }
+//     );
+//     if (!response.ok) {
+//       res.status(500).send("Network error fetching the Google Maps API");
+//     }
+//     // const data = await response.json();
+//     // console.log(data);
+//     res.send(response);
+//   } catch (error) {
+//     res.status(500).send("Error fetching the Google Maps API");
+//   }
+// });
 const PORT = process.env.PORT || 5500;
 const start = (port) => {
     app.listen(port, () => {

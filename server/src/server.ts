@@ -342,7 +342,7 @@ app.post("/signin", async (req: Request, res: Response) => {
   }
 });
 
-const apiKey = process.env.GOOGLE_MAP_ID;
+const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 
 app.get("/maps-api", async (req, res) => {
   try {
@@ -354,6 +354,29 @@ app.get("/maps-api", async (req, res) => {
     res.status(500).send("Error fetching the Google Maps API");
   }
 });
+
+// app.get("/maps-api", async (req: Request, res: Response) => {
+//   try {
+//     const response = await fetch(
+//       `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
+//       // {
+//       //   headers: {
+//       //     "Content-Type": "application/json",
+//       //   },
+//       // }
+//     );
+
+//     if (!response.ok) {
+//       res.status(500).send("Network error fetching the Google Maps API");
+//     }
+
+//     // const data = await response.json();
+//     // console.log(data);
+//     res.send(response);
+//   } catch (error) {
+//     res.status(500).send("Error fetching the Google Maps API");
+//   }
+// });
 
 const PORT = process.env.PORT || 5500;
 

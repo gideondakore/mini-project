@@ -1,14 +1,23 @@
-import mongoose from "mongoose";
+import mongoose, { Model, Document } from "mongoose";
 import jwt from "jsonwebtoken";
 import mongoUserDbConnect from "../utils/mongoUserDbConnect";
 
-const UserSchema = new mongoose.Schema(
+interface IUser extends Document {
+  name: string;
+  email: string;
+  password?: string;
+  birthday?: string;
+  picture?: string;
+  generateToken: () => string;
+}
+
+const UserSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
       unique: true,
       trim: true,
-      required: [true, "Please provide a namw"],
+      required: [true, "Please provide a name"],
       minlength: 3,
       maxlength: 56,
     },
@@ -59,6 +68,12 @@ UserSchema.methods.generateToken = function () {
 
 const { conn } = mongoUserDbConnect();
 
-const User = conn.models.User || conn.model("User", UserSchema);
+let User = Model<IUser>;
+if (conn) {
+  User = conn.models.User || conn.model("User", UserSchema);
+} else {
+  console.error("Failed to connect to the database");
+  throw new Error("Database connection failed");
+}
 
 export default User;

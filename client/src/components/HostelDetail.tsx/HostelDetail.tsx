@@ -1,18 +1,10 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import starRate from "../../utils/starRate";
-import {
-  Sparkles,
-  // BedSingle,
-  // Coffee,
-  // Soup,
-  // Utensils,
-  // ShoppingBag,
-  // Home,
-  // Wifi,
-  // LocateFixed,
-} from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { FaPersonWalking } from "react-icons/fa6";
 import { IoIosTimer } from "react-icons/io";
 
@@ -22,8 +14,6 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/store";
 const HostelDetail: React.FC = () => {
   const Remarks = ["Fair", "Good", "Very good", "Excellent", "Superb"] as const;
 
@@ -50,32 +40,27 @@ const HostelDetail: React.FC = () => {
 
   const handleMouseClick = () => {
     const rootUrl = `${window.location.protocol}//${window.location.host}`;
-    console.log(rootUrl);
     window.location.href = `${rootUrl}/map/?lat=${hostelDetailData.lat}&lng=${hostelDetailData.lng}`;
   };
 
   const newArr = new Array<number>(5).fill(0);
   let total_ratings = 0;
   if (hostelDetailData.reviews_by_person) {
-    hostelDetailData?.reviews_by_person.map((rev) => {
+    hostelDetailData.reviews_by_person.forEach((rev) => {
       const num = rev.rating as number;
       total_ratings += num;
       if (Math.round(num) === 5) {
         newArr[4] += num;
       }
-
       if (Math.round(num) === 4) {
         newArr[3] += num;
       }
-
       if (Math.round(num) === 3) {
         newArr[2] += num;
       }
-
       if (Math.round(num) === 2) {
         newArr[1] += num;
       }
-
       if (Math.round(num) === 1) {
         newArr[0] += num;
       }
@@ -107,7 +92,7 @@ const HostelDetail: React.FC = () => {
           className="swiper_container"
         >
           {hostelDetailData.photos ? (
-            hostelDetailData.photos?.map((photoUrl, index) => (
+            hostelDetailData.photos.map((photoUrl, index) => (
               <SwiperSlide key={index}>
                 <img src={photoUrl} alt={"slide_image " + index} />
               </SwiperSlide>
@@ -119,11 +104,9 @@ const HostelDetail: React.FC = () => {
           )}
           <div className="slider-controler">
             <div className="swiper-pagination"></div>
-
             <div className="swiper-button-prev slider-arrow">
               <ion-icon name="arrow-back-outline"></ion-icon>
             </div>
-
             <div className="swiper-button-next slider-arrow">
               <ion-icon name="arrow-forward-outline"></ion-icon>
             </div>
@@ -172,7 +155,6 @@ const HostelDetail: React.FC = () => {
               hostelDetailData.formatted_address}
           </a>
         </p>
-
         <div className="distace-duration--minimal-nav">
           <div className="distanceContainer">
             <FaPersonWalking size={30} />
@@ -184,7 +166,6 @@ const HostelDetail: React.FC = () => {
           </div>
         </div>
       </div>
-
       <div style={{ width: "60%" }}>
         <div className="showMap--minimal-nav">
           <button
@@ -196,7 +177,6 @@ const HostelDetail: React.FC = () => {
           </button>
         </div>
       </div>
-
       <div className="main--pipe-rating">
         <div className="pipe-rating">
           <div className="rating__average">
@@ -245,13 +225,11 @@ const HostelDetail: React.FC = () => {
           <span>Comments</span>
           <h1>Client Says</h1>
         </div>
-
-        <div className="testionial-box-container">
+        <div className="testimonial-box-container">
           {hostelDetailData.reviews_by_person &&
             hostelDetailData.reviews_by_person.map((user, index) => {
               const timestamp = user.time as number;
               const date = new Date(timestamp * 1000);
-
               return (
                 <div className="testimonial-box" key={index}>
                   <div className="box-top">
@@ -271,11 +249,9 @@ const HostelDetail: React.FC = () => {
                       <p>{starRate({ rating: user.rating as number })}</p>
                     </div>
                   </div>
-
                   <div className="client-comment">
                     <p>{user.text}</p>
                   </div>
-                  {/* <div></div> */}
                   <div className="comment-date">
                     <p>Date: {date.toUTCString()}</p>
                   </div>

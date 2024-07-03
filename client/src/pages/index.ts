@@ -5,5 +5,15 @@ import SignIn from "./SignIn/SignIn";
 import About from "./About/About";
 import Contact from "./Contact/Contact";
 import HostelDetails from "./HostelDetails/HostelDetails";
+import PayStack from "./PayStack/PayStack";
 
-export { UserInfo, Register, Home, SignIn, About, Contact, HostelDetails };
+export {
+  UserInfo,
+  Register,
+  Home,
+  SignIn,
+  About,
+  Contact,
+  HostelDetails,
+  PayStack,
+};

@@ -2,7 +2,14 @@ import React from "react";
 import "./App.css";
 import { Home, Register } from "./pages";
 import { Routes, Route } from "react-router-dom";
-import { UserInfo, SignIn, About, Contact, HostelDetails } from "./pages";
+import {
+  UserInfo,
+  SignIn,
+  About,
+  Contact,
+  HostelDetails,
+  PayStack,
+} from "./pages";
 import MapContainer from "./pages/MapWorks/MapContainer";
 
 const App = () => {
@@ -24,6 +31,7 @@ const App = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/hostel-details" element={<HostelDetails />} />
+      <Route path="payment" element={<PayStack />} />
     </Routes>
   );
 };

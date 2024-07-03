@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Connection } from "mongoose";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -9,10 +10,21 @@ const mongoUserDbConnect = () => {
       throw new Error("DB_URI does not exist in environment variable");
     }
 
-    const conn = mongoose.createConnection(mongoUri);
+    const conn: Connection = mongoose.createConnection(mongoUri);
     return { conn };
   } catch (error) {
-    throw new Error("Unable to connect database");
+    if (error instanceof mongoose.Error.ValidationError) {
+      const errorList: string[] = [];
+
+      for (const e in error.errors) {
+        errorList.push(error.errors[e]?.message);
+      }
+
+      console.error("Mongoose Error: ", errorList);
+    } else {
+      console.error("Ooops!, something out of normal flow happen :(");
+    }
+    return {};
   }
 };
 

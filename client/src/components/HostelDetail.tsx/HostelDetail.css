@@ -5,19 +5,25 @@ html {
 
 @media (min-width: 1440px) {
   html {
-    zoom: 1.5;
+    /* zoom: 1.5; */
+    transform: 1.5;
+    transform-origin: 0 0;
   }
 }
 
 @media (min-width: 2560px) {
   html {
-    zoom: 1.7;
+    /* zoom: 1.7; */
+    transform: 1.7;
+    transform-origin: 0 0;
   }
 }
 
 @media (min-width: 3860px) {
   html {
-    zoom: 2.5;
+    /* zoom: 2.5; */
+    transform: 2.5;
+    transform-origin: 0 0;
   }
 }
 
@@ -247,7 +253,7 @@ html {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 60%;
+  width: 75%;
 }
 
 .testimonials_minimal-nav a {
@@ -282,7 +288,7 @@ html {
 .testimonial-box-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   flex-wrap: wrap;
   width: 100%;
 }
