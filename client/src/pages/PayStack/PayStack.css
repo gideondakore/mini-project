@@ -14,7 +14,6 @@
 .paystack-container {
   display: flex;
   flex-direction: row;
-  /* margin: 5% auto; */
   width: 50%;
   height: 70%;
   background: white;
@@ -62,7 +61,7 @@
 }
 
 .checkout {
-  background: #84a17d; /* fallback for old browsers */
+  background: #84a17d;
 
   display: flex;
   flex-direction: column;
