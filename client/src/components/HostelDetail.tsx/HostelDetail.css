@@ -364,6 +364,62 @@ html {
   transition: all ease 0.3s;
 }
 
+.paystack-link {
+  margin-top: 3rem;
+  /* border: 2px solid var(--secondaryStar); */
+  width: 70%;
+  height: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.paystack-link hr {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.paystack-link p {
+  /* width: 100%; */
+  gap: 1rem;
+  display: flex;
+  align-items: baseline;
+}
+
+.paystack-link p > span {
+  font-size: 1.5rem;
+  font-style: italic;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 0.5rem;
+}
+
+.paystack-link p > button {
+  background-color: rgba(25, 55, 131, 0.5);
+  color: #107896;
+  font-size: 1.5rem;
+  border-style: solid;
+  height: 3rem;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 0px;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-style: italic;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  transition: all 0.8s ease;
+  text-decoration: underline;
+  text-decoration-color: #107896;
+}
+
+.paystack-link p > button:hover {
+  text-decoration: none;
+  background-color: rgba(148, 168, 220, 0.1);
+}
 @media (max-width: 1060px) {
   .testimonial-box {
     width: 45%;

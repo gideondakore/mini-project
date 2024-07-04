@@ -260,6 +260,23 @@ const HostelDetail: React.FC = () => {
             })}
         </div>
       </div>
+
+      <div className="paystack-link">
+        <hr />
+        <p>
+          <span>
+            <em>Join a vibrant community!🌌</em>
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              (window.location.href = "http://localhost:3000/payment")
+            }
+          >
+            Book your bed now
+          </button>
+        </p>
+      </div>
     </div>
   );
 };

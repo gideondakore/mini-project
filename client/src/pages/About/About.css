@@ -1,0 +1,15 @@
+.about-wrapper {
+  display: flex;
+  flex-direction: column;
+  background-color: #107896;
+  width: 100dvw;
+  height: 100dvh;
+  padding: 0px 20%;
+}
+
+.caption_txt {
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 30px;
+  align-self: center;
+}

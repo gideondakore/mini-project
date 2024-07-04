@@ -27,6 +27,7 @@ import routeData from "../../pages/MapWorks/hostelMap/data/routeResponse.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { isAuthenticated } from "../../services/api/authService";
+import Footer from "../../components/Footer/Footer";
 // import formattedDtata from "../MapWorks/hostelMap/data/hostelsDetailData";
 
 type HostelDataType = {
@@ -686,6 +687,7 @@ const Home = () => {
           </section>
         </main>
       </HostelSearchInputContext>
+      <Footer />
     </>
   );
 };
