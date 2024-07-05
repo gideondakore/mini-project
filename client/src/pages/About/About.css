@@ -1,15 +1,281 @@
 .about-wrapper {
   display: flex;
   flex-direction: column;
-  background-color: #107896;
   width: 100dvw;
-  height: 100dvh;
-  padding: 0px 20%;
+  gap: 1rem;
+  background-color: #ffff;
+  padding-bottom: 4rem;
 }
 
+.about-story {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
 .caption_txt {
   text-transform: capitalize;
   font-weight: bold;
   font-size: 30px;
   align-self: center;
+  text-transform: uppercase;
+  font-family: "Playwrite GB S", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--accent);
+}
+
+.story-container {
+  display: flex;
+  width: 85dvw;
+  gap: 3rem;
+}
+.about-story-letter {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
+}
+
+.mystory-title--container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.mystory-title {
+  display: flex;
+  flex-direction: column;
+  letter-spacing: 1rem;
+  text-transform: uppercase;
+  font-family: "Playwrite GB S", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.mystory-title--container > hr {
+  width: 30%;
+  color: rgb(90, 82, 82);
+  border-style: solid;
+}
+
+.mystory-body--container {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+
+  font-size: 1.3rem;
+  line-height: 2rem;
+  letter-spacing: 0.15rem;
+}
+
+.mystory-ceo-pic {
+  background-image: url("../../assets/images/ceo_img.jpeg");
+  background-color: var(--secondary);
+  flex-grow: 1;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: cover;
+}
+
+.ceo-signature {
+  background-image: url("../../assets/images/ceo-signature.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-size: cover;
+  width: 50%;
+  height: 6.5rem;
+  border: 0px;
+  border-style: solid;
+}
+
+.ceo-name {
+  font-family: "Bodoni Moda SC", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.ceo-rank {
+  font-family: "Playwrite GB S", cursive;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.about-conflict--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5rem;
+  gap: 5rem;
+}
+
+.about-conflict--title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.about-conflict--title > p {
+  text-transform: capitalize;
+  font-size: 3rem;
+  font-family: "Playwrite GB S", cursive;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.about-conflict--title > p {
+  text-transform: capitalize;
+  font-size: 3rem;
+  font-family: "Playwrite GB S", cursive;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--accent);
+}
+
+.about-conflict--title_body > p {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.3rem;
+  line-height: 2rem;
+  letter-spacing: 0.15rem;
+}
+
+.about-conflict--statistic,
+.about-resolution--statistic {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+}
+
+.about-conflict-statistic-info,
+.about-resolution-statistic-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* gap: 1rem; */
+  /* background-color: red; */
+}
+
+.about-conflict-statistic-info p:first-child,
+.about-resolution-statistic-info p:first-child {
+  font-family: "Bodoni Moda SC", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 3rem;
+  color: var(--accent);
+}
+
+.about-conflict-statistic-info p:nth-child(2),
+.about-resolution-statistic-info p:nth-child(2) {
+  font-size: 1.5rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.about-challenge,
+.about-resolution {
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  gap: 1rem;
+  margin-top: 15rem;
+  /* background-color: red; */
+}
+.about-challenge p:first-child,
+.about-resolution p:first-child {
+  font-family: "Bodoni Moda SC", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 1.5rem;
+  color: var(--primaryStar);
+  padding-left: 2rem;
+}
+
+.about-challenge--title,
+.about-resolution--title,
+.about-resolution--statistic--container > p {
+  font-size: 2rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+  color: var(--secondary);
+  padding-left: 2rem;
+}
+
+.about-challenge--body,
+.about-resolution--body {
+  display: flex;
+  padding-left: 5rem;
+  width: 80%;
+  margin-top: 5rem;
+}
+
+.about-challenge--body > div,
+.about-resolution--body > div {
+  margin-left: 3rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+
+  font-size: 1.5rem;
+  line-height: 2.5rem;
+  letter-spacing: 0.15rem;
+}
+
+.about-challenge--body > hr {
+  width: 20px;
+  border: 0px;
+  background-color: var(--primaryStar);
+}
+
+.about-resolution--statistic--container {
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  /* padding-right: 5rem; */
+  width: 95%;
+  margin-top: 5rem;
+  gap: 2rem;
+}
+
+.about-resolution--statistic--container > p {
+  text-transform: capitalize;
+}
+
+.about-resolution-statistic-info p:first-child {
+  color: orange;
+}
+
+.about-resolution--title {
+  text-transform: capitalize;
+  color: gold;
+}
+
+.about-resolution {
+  align-self: flex-end;
 }

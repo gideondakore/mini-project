@@ -4,7 +4,8 @@ import "./PayStack.css";
 import { ToastContainer, toast } from "react-toastify";
 const PayStack = () => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY as string;
-  const [email, setEmail] = useState("armstrongspycon27@gmail.com"); //
+
+  const [email, setEmail] = useState("armstrongspycon27@gmail.com");
   const [firstname, setFirstName] = useState("gideon");
   const [surname, setSurname] = useState("dakore");
   const [phone, setPhone] = useState("");
@@ -20,40 +21,47 @@ const PayStack = () => {
 
   const componentProps = {
     email,
-    amount: Number(amount) * 100,
-    // metadata: {
-    //   name,
-    //   phone,
-    // },
-    // metadata: {
-
-    // },
-    firstname,
-    surname,
-    phone,
+    amount: +amount * 100,
+    metadata: {
+      custom_fields: [
+        {
+          display_name: "Hostel Fee",
+          variable_name: "Hostel Fee",
+          value: +amount,
+        },
+      ],
+      name: firstname + " " + surname,
+      email: email,
+      cancel_action: "http://localhost:3000/hostel-details",
+      payment_medium: "site",
+    },
     publicKey,
     currency: "GHS",
     text: "Reserve a bed",
     onSuccess: ({ reference }: { reference: unknown }) => {
       toast(
-        `A bed has been reserved for you successful! Transaction reference: ${reference}`,
+        `A bed has been reserved for you successfully! Transaction reference: ${reference}`,
         {
           type: "success",
-          theme: "dark",
+          theme: "colored",
         }
       );
       resetForm();
+      // window.location.href = "http://localhost:3000";
     },
-    onClose: () =>
-      toast("Are you sure, you want to close?", {
-        type: "info",
+    onClose: () => {
+      toast("Transaction not complete!", {
+        type: "error",
         theme: "dark",
-      }),
+      });
+      // window.location.href = "http://localhost:3000/hostel-details";
+    },
   };
 
   const isFormValid = email && firstname && surname && phone && amount;
+
   return (
-    <form className="paystack-app">
+    <div className="paystack-app">
       <ToastContainer />
       <div className="paystack-container">
         <div className="item">
@@ -66,7 +74,6 @@ const PayStack = () => {
         </div>
         <div className="checkout">
           <div className="checkout-form">
-            <h1 className="checkout-info">payment info.</h1>
             <div className="checkout-field">
               <label>First name</label>
               <input
@@ -74,7 +81,6 @@ const PayStack = () => {
                 id="firstname"
                 value={firstname.toUpperCase()}
                 onChange={({ target }) => setFirstName(target?.value)}
-                placeholder="John"
               />
             </div>
             <div className="checkout-field">
@@ -91,7 +97,7 @@ const PayStack = () => {
               <input
                 type="text"
                 id="email"
-                value={email.toUpperCase()}
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -101,7 +107,7 @@ const PayStack = () => {
                 type="text"
                 id="amount"
                 value={amount}
-                onChange={({ target }) => setAmount(target?.value)}
+                onChange={(e) => setAmount(e.target.value)}
               />
             </div>
             <div className="checkout-field">
@@ -113,6 +119,7 @@ const PayStack = () => {
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
+
             {isFormValid ? (
               <PaystackButton className="paystack-button" {...componentProps} />
             ) : (
@@ -123,14 +130,12 @@ const PayStack = () => {
                   opacity: "0.8",
                   cursor: "not-allowed",
                 }}
-              >
-                Reserve a bed
-              </button>
+              ></button>
             )}
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

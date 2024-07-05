@@ -278,7 +278,7 @@ const SideBar = ({
         </div>
       </div>
       <div style={{ paddingLeft: "2rem" }}>
-        <Link to="/about" className="about">
+        <Link to="http://localhost:3000/about" className="about">
           About
         </Link>
       </div>
