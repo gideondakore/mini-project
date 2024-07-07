@@ -1,0 +1,21 @@
+.chat-container {
+  background-image: url("../../assets/images/valley.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  margin: 0px;
+  background: linear-gradient(
+    75deg,
+    rgb(20, 23, 33) 0%,
+    rgb(20, 23, 33) 50%,
+    rgba(20, 23, 33, 0.8) 100%
+  );
+}
+.chat-wrapper {
+  height: 100%;
+  width: 100%;
+  color: white;
+  background: rgb(43, 47, 60);
+  /* padding-bottom: 1rem; */
+}

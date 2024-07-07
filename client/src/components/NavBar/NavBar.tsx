@@ -29,8 +29,8 @@ const NavBar = () => {
 
     if (auth) {
       authUserProfile()
-        .then((picUrl) => {
-          setPic(picUrl?.picture);
+        .then((user) => {
+          setPic(user.user?.picture);
         })
         .catch((error) => console.error(`Error fetching pic: ${error}`));
     }

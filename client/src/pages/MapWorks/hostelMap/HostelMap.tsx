@@ -37,6 +37,8 @@ import { RootState } from "../../../store/store";
 import { setDestination } from "../../../store/features/mapDestinationNameSlice";
 import { useLocation } from "react-router-dom";
 import useDebounced from "../../../hooks/useDebounced";
+// import { saveAs } from "file-saver";
+// import detailMapData from "./data/HostelsDetailData.json";
 
 type Point = google.maps.LatLngLiteral & {
   key: string;
@@ -394,7 +396,10 @@ const Directions = () => {
       .route({
         origin: mapCollegePositions,
         destination: currentDestinationPosition,
-        travelMode: mapTravelMode,
+        travelMode:
+          mapTravelMode === "DRIVING"
+            ? google.maps.TravelMode.DRIVING
+            : google.maps.TravelMode.WALKING,
         provideRouteAlternatives: true,
       })
       .then((response) => {
@@ -467,6 +472,37 @@ const Places = ({ points }: Prop) => {
 
   const debouncedSearchValue = useDebounced(inputValue, 500);
 
+  ///////////////////////////////
+  // const fetchPhotos = async (
+  //   place_service: google.maps.places.PlacesService,
+  //   placeId: string
+  // ): Promise<string[] | undefined> => {
+  //   const request: google.maps.places.PlaceDetailsRequest = {
+  //     placeId: placeId,
+  //     fields: ["ALL"],
+  //   };
+  //   return new Promise((resolve, reject) => {
+  //     place_service.getDetails(
+  //       request,
+  //       (
+  //         result: google.maps.places.PlaceResult | null,
+  //         status: google.maps.places.PlacesServiceStatus
+  //       ) => {
+  //         if (request && status === google.maps.places.PlacesServiceStatus.OK) {
+  //           const photos = result?.photos?.map((pic) =>
+  //             pic.getUrl({ maxWidth: 500, maxHeight: 500 })
+  //           );
+  //           resolve(photos as string[] | undefined);
+  //         } else {
+  //           reject("Failed to get photos");
+  //         }
+  //       }
+  //     );
+  //   });
+  // };
+
+  // useCallback(fetchPhotos, []);
+  //////////////////////////////
   useEffect(() => {
     if (!map || !placeLibrary) return;
 
@@ -492,7 +528,52 @@ const Places = ({ points }: Prop) => {
       }
     );
   }, [placesService, predictionSelected]);
+  //////////////////////
+  // useEffect(() => {
+  //   if (!predictionSelected || !placesService) return;
+  //   (async () => {
+  //     const gallery = await Promise.all(
+  //       detailMapData.map((id) => {
+  //         const url = fetchPhotos(placesService, id.place_id as string);
+  //         const response = url
+  //           .then((data) => {
+  //             const galleryObj = {
+  //               name: id.name,
+  //               photos: data,
+  //               place_id: id.place_id,
+  //             };
 
+  //             return galleryObj;
+  //           })
+  //           .catch((err) => {
+  //             console.error("Error photo: ", err);
+  //           });
+
+  //         return response;
+  //       })
+  //     );
+
+  //     interface FormattedResult {
+  //       name: string | undefined;
+  //       photos: string[] | undefined;
+  //       place_id: string | undefined;
+  //     }
+  //     const results: FormattedResult[] = gallery.map((gallery) => {
+  //       return {
+  //         name: gallery?.name,
+  //         photos: gallery?.photos,
+  //         place_id: gallery?.place_id,
+  //       };
+  //     });
+
+  //     const blob = new Blob([JSON.stringify(results, null, 2)], {
+  //       type: "application/json",
+  //     });
+  //     saveAs(blob, "Gallery.json");
+  //   })();
+  // }, [placesService, predictionSelected]);
+
+  /////////////////////
   useEffect(() => {
     if (!placeLibrary || !placesService) return;
 

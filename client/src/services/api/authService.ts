@@ -1,4 +1,6 @@
 import getToken from "../../utils/getToken";
+import generateUsername from "../../utils/generateUsername";
+
 const aouthLogin = async () => {
   const GOOGLE_OAUTH_URL = process.env.REACT_APP_GOOGLE_OAUTH_URL;
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
@@ -114,6 +116,8 @@ const authUserProfile = async () => {
       console.error("Error fetching user profile");
     }
     const data = await response.json();
+    const userName = generateUsername(data.user?.name);
+    window.localStorage.setItem("chat_user_name", userName);
     return data;
   } catch (error) {
     console.error(`Network error: ${error}`);

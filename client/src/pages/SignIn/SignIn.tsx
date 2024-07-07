@@ -23,15 +23,15 @@ const SignIn = () => {
             "credential_refresh_token",
             refresh_token
           );
-          errorMsg.map((err, index) => toast(err));
+          errorMsg.map((err) => toast(err));
           window.location.href = "http://localhost:3000";
         } else {
           setErrorMsg(message);
-          errorMsg.map((err, index) => toast(err));
+          errorMsg.map((err) => toast(err));
         }
       })
       .catch((error) => {
-        console.error("Ooops! can't sign in");
+        console.error("Ooops! can't sign in", error);
         setErrorMsg(["Ooops! can't sign in"]);
       });
   };
@@ -115,7 +115,7 @@ const SignIn = () => {
               </div>
 
               <div id="signup-signin">
-                <p>Doesn't have an account yet?</p>
+                <p>{"Doesn't have an account yet?"}</p>
                 <a href="/register">sign up</a>
               </div>
             </footer>

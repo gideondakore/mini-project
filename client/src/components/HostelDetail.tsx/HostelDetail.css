@@ -27,9 +27,9 @@ html {
   }
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 1.3rem;
-}
+} */
 
 ::-webkit-scrollbar-thumb {
   border-radius: 1rem;

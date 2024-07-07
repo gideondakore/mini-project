@@ -255,13 +255,19 @@ const About = () => {
             Make an informed decision based on real experiences, not just glossy
             marketing photos.
             <br />
-            <br /> Duplex isn&apos;t just about finding a place to sleep;
-            it&apos;s about finding a haven for your college adventures.
-            We&apos;re more than a booking app; we&apos;re a community of
-            students, travelers, and explorers, dedicated to making your college
-            experience smoother, safer, and way more fun. So, ditch the stress
-            of hostel hunting and explore the world with confidence. With
-            Duplex, your perfect college crashpad is just a few clicks away!
+            <br />
+            <strong style={{ fontSize: "1.6rem" }}>
+              <code>
+                Duplex isn&apos;t just about finding a place to sleep; it&apos;s
+                about finding a haven for your college adventures. We&apos;re
+                more than a booking app; we&apos;re a community of students,
+                travelers, and explorers, dedicated to making your college
+                experience smoother, safer, and way more fun. So, ditch the
+                stress of hostel hunting and explore the world with confidence.
+                With Duplex, your perfect college crashpad is just a few clicks
+                away!
+              </code>
+            </strong>
           </div>
         </div>
       </div>

@@ -17,6 +17,8 @@ import { SideBar, DisplayHostels, ComprehensiveSearch } from "../../components";
 import { IoCall } from "react-icons/io5";
 import { MessageCircleMore } from "lucide-react";
 
+// import formattedDtata from "../MapWorks/hostelMap/data/hostelsDetailData";
+
 import NavBar from "../../layouts/NavBar";
 import useInViewport from "../../hooks/useInViewport";
 import formattedDataForMap from "../../pages/MapWorks/hostelMap/data/hostelLocations";
@@ -563,12 +565,12 @@ const Home = () => {
                 handleCardMomo={handleCardMomo}
               />
               <div className="contacts-btns">
-                <button title="Call available hostels managers">
-                  <IoCall />
-                </button>
-                <button title="Real time chat with hostels managers">
-                  <MessageCircleMore />
-                </button>
+                <Link title="Call available hostels managers" to="/contact">
+                  <IoCall size={50} />
+                </Link>
+                <Link title="Real time chat with hostels managers" to="/chat">
+                  <MessageCircleMore size={50} />
+                </Link>
               </div>
             </div>
             {!isInView && (
@@ -579,12 +581,12 @@ const Home = () => {
                   handleCardMomo={handleCardMomo}
                 />
                 <div className="contacts-btns">
-                  <button title="Call available hostels managers">
-                    <IoCall />
-                  </button>
-                  <button title="Real time chat with hostels managers">
-                    <MessageCircleMore />
-                  </button>
+                  <Link title="Call available hostels managers" to="/contacts">
+                    <IoCall size={50} />
+                  </Link>
+                  <Link title="Real time chat with hostels managers" to="/chat">
+                    <MessageCircleMore size={50} />
+                  </Link>
                 </div>
               </div>
             )}

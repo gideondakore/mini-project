@@ -254,7 +254,7 @@ const Register = () => {
               </div>
               <div id="signup">
                 <p>Already have an account?</p>
-                <a href="/register.html">sign in</a>
+                <a href="http://localhost:3000/signin">sign in</a>
               </div>
             </footer>
           </form>

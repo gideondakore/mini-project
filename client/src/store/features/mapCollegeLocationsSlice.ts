@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CollegeLocations {
-  position: google.maps.LatLngLiteral;
+  // position: google.maps.LatLngLiteral;
+  position: { lat: number; lng: number };
 }
 
 const initialState = {

@@ -6,9 +6,10 @@ import {
   UserInfo,
   SignIn,
   About,
-  Contact,
+  Contacts,
   HostelDetails,
   PayStack,
+  Chat,
 } from "./pages";
 import MapContainer from "./pages/MapWorks/MapContainer";
 
@@ -29,9 +30,10 @@ const App = () => {
       </Route>
 
       <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
+      <Route path="/contact" element={<Contacts />} />
       <Route path="/hostel-details" element={<HostelDetails />} />
       <Route path="payment" element={<PayStack />} />
+      <Route path="chat" element={<Chat />} />
     </Routes>
   );
 };

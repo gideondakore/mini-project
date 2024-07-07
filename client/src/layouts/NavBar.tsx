@@ -20,14 +20,15 @@ const NavBar = () => {
     isAuthenticated()
       .then((authenticated) => {
         // console.log("Is Authenticated in NaveBar: ", authenticated);
+        // console.log;
         setAuth(authenticated);
       })
       .catch((error) => console.error("Authentication check failed:", error));
 
     if (auth) {
       authUserProfile()
-        .then((picUrl) => {
-          setPic(picUrl?.picture);
+        .then((user) => {
+          setPic(user.user?.picture);
         })
         .catch((error) => console.error(`Error fetching pic: ${error}`));
     }

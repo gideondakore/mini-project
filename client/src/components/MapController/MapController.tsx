@@ -112,16 +112,20 @@ const MapController = () => {
       <h2 style={{ marginTop: "1rem" }}>Mode of Transport:</h2>
       <select
         value={mapTravelMode}
-        onChange={({ target }) =>
+        onChange={({ target }) => {
+          console.log(target.value);
           dispatch(
             setTravelModes({
-              travelMode: target?.value as google.maps.TravelMode,
+              travelMode:
+                target?.value.trim().toLowerCase() === "driving"
+                  ? "DRIVING"
+                  : "WALKING",
             })
-          )
-        }
+          );
+        }}
       >
-        <option value={google.maps.TravelMode.DRIVING}>Driving</option>
-        <option value={google.maps.TravelMode.WALKING}>Walking</option>
+        <option value="DRIVING">Driving</option>
+        <option value="WALKING">Walking</option>
       </select>
 
       <h2 style={{ marginTop: "2rem" }}>Origin - Destination:</h2>

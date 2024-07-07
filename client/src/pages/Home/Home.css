@@ -62,17 +62,23 @@
 .contacts-btns {
   display: flex;
   gap: 1rem;
+  gap: 2rem;
 }
 
-.contacts-btns button {
+.contacts-btns a {
   color: var(--fontColor);
   font-family: var(--fontFamily);
   font-size: 1.2rem;
   font-weight: 600;
-  height: 4rem;
-  width: 4rem;
+  /* height: 4rem; */
+  /* width: 4rem; */
   border-radius: 50%;
   cursor: pointer;
+}
+
+.contacts-btns a:hover {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background-color: var(--secondary);
 }
 
 .right {

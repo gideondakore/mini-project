@@ -14,6 +14,8 @@ import jwt from "jsonwebtoken";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import axios from "axios";
+// import { Server } from "socket.io";
+// import { createServer } from "http";
 
 dotenv.config();
 
@@ -191,7 +193,7 @@ app.get("/user-profile", async (req: Request, res: Response) => {
     const { verify_access_token_data } = userProfile!;
     const { email } = verify_access_token_data;
     const user = await User.findOne({ email: email }).select("-password");
-    res.status(200).json({ picture: user?.picture });
+    res.status(200).json({ user: user });
   } catch (error) {
     console.error("Error occur in user-profile response handler");
   }
@@ -359,30 +361,27 @@ app.get("/maps-api", async (req: Request, res: Response) => {
   }
 });
 
-// app.get("/maps-api", async (req: Request, res: Response) => {
-//   try {
-//     const response = await fetch(
-//       `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
+//CHATENGINE.IO
+app.post("/authenticate", async (req, res) => {
+  const { username } = req.body;
+  try {
+    const r = await axios.put(
+      "https://api.chatengine.io/users/",
+      {
+        username: username,
+        secret: username,
+      },
+      {
+        headers: { "private-key": process.env.CHAT_ENGINE_IO_SECRET },
+      }
+    );
 
-//     if (!response.ok) {
-//       res.status(500).send("Network error fetching the Google Maps API");
-//     }
-//     // console.log(response);
-
-//     const data = await response.;
-//     console.log("DATA: ", data);
-//     res.setHeader("Content-Type", "text/javascript");
-//     res.send(data);
-//   } catch (error) {
-//     res.status(500).send("Error fetching the Google Maps API");
-//   }
-// });
+    return res.status(r.status).json(r.data);
+  } catch (error) {
+    console.log(error);
+    // return res.status(error?.response.status).json(error?.response.data);
+  }
+});
 
 const PORT = process.env.PORT || 5500;
 

@@ -3,9 +3,10 @@ import Register from "./Register/Register";
 import Home from "./Home/Home";
 import SignIn from "./SignIn/SignIn";
 import About from "./About/About";
-import Contact from "./Contact/Contact";
+import Contacts from "./Contact/Contacts";
 import HostelDetails from "./HostelDetails/HostelDetails";
 import PayStack from "./PayStack/PayStack";
+import Chat from "./Chat/Chat";
 
 export {
   UserInfo,
@@ -13,7 +14,8 @@ export {
   Home,
   SignIn,
   About,
-  Contact,
+  Contacts,
   HostelDetails,
   PayStack,
+  Chat,
 };
