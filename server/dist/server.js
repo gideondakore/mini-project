@@ -51,6 +51,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const axios_1 = __importDefault(require("axios"));
+// import { Server } from "socket.io";
+// import { createServer } from "http";
 dotenv.config();
 const corsOptions = {
     origin: "http://localhost:3000",
@@ -180,7 +182,7 @@ app.get("/user-profile", (req, res) => __awaiter(void 0, void 0, void 0, functio
         const { verify_access_token_data } = userProfile;
         const { email } = verify_access_token_data;
         const user = yield user_model_1.default.findOne({ email: email }).select("-password");
-        res.status(200).json({ picture: user === null || user === void 0 ? void 0 : user.picture });
+        res.status(200).json({ user: user });
     }
     catch (error) {
         console.error("Error occur in user-profile response handler");
@@ -318,32 +320,32 @@ const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 app.get("/maps-api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(`https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`);
+        // console.log("Response from Map API: ", response);
+        res.setHeader("Content-Type", "text/javascript");
         res.send(response.data);
     }
     catch (error) {
+        console.error("Error fetching the Google Maps API:", error);
         res.status(500).send("Error fetching the Google Maps API");
     }
 }));
-// app.get("/maps-api", async (req: Request, res: Response) => {
-//   try {
-//     const response = await fetch(
-//       `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`,
-//       // {
-//       //   headers: {
-//       //     "Content-Type": "application/json",
-//       //   },
-//       // }
-//     );
-//     if (!response.ok) {
-//       res.status(500).send("Network error fetching the Google Maps API");
-//     }
-//     // const data = await response.json();
-//     // console.log(data);
-//     res.send(response);
-//   } catch (error) {
-//     res.status(500).send("Error fetching the Google Maps API");
-//   }
-// });
+//CHATENGINE.IO
+app.post("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { username } = req.body;
+    try {
+        const r = yield axios_1.default.put("https://api.chatengine.io/users/", {
+            username: username,
+            secret: username,
+        }, {
+            headers: { "private-key": process.env.CHAT_ENGINE_IO_SECRET },
+        });
+        return res.status(r.status).json(r.data);
+    }
+    catch (error) {
+        console.log(error);
+        // return res.status(error?.response.status).json(error?.response.data);
+    }
+}));
 const PORT = process.env.PORT || 5500;
 const start = (port) => {
     app.listen(port, () => {

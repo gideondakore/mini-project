@@ -5,11 +5,11 @@ import { ToastContainer, toast } from "react-toastify";
 const PayStack = () => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY as string;
 
-  const [email, setEmail] = useState("armstrongspycon27@gmail.com");
-  const [firstname, setFirstName] = useState("gideon");
-  const [surname, setSurname] = useState("dakore");
+  const [email, setEmail] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [surname, setSurname] = useState("");
   const [phone, setPhone] = useState("");
-  const [amount, setAmount] = useState("5");
+  const [amount, setAmount] = useState("");
 
   const resetForm = () => {
     setEmail("");
