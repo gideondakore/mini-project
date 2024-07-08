@@ -19,8 +19,6 @@ const NavBar = () => {
   useEffect(() => {
     isAuthenticated()
       .then((authenticated) => {
-        // console.log("Is Authenticated in NaveBar: ", authenticated);
-        // console.log;
         setAuth(authenticated);
       })
       .catch((error) => console.error("Authentication check failed:", error));
@@ -34,6 +32,11 @@ const NavBar = () => {
     }
   });
 
+  useEffect(() => {
+    if (!auth) {
+      window.localStorage.removeItem("chat_user_name");
+    }
+  });
   return (
     <>
       <div className="nav-bar">

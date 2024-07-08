@@ -2,6 +2,7 @@ import React from "react";
 import "./About.css";
 import NavBar from "../../components/NavBar/NavBar";
 import { Plus } from "lucide-react";
+import Footer from "../../components/Footer/Footer";
 
 const About = () => {
   return (
@@ -271,6 +272,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
