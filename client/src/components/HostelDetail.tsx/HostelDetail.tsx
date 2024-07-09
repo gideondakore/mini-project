@@ -44,12 +44,13 @@ const HostelDetail: React.FC = () => {
     const rightArrow = document.querySelector(
       ".slider-controler .swiper-button-next"
     );
+
     const handleOnload = () => {
       swiperSlides.forEach((slide) => {
         (slide as HTMLElement).style.width = "auto";
       });
 
-      console.log((swiperPagination as HTMLElement).style);
+      // console.log((swiperPagination as HTMLElement).style);
       // swiperPagination.forEach((swiperPage) => {
       if (swiperPagination instanceof HTMLElement) {
         swiperPagination.style.setProperty("position", "relative");
@@ -65,7 +66,7 @@ const HostelDetail: React.FC = () => {
 
     if (leftArrow instanceof HTMLElement && rightArrow instanceof HTMLElement) {
       leftArrow.style.setProperty("left", "40%");
-      leftArrow.style.setProperty("right", "60%", "important");
+      rightArrow.style.setProperty("right", "60%");
     }
     window.addEventListener("DOMContentLoaded", handleOnload);
 
