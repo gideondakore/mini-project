@@ -127,7 +127,9 @@ const Register = () => {
         className="mainContainer"
         style={isLoading ? { opacity: "0.5" } : { opacity: "1" }}
       >
-        {errorMsg && (errorMsg as ReactNode[]).map((err) => toast(err))}
+        {errorMsg &&
+          Array.isArray(errorMsg) &&
+          (errorMsg as ReactNode[]).map((err) => toast(err))}
         <ToastContainer />
         <div className="form_logo">
           <img width="50px" height="50px" src={loginLogo} alt="login" />

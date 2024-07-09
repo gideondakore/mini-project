@@ -117,12 +117,13 @@ app.get("/google/callback", async (req: Request, res: Response) => {
       sameSite: "none",
     });
 
-    res.redirect(FRONTEND_URL);
+    return res.redirect(`${FRONTEND_URL}`);
   } catch (error) {
     console.error("ErroreExchanging authentication code for token: ", error);
     return res.status(500).send("Authentication failed");
   }
 });
+////////////////////////////////////////////////
 
 app.get("/api/test", async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refresh_token;
@@ -336,7 +337,11 @@ app.post("/signin", async (req: Request, res: Response) => {
         .json({ message: errorList, success: false, status: 500 });
     } else {
       res.status(404).json({
-        message: ["Ooops!, unable to sign you in"],
+        message: [
+          "Ooops!, unable to sign you in",
+          "This error can also occur when you have already registered using gmail and now you are tring to use email and password.",
+          "May be try using your gmail to signin",
+        ],
         success: false,
         status: 500,
       });

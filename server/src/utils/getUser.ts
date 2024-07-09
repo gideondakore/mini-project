@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+// import express, { Request, Response } from "express";
 import User from "../models/user.model";
 
 const getUser = async (email: string, name: string) => {
@@ -6,7 +6,7 @@ const getUser = async (email: string, name: string) => {
     const user = await User.findOne({ email }).select("-password");
     if (user) {
       return {
-        message: `User with the same name ${name} and email '${email}' exist`,
+        message: [`User with the same name ${name} and email '${email}' exist`],
         success: false,
         user: user,
       };

@@ -23,6 +23,8 @@ const SignIn = () => {
             "credential_refresh_token",
             refresh_token
           );
+
+          console.log("Error Msg: ", errorMsg);
           errorMsg.map((err) => toast(err));
           window.location.href = "http://localhost:3000";
         } else {

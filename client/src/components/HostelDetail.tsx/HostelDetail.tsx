@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import { useSelector } from "react-redux";
@@ -34,6 +34,43 @@ const HostelDetail: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    const swiperSlides = document.querySelectorAll(".swiper-slide");
+    const swiper3DSlidePadding = document.querySelectorAll(".swiper-container");
+    const swiperPagination = document.querySelector(
+      "swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination"
+    );
+    const leftArrow = document.querySelector(".slider-controler .slider-arrow");
+    const rightArrow = document.querySelector(
+      ".slider-controler .swiper-button-next"
+    );
+    const handleOnload = () => {
+      swiperSlides.forEach((slide) => {
+        (slide as HTMLElement).style.width = "auto";
+      });
+
+      console.log((swiperPagination as HTMLElement).style);
+      // swiperPagination.forEach((swiperPage) => {
+      if (swiperPagination instanceof HTMLElement) {
+        swiperPagination.style.setProperty("position", "relative");
+      }
+      // });
+
+      swiper3DSlidePadding.forEach((slide) => {
+        if (slide instanceof HTMLElement) {
+          slide.style.setProperty("padding", "");
+        }
+      });
+    };
+
+    if (leftArrow instanceof HTMLElement && rightArrow instanceof HTMLElement) {
+      leftArrow.style.setProperty("left", "40%");
+      leftArrow.style.setProperty("right", "60%", "important");
+    }
+    window.addEventListener("DOMContentLoaded", handleOnload);
+
+    return () => window.removeEventListener("DOMContentLoaded", handleOnload);
+  }, []);
   const hostelDetailData = useSelector(
     (state: RootState) => state.hostelsDetailData.hostelsDetailData
   );

@@ -120,6 +120,23 @@ const Home = () => {
         return Remarks.at(1);
     }
   };
+
+  useEffect(() => {
+    const handleLoad = () => {
+      const userAlreadyRegisteredMsg = searchParams.get("register_msg");
+      const interValForError = setTimeout(() => {
+        if (userAlreadyRegisteredMsg) {
+          alert(userAlreadyRegisteredMsg);
+        }
+      }, 100);
+
+      return () => clearTimeout(interValForError);
+    };
+
+    window.addEventListener("load", handleLoad);
+
+    return () => window.removeEventListener("load", handleLoad);
+  }, [searchParams]);
   useEffect(() => {
     isAuthenticated()
       .then((authenticated) => {
@@ -523,6 +540,7 @@ const Home = () => {
     <>
       <HostelSearchInputContext state={{ searchInput, setSearchInput }}>
         <main className="main-wrapper">
+          <ToastContainer />
           <section className="left">
             <div className="site-icon--wrapper">
               <img
