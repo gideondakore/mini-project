@@ -66,8 +66,8 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
                 credential_refresh_token !== "null") {
                 try {
                     let decodeStateAcess = false;
-                    let decodeStateRefresh = false;
-                    jsonwebtoken_1.default.verify(credential_access_token === null || credential_access_token === void 0 ? void 0 : credential_access_token.trim(), process.env.JWT_ACCESS_TOKEN_SECRET, (error, decoded) => {
+                    // let decodeStateRefresh: boolean = false;
+                    jsonwebtoken_1.default.verify(credential_access_token === null || credential_access_token === void 0 ? void 0 : credential_access_token.trim(), process.env.JWT_ACCESS_TOKEN_SECRET, (error) => {
                         if (error) {
                             return;
                         }
@@ -106,7 +106,7 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
                             const new_refresh_token = jsonwebtoken_1.default.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
                             req.session.refreshToken = new_refresh_token;
                             req.session.accessToken = new_access_token;
-                            decodeStateRefresh = true;
+                            // decodeStateRefresh = true;
                             return;
                         });
                         return res.status(200).json({

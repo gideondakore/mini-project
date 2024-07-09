@@ -55,7 +55,7 @@ const axios_1 = __importDefault(require("axios"));
 // import { createServer } from "http";
 dotenv.config();
 const corsOptions = {
-    origin: "http://localhost:3000",
+    origin: `${process.env.LOCAL_HOST_CLIENT}`,
     methods: "GET,POST,PUT,PATCH,DELETE,HEAD",
     credentials: true,
     optionsSuccessStatus: 200,
@@ -82,7 +82,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL;
 const GOOGLE_TOKEN_INFO_URL = process.env.GOOGLE_TOKEN_INFO_URL;
-const FRONTEND_URL = "http://localhost:3000";
+const FRONTEND_URL = `${process.env.LOCAL_HOST_CLIENT}`;
 //Google  Oauth call back url
 app.get("/google/callback", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const code = req.query.code;
@@ -90,7 +90,7 @@ app.get("/google/callback", (req, res) => __awaiter(void 0, void 0, void 0, func
         code,
         client_id: GOOGLE_CLIENT_ID,
         client_secret: GOOGLE_CLIENT_SECRET,
-        redirect_uri: `http://localhost:8000/google/callback`,
+        redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
         grant_type: "authorization_code",
     };
     try {
@@ -118,13 +118,14 @@ app.get("/google/callback", (req, res) => __awaiter(void 0, void 0, void 0, func
             secure: true,
             sameSite: "none",
         });
-        res.redirect(FRONTEND_URL);
+        return res.redirect(`${FRONTEND_URL}`);
     }
     catch (error) {
         console.error("ErroreExchanging authentication code for token: ", error);
         return res.status(500).send("Authentication failed");
     }
 }));
+////////////////////////////////////////////////
 app.get("/api/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshToken = req.cookies.refresh_token;
     const accessToken = req.cookies.access_token;
@@ -309,7 +310,11 @@ app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         else {
             res.status(404).json({
-                message: ["Ooops!, unable to sign you in"],
+                message: [
+                    "Ooops!, unable to sign you in",
+                    "This error can also occur when you have already registered using gmail and now you are tring to use email and password.",
+                    "May be try using your gmail to signin",
+                ],
                 success: false,
                 status: 500,
             });

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const checkPasswordValidity = (passWord) => {
     // const validatePasssword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
-    let errors = [];
+    const errors = [];
     const isNonWhiteSpace = /^\S*$/;
     if (!isNonWhiteSpace.test(passWord)) {
         errors.push("Password must not contain spaces.");
