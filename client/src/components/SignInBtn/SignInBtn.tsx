@@ -3,7 +3,7 @@ import { useStyles } from "../../context/NavBarStyleContext";
 
 const SignInBtn = () => {
   const handleClick = () => {
-    const registerUrl = "http://localhost:3000/signin";
+    const registerUrl = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/signin`;
     window.location.href = registerUrl;
   };
   const styles = useStyles();

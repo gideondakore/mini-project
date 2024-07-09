@@ -3,7 +3,7 @@ import { useStyles } from "../../context/NavBarStyleContext";
 
 const RegisterBtn = () => {
   const handleRegister = () => {
-    const registerUrl = "http://localhost:3000/register";
+    const registerUrl = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/register`;
     window.location.href = registerUrl;
   };
   const styles = useStyles();

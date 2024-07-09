@@ -5,7 +5,7 @@ const aouthLogin = async () => {
   const GOOGLE_OAUTH_URL = process.env.REACT_APP_GOOGLE_OAUTH_URL;
   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-  const GOOGLE_CALLBACK_URI = `http://localhost:8000/google/callback`;
+  const GOOGLE_CALLBACK_URI = `${process.env.REACT_APP_LOCAL_HOST_SERVER}/google/callback`;
   const GOOGLE_OAUTH_SCOPES = [
     "https%3A//www.googleapis.com/auth/userinfo.email",
     "https%3A//www.googleapis.com/auth/userinfo.profile",
@@ -26,7 +26,7 @@ const isAuthenticated = async () => {
 
   try {
     const response = await fetch(
-      `http://localhost:8000/authentication-status`,
+      `${process.env.REACT_APP_LOCAL_HOST_SERVER}/authentication-status`,
       {
         // headers: new Headers({
         //   "Content-Type": "application/json",
@@ -63,13 +63,16 @@ const isAuthenticated = async () => {
 
 const signOut = async () => {
   try {
-    const response = await fetch(`http://localhost:8000/signout`, {
-      headers: new Headers({
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "12345",
-      }),
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_LOCAL_HOST_SERVER}/signout`,
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "12345",
+        }),
+        credentials: "include",
+      }
+    );
 
     const { success } = await response.json();
 
@@ -86,15 +89,18 @@ const signOut = async () => {
 
 const signIn = async (body: { email: string; password: string }) => {
   try {
-    const response = await fetch("http://localhost:8000/signin", {
-      method: "POST",
-      headers: new Headers({
-        "Content-Type": "application/json",
-        "ngrok-skip-browswer-warning": "12345",
-      }),
-      credentials: "include",
-      body: JSON.stringify(body),
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_LOCAL_HOST_SERVER}/signin`,
+      {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+          "ngrok-skip-browswer-warning": "12345",
+        }),
+        credentials: "include",
+        body: JSON.stringify(body),
+      }
+    );
 
     const data = await response.json();
     return data;
@@ -104,13 +110,16 @@ const signIn = async (body: { email: string; password: string }) => {
 };
 const authUserProfile = async () => {
   try {
-    const response = await fetch("http://localhost:8000/user-profile", {
-      headers: new Headers({
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "12345",
-      }),
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_LOCAL_HOST_SERVER}/user-profile`,
+      {
+        headers: new Headers({
+          "Content-Type": "application/json",
+          // "ngrok-skip-browser-warning": "12345",
+        }),
+        credentials: "include",
+      }
+    );
 
     if (!response?.ok) {
       console.error("Error fetching user profile");

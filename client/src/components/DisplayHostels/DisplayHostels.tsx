@@ -140,7 +140,7 @@ const DisplayHostels = ({
       console.error("Hostel not found");
     }
 
-    window.location.href = "http://localhost:3000/hostel-details";
+    window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/hostel-details`;
   };
 
   return (

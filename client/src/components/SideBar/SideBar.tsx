@@ -278,7 +278,10 @@ const SideBar = ({
         </div>
       </div>
       <div style={{ paddingLeft: "2rem" }}>
-        <Link to="http://localhost:3000/about" className="about">
+        <Link
+          to={`${process.env.REACT_APP_LOCAL_HOST_CLIENT}/about`}
+          className="about"
+        >
           About
         </Link>
       </div>

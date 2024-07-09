@@ -29,7 +29,7 @@ const Register = () => {
       setIsLoading(true);
       try {
         const response = await fetch(
-          "http://localhost:8000/credential-register",
+          `${process.env.REACT_APP_LOCAL_HOST_SERVER}/credential-register`,
           {
             method: "POST",
             headers: new Headers({
@@ -72,7 +72,7 @@ const Register = () => {
           return;
         }
 
-        window.location.href = "http://localhost:3000";
+        window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`;
       } catch (error) {
         throw new Error(`Error: ${error}`);
       } finally {
@@ -256,7 +256,9 @@ const Register = () => {
               </div>
               <div id="signup">
                 <p>Already have an account?</p>
-                <a href="http://localhost:3000/signin">sign in</a>
+                <a href={`${process.env.REACT_APP_LOCAL_HOST_CLIENT}/signin`}>
+                  sign in
+                </a>
               </div>
             </footer>
           </form>

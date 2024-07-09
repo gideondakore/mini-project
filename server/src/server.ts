@@ -27,7 +27,7 @@ interface CorsOptions {
 }
 
 const corsOptions: CorsOptions = {
-  origin: "http://localhost:3000",
+  origin: `${process.env.LOCAL_HOST_CLIENT}`,
   methods: "GET,POST,PUT,PATCH,DELETE,HEAD",
   credentials: true,
   optionsSuccessStatus: 200,
@@ -59,7 +59,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
 const GOOGLE_TOKEN_INFO_URL = process.env.GOOGLE_TOKEN_INFO_URL as string;
-const FRONTEND_URL = "http://localhost:3000";
+const FRONTEND_URL = `${process.env.LOCAL_HOST_CLIENT}`;
 
 //Google  Oauth call back url
 app.get("/google/callback", async (req: Request, res: Response) => {
@@ -77,7 +77,7 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     code,
     client_id: GOOGLE_CLIENT_ID as string,
     client_secret: GOOGLE_CLIENT_SECRET as string,
-    redirect_uri: `http://localhost:8000/google/callback`,
+    redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
     grant_type: "authorization_code",
   };
 

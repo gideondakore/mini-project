@@ -1,6 +1,6 @@
 const checkPasswordValidity = (passWord: string): string[] => {
   // const validatePasssword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
-  let errors: string[] = [];
+  const errors: string[] = [];
 
   const isNonWhiteSpace = /^\S*$/;
   if (!isNonWhiteSpace.test(passWord)) {

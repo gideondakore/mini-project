@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import verifyAccessToken from "./verifyAccessToken";
 import tokenRefresh from "./tokenRefresh";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -67,12 +67,12 @@ const cookieVerificationAndRefresh = async (
       ) {
         try {
           let decodeStateAcess: boolean = false;
-          let decodeStateRefresh: boolean = false;
+          // let decodeStateRefresh: boolean = false;
 
           jwt.verify(
             credential_access_token?.trim() as string,
             process.env.JWT_ACCESS_TOKEN_SECRET as string,
-            (error, decoded) => {
+            (error) => {
               if (error) {
                 return;
               }
@@ -128,7 +128,7 @@ const cookieVerificationAndRefresh = async (
                 req.session.refreshToken = new_refresh_token;
                 req.session.accessToken = new_access_token;
 
-                decodeStateRefresh = true;
+                // decodeStateRefresh = true;
                 return;
               }
             );

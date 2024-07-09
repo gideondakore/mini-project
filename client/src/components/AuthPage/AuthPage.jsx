@@ -12,7 +12,7 @@ const AuthPage = (props) => {
     e.preventDefault();
     const { value } = e.target[0];
     axios
-      .post("http://localhost:8000/authenticate", {
+      .post(`${process.env.REACT_APP_LOCAL_HOST_SERVER}/authenticate`, {
         username: value.toLowerCase(),
       })
       .then((r) => props.onAuth({ ...r.data, secret: value }))

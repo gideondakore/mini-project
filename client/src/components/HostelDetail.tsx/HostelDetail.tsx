@@ -308,7 +308,7 @@ const HostelDetail: React.FC = () => {
           <button
             type="button"
             onClick={() =>
-              (window.location.href = "http://localhost:3000/payment")
+              (window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/payment`)
             }
           >
             Book your bed now

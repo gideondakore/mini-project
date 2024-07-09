@@ -26,7 +26,7 @@ const SignIn = () => {
 
           console.log("Error Msg: ", errorMsg);
           errorMsg.map((err) => toast(err));
-          window.location.href = "http://localhost:3000";
+          window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`;
         } else {
           setErrorMsg(message);
           errorMsg.map((err) => toast(err));

@@ -42,7 +42,9 @@ const NavBar = () => {
         <StylesProvider styles={styles}>
           <div
             className="site-icon--wrapper"
-            onClick={() => (window.location.href = "http://localhost:3000")}
+            onClick={() =>
+              (window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`)
+            }
             style={{ cursor: "pointer" }}
           >
             <img

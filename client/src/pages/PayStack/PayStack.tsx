@@ -32,7 +32,7 @@ const PayStack = () => {
       ],
       name: firstname + " " + surname,
       email: email,
-      cancel_action: "http://localhost:3000/hostel-details",
+      cancel_action: `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/hostel-details`,
       payment_medium: "site",
     },
     publicKey,
@@ -47,14 +47,12 @@ const PayStack = () => {
         }
       );
       resetForm();
-      // window.location.href = "http://localhost:3000";
     },
     onClose: () => {
       toast("Transaction not complete!", {
         type: "error",
         theme: "dark",
       });
-      // window.location.href = "http://localhost:3000/hostel-details";
     },
   };
 
