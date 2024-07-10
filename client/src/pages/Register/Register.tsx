@@ -6,6 +6,7 @@ import { aouthLogin } from "../../services/api/authService";
 import checkPasswordValidity from "../../utils/Validations/passwordValidity";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import generateUsername from "../../utils/generateUsername";
 
 const Register = () => {
   const [oAuthType, setOauthType] = useState<string>("");
@@ -57,6 +58,9 @@ const Register = () => {
           credential_access_token,
           credential_refresh_token,
         } = await response.json();
+
+        const userName = generateUsername(fullname);
+        window.localStorage.setItem("chat_user_name", userName);
 
         window.localStorage.setItem(
           "credential_access_token",
