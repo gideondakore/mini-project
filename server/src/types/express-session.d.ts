@@ -10,6 +10,13 @@ declare module "express-session" {
     };
     refreshToken: string;
     accessToken: string;
+    user_email_verification_data: {
+      id?: string;
+      name: string;
+      email: string;
+      password: string;
+      birth_day?: string;
+    };
   }
 }
 

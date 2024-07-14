@@ -3,10 +3,15 @@ import "./AuthPage.css";
 import axios from "axios";
 import { isAuthenticated } from "../../services/api/authService";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const AuthPage = (props) => {
   const [userName, setUserName] = useState("");
   const [auth, setAuth] = useState(false);
+
+  const chat_user_name = useSelector(
+    (state) => state.chatUserName.chat_user_name
+  );
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -20,9 +25,8 @@ const AuthPage = (props) => {
   };
 
   useEffect(() => {
-    const storedUserName = window.localStorage.getItem("chat_user_name");
-    setUserName(storedUserName);
-  }, [window.localStorage]);
+    setUserName(chat_user_name);
+  }, [chat_user_name]);
 
   useEffect(() => {
     isAuthenticated()

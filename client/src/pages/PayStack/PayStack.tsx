@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PaystackButton } from "react-paystack";
 import "./PayStack.css";
 import { ToastContainer, toast } from "react-toastify";
+import { isAuthenticated } from "../../services/api/authService";
 const PayStack = () => {
   const publicKey = process.env.REACT_APP_PAYSTACK_PUBLIC_KEY as string;
 
@@ -56,6 +57,21 @@ const PayStack = () => {
     },
   };
 
+  useEffect(() => {
+    const handleDOMContentLoaded = () => {
+      isAuthenticated()
+        .then((authenticated) => {
+          !authenticated &&
+            (window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}?register_msg=You are almost there. Sign in to make payment`);
+        })
+        .catch((error) => console.error("Authentication check failed:", error));
+    };
+
+    window.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
+
+    return () =>
+      window.removeEventListener("DOMContentLoaded", handleDOMContentLoaded);
+  }, []);
   const isFormValid = email && firstname && surname && phone && amount;
 
   return (

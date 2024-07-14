@@ -5,7 +5,7 @@ import mongoUserDbConnect from "../utils/mongoUserDbConnect";
 interface IUser extends Document {
   name: string;
   email: string;
-  password?: string;
+  password: string;
   birthday?: string;
   picture?: string;
   generateToken: () => string;
@@ -15,7 +15,6 @@ const UserSchema = new mongoose.Schema<IUser>(
   {
     name: {
       type: String,
-      unique: true,
       trim: true,
       required: [true, "Please provide a name"],
       minlength: 3,
@@ -41,7 +40,6 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       required: false,
     },
-
     picture: {
       type: String,
       required: false,

@@ -14,7 +14,7 @@ import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-const HostelDetail: React.FC = () => {
+const HostelDetail = () => {
   const Remarks = ["Fair", "Good", "Very good", "Excellent", "Superb"] as const;
 
   const remarks = (index: number) => {

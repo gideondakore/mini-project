@@ -2,11 +2,16 @@ import React, { ReactNode, useEffect, useState } from "react";
 import loginLogo from "../../assets/images/login-svg.svg";
 import gLogo from "../../assets/images/google-svg.svg";
 import "./Register.css";
-import { aouthLogin } from "../../services/api/authService";
+import { aouthLogin, isAuthenticated } from "../../services/api/authService";
 import checkPasswordValidity from "../../utils/Validations/passwordValidity";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import generateUsername from "../../utils/generateUsername";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
+import { setChatUSerName } from "../../store/features/chatUserNameSlice";
+import { setRememberUser } from "../../store/features/rememberUserInputSlice";
+import { useSelector } from "react-redux";
 
 const Register = () => {
   const [oAuthType, setOauthType] = useState<string>("");
@@ -16,12 +21,18 @@ const Register = () => {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [validInput, setValidInput] = useState<boolean>(false);
+  const [validEmailInput, setValidEmailInput] = useState<boolean>(false);
+  const [validNameInput, setValidNameInput] = useState<boolean>(false);
+
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<Array<string | undefined>>([]);
   const [success, setSuccess] = useState<boolean>(false);
 
+  const dispatch = useDispatch<AppDispatch>();
+  const rememberUserInput = useSelector(
+    (state: RootState) => state.rememberUserInput.remember_user
+  );
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (errors.length > 0) {
@@ -29,14 +40,33 @@ const Register = () => {
     } else {
       setIsLoading(true);
       try {
+        // const response = await fetch(
+        //   `${process.env.REACT_APP_LOCAL_HOST_SERVER}/credential-register`,
+        //   {
+        //     method: "POST",
+        //     headers: new Headers({
+        //       "Content-Type": "application/json",
+        //       "ngrok-skip-browser-warning": "12345",
+        //     }),
+        //     body: JSON.stringify({
+        //       fullname,
+        //       email,
+        //       birthDate,
+        //       password,
+        //       confirmPassword,
+        //     }),
+        //     credentials: "include",
+        //   }
+        // );
+
+        //////////////////////////////////////////
         const response = await fetch(
-          `${process.env.REACT_APP_LOCAL_HOST_SERVER}/credential-register`,
+          "http://localhost:8000/api/send-verification-email",
           {
-            method: "POST",
-            headers: new Headers({
+            headers: {
               "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "12345",
-            }),
+            },
+            method: "POST",
             body: JSON.stringify({
               fullname,
               email,
@@ -44,41 +74,87 @@ const Register = () => {
               password,
               confirmPassword,
             }),
-            credentials: "include",
           }
         );
 
-        if (!response) {
-          throw new Error("Failed to submit data, please try again!");
+        if (!response.ok) {
+          console.log("Error sending request to email");
+          toast("Error sending request to email");
+          return;
         }
 
-        const {
-          message,
-          success,
-          credential_access_token,
-          credential_refresh_token,
-        } = await response.json();
+        const { message, success } = await response.json();
+        if (success) {
+          // console.log(message, " : ", success);
+          // toast(message.join(" "));
+          if (isChecked) {
+            const rememberUserInputObj = {
+              name: fullname,
+              email: email,
+              birth_day: birthDate,
+              password: password,
+            };
+            dispatch(setRememberUser({ remember_user: rememberUserInputObj }));
+          }
 
-        const userName = generateUsername(fullname);
-        window.localStorage.setItem("chat_user_name", userName);
+          const userName = generateUsername(fullname);
+          dispatch(setChatUSerName(userName));
 
-        window.localStorage.setItem(
-          "credential_access_token",
-          credential_access_token
-        );
-        window.localStorage.setItem(
-          "credential_refresh_token",
-          credential_refresh_token
-        );
-        if (!success) {
+          window.location.href = "http://localhost:3000/email-sent";
+          return;
+        } else {
           setErrorMsg(message);
           setSuccess(success);
           return;
         }
 
-        window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`;
+        // toast(message.join(" "));
+
+        //////////////////////
+        // if (!response.ok) {
+        //   // throw new Error("Failed to submit data, please try again!");
+        //   setErrorMsg(["Failed to submit data, please try again!"]);
+        // }
+
+        ///NOT//
+        // if (isChecked) {
+        //   const rememberUserInputObj = {
+        //     name: fullname,
+        //     email: email,
+        //     birth_day: birthDate,
+        //     password: password,
+        //   };
+        //   dispatch(setRememberUser({ remember_user: rememberUserInputObj }));
+        // }
+        ////////////////////
+        // const {
+        //   message,
+        //   success,
+        //   credential_access_token,
+        //   credential_refresh_token,
+        // } = await response.json();
+
+        // if (!success) {
+        //   setErrorMsg(message);
+        //   setSuccess(success);
+        //   return;
+        // }
+
+        ////////////////////////////////////////////////////
+        // const userName = generateUsername(fullname);
+        // dispatch(setChatUSerName(userName));
+
+        // window.localStorage.setItem(
+        //   "credential_access_token",
+        //   credential_access_token
+        // );
+        // window.localStorage.setItem(
+        //   "credential_refresh_token",
+        //   credential_refresh_token
+        // );
       } catch (error) {
-        throw new Error(`Error: ${error}`);
+        toast("Ooops! An error occur. Try again!");
+        // throw new Error(`Error: ${error}`);
       } finally {
         setIsLoading(false);
         if (success) {
@@ -86,44 +162,106 @@ const Register = () => {
           setEmail("");
           setBirthDate("");
           setPassword("");
+          // window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`;
         }
       }
     }
   };
+
   useEffect(() => {
     if (oAuthType === "google") {
       aouthLogin();
     }
 
-    const msgStr: string = `Invalid email`;
-    const confirmPasswordFail = "Password must be the same";
+    const validateName = () => {
+      const validNameRegex =
+        /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
+      if (validNameRegex.test(fullname)) {
+        setValidNameInput(true);
+      } else {
+        setValidNameInput(false);
+      }
+    };
 
-    const emailValidity = () => {
+    const validateEmail = () => {
       const validEmailRegex =
         /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
       if (validEmailRegex.test(email)) {
-        setValidInput(true);
+        setValidEmailInput(true);
       } else {
-        setValidInput(false);
+        setValidEmailInput(false);
       }
     };
-    emailValidity();
 
-    const passValidity = () => {
+    const validatePassword = () => {
       const errMsgs: string[] = checkPasswordValidity(password);
       setErrors(errMsgs);
     };
-    passValidity();
 
-    if (!validInput) {
-      if (password !== confirmPassword) {
-        setErrors((prev) => [confirmPasswordFail, ...prev]);
-      }
-      setErrors((prev) => [msgStr, ...prev]);
+    validateName();
+    validateEmail();
+    validatePassword();
+
+    const errorMsgs: string[] = [];
+    if (!validEmailInput) {
+      errorMsgs.push("Invalid email");
     }
+    if (!validNameInput) {
+      errorMsgs.push("Please provide your full name");
+    }
+    if (password !== confirmPassword) {
+      errorMsgs.push("Password must be the same");
+    }
+    setErrors(errorMsgs);
 
     setSuccess(success);
-  }, [success, email, oAuthType, password, validInput, confirmPassword]);
+  }, [
+    success,
+    email,
+    oAuthType,
+    password,
+    confirmPassword,
+    fullname,
+    validEmailInput,
+    validNameInput,
+  ]);
+
+  useEffect(() => {
+    if (oAuthType === "google") {
+      aouthLogin();
+    }
+  }, [oAuthType]);
+
+  useEffect(() => {
+    const handleDOMContentLoaded = () => {
+      isAuthenticated()
+        .then((authenticated) => {
+          authenticated &&
+            (window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}?register_msg=You're already registered`);
+        })
+        .catch((error) => console.error("Authentication check failed:", error));
+    };
+
+    window.addEventListener("DOMContentLoaded", handleDOMContentLoaded);
+
+    return () =>
+      window.removeEventListener("DOMContentLoaded", handleDOMContentLoaded);
+  }, []);
+
+  useEffect(() => {
+    if (rememberUserInput) {
+      if (rememberUserInput.name)
+        setFullname(rememberUserInput.name ? rememberUserInput.name : "");
+      setEmail(rememberUserInput.email ? rememberUserInput.email : "");
+      setBirthDate(
+        rememberUserInput.birth_day ? rememberUserInput.birth_day : ""
+      );
+      setPassword(rememberUserInput.password ? rememberUserInput.password : "");
+      setConfirmPassword(
+        rememberUserInput.password ? rememberUserInput.password : ""
+      );
+    }
+  }, [rememberUserInput]);
 
   return (
     <div className="mainWrapper">

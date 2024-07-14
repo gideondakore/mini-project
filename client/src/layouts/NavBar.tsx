@@ -26,17 +26,18 @@ const NavBar = () => {
     if (auth) {
       authUserProfile()
         .then((user) => {
+          console.log("PICTURE: ", user.user?.picture);
           setPic(user.user?.picture);
         })
         .catch((error) => console.error(`Error fetching pic: ${error}`));
     }
   });
 
-  useEffect(() => {
-    if (!auth) {
-      window.localStorage.removeItem("chat_user_name");
-    }
-  });
+  // useEffect(() => {
+  //   if (!auth) {
+  //     window.localStorage.removeItem("chat_user_name");
+  //   }
+  // });
   return (
     <>
       <div className="nav-bar">

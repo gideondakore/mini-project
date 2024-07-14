@@ -14,8 +14,12 @@ import jwt from "jsonwebtoken";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import axios from "axios";
+// import nodemailer from "nodemailer";
 // import { Server } from "socket.io";
 // import { createServer } from "http";
+import sendMail from "./utils/mail";
+import { MongoClient } from "mongodb";
+// const MongoStore = require(‘connect-mongo’)(session);
 
 dotenv.config();
 
@@ -43,16 +47,36 @@ app.use(
     secret: process.env.SESSION_SECRET_TOKEN as string,
     resave: false,
     saveUninitialized: false,
+  })
+);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET_TOKEN as string,
+    resave: false,
+    saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl:
         "mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/sessionStore?retryWrites=true&w=majority&appName=merncrud",
+      // ttl: 14 * 24 * 60 * 60,
+      // autoRemove: "native",
     }),
     cookie: {
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
     },
   })
 );
+
+const mongoClient = new MongoClient(
+  "mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/?retryWrites=true&w=majority&appName=merncrud"
+);
+
+//Token verification
+const dbName = "CredentialEmailVerification";
+const collectionName = "userEmailVerificationData";
+//Session Verification
+const dbNameSession = "SessionVerification";
+const collectionNameSession = "userSessionVerification";
 
 // const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
@@ -137,7 +161,10 @@ app.get(
   cookieVerificationAndRefresh,
   async (req: Request, res: Response) => {
     try {
+      // console.log("FROM DB: ", req.session.refreshToken);
       const { access_token } = req.cookies;
+      // console.log("ACCESS TOKEN FROM BROWSER: ", access_token);
+      // console.log("CONNECT-MONGO ID: ", req.session.id);
       const access_token_response = await verifyAccessToken(access_token);
       const response = access_token_response?.verify_access_token_response;
 
@@ -190,11 +217,17 @@ app.get("/user-profile", async (req: Request, res: Response) => {
   try {
     const { access_token } = req.cookies;
     const userProfile = await getUserProfile(access_token);
+    // console.log("Profile: ", userProfile);
+    console.log("User Profile: ", userProfile);
 
-    const { verify_access_token_data } = userProfile!;
-    const { email } = verify_access_token_data;
-    const user = await User.findOne({ email: email }).select("-password");
-    res.status(200).json({ user: user });
+    if (userProfile) {
+      const { verify_access_token_data } = userProfile;
+      const { email } = verify_access_token_data;
+      const user = await User.findOne({ email: email }).select("-password");
+      res.status(200).json({ user: user });
+    } else {
+      res.status(400).json({ user: "no profile provided" });
+    }
   } catch (error) {
     console.error("Error occur in user-profile response handler");
   }
@@ -202,39 +235,71 @@ app.get("/user-profile", async (req: Request, res: Response) => {
 
 //////////////////// CREDENTIALS FUNCTIONALITY ////////////////////////
 
-//Credential login
+////Credential login
 app.post("/credential-register", async (req: Request, res: Response) => {
   try {
     const body = req.body;
+    console.log("BODY: ", body);
     const { fullname, email, birthDate, password, confirmPassword } = body;
     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+    const validNameRegex =
+      /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
     const validatedCredentials: string[] = [];
 
+    console.log("Info: 1");
+    console.log(password, " : ", confirmPassword);
     if (password && password === confirmPassword) {
       validatedCredentials.push(...checkPasswordValidity(password));
     } else {
       validatedCredentials.push("Valid passwords must be provided");
     }
 
+    console.log("Info: 2");
+    //Email verification
     if (email) {
       if (!validEmailRegex.test(email)) {
+        console.log("Error--1");
         validatedCredentials.unshift("Invalid email");
       }
     } else {
+      console.log("Error--2");
+
       validatedCredentials.unshift("Valid email must be provided");
     }
+
+    //Name verification
+    if (fullname) {
+      if (!validNameRegex.test(fullname)) {
+        console.log("Error--2");
+
+        validatedCredentials.unshift(
+          "Your full name must provided. e.g John Doe"
+        );
+      }
+    } else {
+      console.log("Error--3");
+
+      validatedCredentials.unshift("Valid name must be provided");
+    }
+
+    console.log("Info: 3");
+    console.log("Full Error messages: ", validatedCredentials);
 
     if (
       Array.isArray(validatedCredentials) &&
       validatedCredentials.length === 0
     ) {
-      const { message, success, user } = (await getUser(email, fullname))!;
+      const { message, success, user } = (await getUser(email))!;
+
+      // console.log("EMAIL: ", user);
+      console.log("Info: 4");
 
       if (!success) {
         return res
           .status(201)
           .json({ message: message, success: success, user: user });
       }
+      console.log("Info: 5");
 
       const hashedPassword = bcrypt.hashSync(password, 10);
       const dbUser = await User.create({
@@ -243,6 +308,8 @@ app.post("/credential-register", async (req: Request, res: Response) => {
         password: hashedPassword,
         birthday: birthDate,
       });
+
+      console.log("Info: 6");
 
       req.session.user = {
         id: dbUser?._id,
@@ -255,29 +322,161 @@ app.post("/credential-register", async (req: Request, res: Response) => {
         email: dbUser.email,
         name: dbUser.name,
       };
-      const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
-      if (dbUser) {
-        const accessToken = dbUser.generateToken();
-        const refreshToken = jwt.sign(payload, jwtRefreshSecret);
-        req.session.refreshToken = refreshToken;
 
-        return res.status(200).json({
-          message: [message],
-          success: success,
-          credential_access_token: accessToken,
-          credential_refresh_token: refreshToken,
-        });
+      const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
+      console.log("Info: 7");
+
+      if (dbUser) {
+        try {
+          const accessToken = dbUser.generateToken();
+          const refreshToken = jwt.sign(payload, jwtRefreshSecret);
+          // req.session.refreshToken = refreshToken;
+
+          // await mongoClient.connect();
+          // const db = mongoClient.db(dbName);
+          // const collection = db.collection(collectionName);
+          // await collection.insertOne({ data, token, createAt: new Date() });
+          await mongoClient.connect();
+          const dbSession = mongoClient.db(dbNameSession);
+          const collectionSession = dbSession.collection(collectionNameSession);
+          await collectionSession.insertOne({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+            payload,
+            createAt: new Date(),
+          });
+
+          return res.status(200).json({
+            message: ["User have been succefully registered"],
+            success: true,
+            credential_access_token: accessToken,
+            credential_refresh_token: refreshToken,
+          });
+        } catch (error) {
+          console.log("Error occur while saving session data in mongo");
+        }
+
+        //Saving session in DB;
       }
+      console.log("Info: 8");
 
       return res
         .status(500)
         .json({ message: ["Internal server error"], success: false });
+    } else {
+      console.log("Big Error from Credential register: ");
+      return res
+        .status(203)
+        .json({ message: validatedCredentials, success: false });
     }
   } catch (error) {
     console.error("Error handling user credentials body!");
   }
 });
+/////////////////////////////////////////
+// app.post("/credential-register", async (req: Request, res: Response) => {
+//   try {
+//     const body = req.body;
+//     const { fullname, email, birthDate, password, confirmPassword } = body;
+//     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+//     const validNameRegex =
+//       /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
+//     const validatedCredentials: string[] = [];
 
+//     if (password && password === confirmPassword) {
+//       validatedCredentials.push(...checkPasswordValidity(password));
+//     } else {
+//       validatedCredentials.push("Valid passwords must be provided");
+//     }
+
+//     if (email) {
+//       if (!validEmailRegex.test(email)) {
+//         validatedCredentials.unshift("Invalid email");
+//       }
+//     } else {
+//       validatedCredentials.unshift("Valid email must be provided");
+//     }
+
+//     if (fullname) {
+//       if (!validNameRegex.test(fullname)) {
+//         validatedCredentials.unshift(
+//           "Your full name must provided. e.g John Doe"
+//         );
+//       }
+//     } else {
+//       validatedCredentials.unshift("Valid name must be provided");
+//     }
+
+//     if (
+//       Array.isArray(validatedCredentials) &&
+//       validatedCredentials.length === 0
+//     ) {
+//       const { message, success, user } = (await getUser(email))!;
+
+//       if (!success) {
+//         return res
+//           .status(201)
+//           .json({ message: message, success: success, user: user });
+//       }
+
+//       const hashedPassword = bcrypt.hashSync(password, 10);
+//       const dbUser = await User.create({
+//         name: fullname,
+//         email: email,
+//         password: hashedPassword,
+//         birthday: birthDate,
+//       });
+
+//       req.session.user = {
+//         id: dbUser?._id,
+//         name: dbUser?.name,
+//         email: dbUser.email,
+//       };
+
+//       req.session.save((err) => {
+//         if (err) {
+//           console.log("ERROR OCCUR SAVING USER SESSIONS: ", err);
+//         } else {
+//           console.log("SESSION SAVED IN THE DB: ");
+//         }
+//       });
+//       console.log("Session data require: ", req.session.user);
+//       const payload = {
+//         id: dbUser._id,
+//         email: dbUser.email,
+//         name: dbUser.name,
+//       };
+//       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
+
+//       if (dbUser) {
+//         const accessToken = dbUser.generateToken();
+//         const refreshToken = jwt.sign(payload, jwtRefreshSecret);
+//         req.session.refreshToken = refreshToken;
+
+//         return res.status(200).json({
+//           message: ["User has been successfully registered"],
+//           success: true,
+//           credential_access_token: accessToken,
+//           credential_refresh_token: refreshToken,
+//         });
+//       }
+
+//       return res
+//         .status(500)
+//         .json({ message: ["Internal server error"], success: false });
+//     } else {
+//       return res
+//         .status(203)
+//         .json({ message: validatedCredentials, success: false });
+//     }
+//   } catch (error) {
+//     console.error("Error handling user credentials body!", error);
+//     return res
+//       .status(500)
+//       .json({ message: "Internal server error", success: false });
+//   }
+// });
+///////////////////////////////////////////////////////////
 app.post("/signin", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -305,6 +504,7 @@ app.post("/signin", async (req: Request, res: Response) => {
         req.session.refreshToken = new_refresh_token;
         req.session.accessToken = new_access_token;
         return res.status(200).json({
+          name: user.name,
           message: ["Sign in successful"],
           success: true,
           status: 200,
@@ -385,6 +585,163 @@ app.post("/authenticate", async (req, res) => {
   } catch (error) {
     console.log(error);
     // return res.status(error?.response.status).json(error?.response.data);
+  }
+});
+
+// Credential email verification
+
+////////////////////////
+app.post(
+  "/api/send-verification-email",
+  async (req: Request, res: Response) => {
+    try {
+      const { fullname, email, birthDate, password } = req.body;
+      const data = {
+        fullname,
+        email: email,
+        birth_day: birthDate,
+        password: password,
+      };
+      //Checking if email already exist
+      const { message, success, user } = (await getUser(email))!;
+      // console.log("Info: 4");
+      // console.log(message, " : ", " : ", success, " : ", user);
+      if (!success) {
+        return res
+          .status(201)
+          .json({ message: message, success: success, user: user });
+      }
+
+      const { tempData, token } = await sendMail(email, password);
+
+      if (token && tempData) {
+        //Mongodb connection
+        try {
+          await mongoClient.connect();
+          const db = mongoClient.db(dbName);
+          const collection = db.collection(collectionName);
+          await collection.insertOne({ data, token, createAt: new Date() });
+
+          return res
+            .status(200)
+            .json({ message: ["Email send successfully!"], success: true });
+        } catch (error) {
+          return res
+            .status(500)
+            .json({ message: ["Internal server error!"], success: true });
+        }
+      } else {
+        return res
+          .status(500)
+          .json({ message: ["Failed to send the email!"], success: false });
+      }
+    } catch (error) {
+      console.log("Error occur", error);
+      return res
+        .status(500)
+        .json({ message: ["Failed to send the email!"], success: false });
+    }
+  }
+);
+
+///////////////////////////////////////////////////
+
+//////////////////////////////////////////////////
+
+app.get("/api/verify-email", async (req: Request, res: Response) => {
+  const token = req.query.token as string;
+  const MAIL_TOKEN = process.env.MAIL_TOKEN as string;
+
+  console.log("TOKEN DATA: ", token);
+  try {
+    const verifyToken = jwt.verify(token, MAIL_TOKEN); // Verify JWT token
+    if (!verifyToken) {
+      return res.status(500).json({
+        message: [
+          "Email verification failed, possibly the link is invalid or expired",
+        ],
+        success: false,
+      });
+    }
+    console.log("+++TOKEN+++: 1", verifyToken);
+    await mongoClient.connect(); // Connect to MongoDB
+    const db = mongoClient.db(dbName);
+    const collection = db.collection(collectionName);
+    const verificationRecord = await collection.findOne({ token });
+    console.log("+++TOKEN+++: 2", verifyToken);
+
+    if (verificationRecord) {
+      const { data } = verificationRecord;
+      console.log("Verification: 3", data);
+      const user_data = {
+        fullname: data.fullname,
+        email: data.email,
+        birthDay: data.birth_day,
+        password: data.password,
+        confirmPassword: data.password,
+      };
+
+      console.log("===========Data==========: ", user_data);
+      try {
+        const response = await fetch(
+          "http://localhost:8000/credential-register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user_data),
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          // Changed res.send(500) to res.status(500)
+          return res.status(500).json({
+            message: ["Ooops! error occur occur while registering!. Try again"],
+            success: false,
+          });
+        }
+
+        console.log("No error found: 1");
+        const {
+          message,
+          success,
+          credential_access_token,
+          credential_refresh_token,
+        } = await response.json();
+
+        // Changed res.send(200) to res.status(200)
+        return res.status(200).json({
+          message,
+          success,
+          credential_access_token,
+          credential_refresh_token,
+        });
+      } catch (error) {
+        console.log("error", error);
+        // Changed res.send(500) to res.status(500)
+        return res.status(500).json({
+          message: ["Internal server error!. Try again"],
+          success: false,
+        });
+      }
+    } else {
+      // Changed res.send(500) to res.status(500)
+      return res.status(500).json({
+        message: [
+          "Email verification failed, possibly the link is invalid or expired",
+        ],
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.log("Error verifying token: ", error);
+    // Changed res.send(500) to res.status(500)
+    return res.status(500).json({
+      message: ["Error verifying token"],
+      success: false,
+    });
   }
 });
 

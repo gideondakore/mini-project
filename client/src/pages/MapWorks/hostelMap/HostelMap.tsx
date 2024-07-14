@@ -9,6 +9,7 @@ import React, {
   useMemo,
 } from "react";
 import formattedDataForMap from "./data/hostelLocations";
+// import detailMapData from "../hostelMap/data/detailMapData.json";
 import StarRate from "../../../utils/starRate";
 import {
   Map,
@@ -37,6 +38,7 @@ import { RootState } from "../../../store/store";
 import { setDestination } from "../../../store/features/mapDestinationNameSlice";
 import { useLocation } from "react-router-dom";
 import useDebounced from "../../../hooks/useDebounced";
+// import { saveAs } from "file-saver";
 // import { saveAs } from "file-saver";
 // import detailMapData from "./data/HostelsDetailData.json";
 
@@ -502,7 +504,7 @@ const Places = ({ points }: Prop) => {
   // };
 
   // useCallback(fetchPhotos, []);
-  //////////////////////////////
+  ////////////////////////////////////////////////////
   useEffect(() => {
     if (!map || !placeLibrary) return;
 
@@ -528,7 +530,7 @@ const Places = ({ points }: Prop) => {
       }
     );
   }, [placesService, predictionSelected]);
-  //////////////////////
+  ///////////////////////////////////////////////////
   // useEffect(() => {
   //   if (!predictionSelected || !placesService) return;
   //   (async () => {
@@ -573,7 +575,7 @@ const Places = ({ points }: Prop) => {
   //   })();
   // }, [placesService, predictionSelected]);
 
-  /////////////////////
+  //////////////////////////////////////////////////
   useEffect(() => {
     if (!placeLibrary || !placesService) return;
 

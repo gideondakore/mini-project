@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import mapRoutes from "./features/mapRoutesSlice";
@@ -8,24 +8,31 @@ import mapCollegeLocations from "./features/mapCollegeLocationsSlice";
 import mapDestinationName from "./features/mapDestinationNameSlice";
 import mapTraveModes from "./features/mapTraveModesSlice";
 import hostelsDetailData from "./features/hostelDetailDataSlice";
+import chatUserName from "./features/chatUserNameSlice";
+import rememberUserInput from "./features/rememberUserInputSlice";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["hostelsDetailData", "chatUserName", "rememberUserInput"],
 };
 
-const persistedReducer = persistReducer(persistConfig, hostelsDetailData);
+const rootReducers = combineReducers({
+  routes: mapRoutes,
+  routesIndex: mapRoutesIndex,
+  collegeNames: mapCollegeNames,
+  collegePosition: mapCollegeLocations,
+  collegeDestination: mapDestinationName,
+  travelMode: mapTraveModes,
+  hostelsDetailData: hostelsDetailData,
+  chatUserName: chatUserName,
+  rememberUserInput: rememberUserInput,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducers);
 
 export const store = configureStore({
-  reducer: {
-    routes: mapRoutes,
-    routesIndex: mapRoutesIndex,
-    collegeNames: mapCollegeNames,
-    collegePosition: mapCollegeLocations,
-    collegeDestination: mapDestinationName,
-    travelMode: mapTraveModes,
-    hostelsDetailData: persistedReducer,
-  },
+  reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== "production",
 });
 

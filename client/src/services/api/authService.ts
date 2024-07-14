@@ -23,6 +23,7 @@ const aouthLogin = async () => {
 
 const isAuthenticated = async () => {
   const { credential_access_token, credential_refresh_token } = getToken();
+  // console.log(credential_access_token, "--:-- ", credential_refresh_token);
 
   try {
     const response = await fetch(
@@ -49,6 +50,7 @@ const isAuthenticated = async () => {
       await response.json();
 
     if (credential_access && credential_refresh) {
+      console.log(credential_access, " ==:== ", credential_refresh);
       window.localStorage.setItem("credential_access_token", credential_access);
       window.localStorage.setItem(
         "credential_refresh_token",

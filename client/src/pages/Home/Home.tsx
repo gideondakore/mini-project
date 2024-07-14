@@ -31,6 +31,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { isAuthenticated } from "../../services/api/authService";
 import Footer from "../../components/Footer/Footer";
 // import formattedDtata from "../MapWorks/hostelMap/data/hostelsDetailData";
+// import formattedDtata from "../MapWorks/hostelMap/data/hostelsDetailData";
 
 type HostelDataType = {
   name: string;
@@ -531,10 +532,12 @@ const Home = () => {
     setComprehensiveSearchBool(true);
   };
 
+  ///////////////////
   // useEffect(() => {
   //   const data = formattedDtata();
   //   console.log(data);
   // }, [formattedDtata]);
+  ////////////////////////
 
   return (
     <>

@@ -1,0 +1,13 @@
+<input class="" style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px none; margin: 0px; outline: 0px; padding: 0px;" autocapitalize="none" autocomplete="off" autocorrect="off" id="react-select-3-input" spellcheck="false" tabindex="0" type="text" aria-autocomplete="list" aria-expanded="false" aria-haspopup="true" role="combobox" aria-activedescendant="" aria-describedby="react-select-3-placeholder" value="">
+
+
+
+
+//react-select-3-placeholder
+
+https://lh3.googleusercontent.com/p/AF1QipNbYrGdjvKHyW0tJcwgNSXx5FFi-hCv91bOLFCP=s680-w680-h510
+
+////////////////////////
+m#P52s@ap$V
+
+    // "start": "node ./dist/server.js",
