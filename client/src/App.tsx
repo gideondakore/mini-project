@@ -13,10 +13,10 @@ import {
   VerificationSuccess,
   VerificationError,
   EmailSentPage,
+  EmailVerify,
 } from "./pages";
 import MapContainer from "./pages/MapWorks/MapContainer";
 import LoginForm from "./pages/TestEmailPage";
-import TestEmailVerify from "./pages/TestEmailVerify";
 
 const App = () => {
   return (
@@ -40,7 +40,7 @@ const App = () => {
       <Route path="payment" element={<PayStack />} />
       <Route path="chat" element={<Chat />} />
       <Route path="email" element={<LoginForm />} />
-      <Route path="verify-email" element={<TestEmailVerify />} />
+      <Route path="verify-email" element={<EmailVerify />} />
       <Route path="verification-success" element={<VerificationSuccess />} />
       <Route path="verification-error" element={<VerificationError />} />
       <Route path="email-sent" element={<EmailSentPage />} />

@@ -10,6 +10,7 @@ import Chat from "./Chat/Chat";
 import VerificationSuccess from "./VerificationSuccess/VerificationSuccess";
 import VerificationError from "./VerificationError/VerificationError";
 import EmailSentPage from "./EmailSentPage/EmailSentPage";
+import EmailVerify from "./EmailVerify/EmailVerify";
 
 export {
   UserInfo,
@@ -24,4 +25,5 @@ export {
   VerificationSuccess,
   VerificationError,
   EmailSentPage,
+  EmailVerify,
 };

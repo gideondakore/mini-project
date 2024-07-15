@@ -147,9 +147,6 @@ const HostelMap = () => {
 
   const [liveLocation, setLiveLocation] = useState<boolean>(false);
 
-  // const [isToggled, setIsToggled] = useState(false);
-
-  // Step 2: Create a function to toggle the state
   const toggleButton = () => {
     setLiveLocation((prevState) => !prevState);
   };
