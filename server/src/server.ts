@@ -218,7 +218,7 @@ app.get("/user-profile", async (req: Request, res: Response) => {
     const { access_token } = req.cookies;
     const userProfile = await getUserProfile(access_token);
     // console.log("Profile: ", userProfile);
-    console.log("User Profile: ", userProfile);
+    // console.log("User Profile: ", userProfile);
 
     if (userProfile) {
       const { verify_access_token_data } = userProfile;
@@ -239,30 +239,30 @@ app.get("/user-profile", async (req: Request, res: Response) => {
 app.post("/credential-register", async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    console.log("BODY: ", body);
+    // console.log("BODY: ", body);
     const { fullname, email, birthDate, password, confirmPassword } = body;
     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
     const validNameRegex =
       /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
     const validatedCredentials: string[] = [];
 
-    console.log("Info: 1");
-    console.log(password, " : ", confirmPassword);
+    // console.log("Info: 1");
+    // console.log(password, " : ", confirmPassword);
     if (password && password === confirmPassword) {
       validatedCredentials.push(...checkPasswordValidity(password));
     } else {
       validatedCredentials.push("Valid passwords must be provided");
     }
 
-    console.log("Info: 2");
+    // console.log("Info: 2");
     //Email verification
     if (email) {
       if (!validEmailRegex.test(email)) {
-        console.log("Error--1");
+        // console.log("Error--1");
         validatedCredentials.unshift("Invalid email");
       }
     } else {
-      console.log("Error--2");
+      // console.log("Error--2");
 
       validatedCredentials.unshift("Valid email must be provided");
     }
@@ -270,20 +270,20 @@ app.post("/credential-register", async (req: Request, res: Response) => {
     //Name verification
     if (fullname) {
       if (!validNameRegex.test(fullname)) {
-        console.log("Error--2");
+        // console.log("Error--2");
 
         validatedCredentials.unshift(
           "Your full name must provided. e.g John Doe"
         );
       }
     } else {
-      console.log("Error--3");
+      // console.log("Error--3");
 
       validatedCredentials.unshift("Valid name must be provided");
     }
 
-    console.log("Info: 3");
-    console.log("Full Error messages: ", validatedCredentials);
+    // console.log("Info: 3");
+    // console.log("Full Error messages: ", validatedCredentials);
 
     if (
       Array.isArray(validatedCredentials) &&
@@ -292,14 +292,14 @@ app.post("/credential-register", async (req: Request, res: Response) => {
       const { message, success, user } = (await getUser(email))!;
 
       // console.log("EMAIL: ", user);
-      console.log("Info: 4");
+      // console.log("Info: 4");
 
       if (!success) {
         return res
           .status(201)
           .json({ message: message, success: success, user: user });
       }
-      console.log("Info: 5");
+      // console.log("Info: 5");
 
       const hashedPassword = bcrypt.hashSync(password, 10);
       const dbUser = await User.create({
@@ -309,7 +309,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
         birthday: birthDate,
       });
 
-      console.log("Info: 6");
+      // console.log("Info: 6");
 
       req.session.user = {
         id: dbUser?._id,
@@ -324,7 +324,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
       };
 
       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
-      console.log("Info: 7");
+      // console.log("Info: 7");
 
       if (dbUser) {
         try {
@@ -358,7 +358,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
 
         //Saving session in DB;
       }
-      console.log("Info: 8");
+      // console.log("Info: 8");
 
       return res
         .status(500)
@@ -374,108 +374,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
   }
 });
 /////////////////////////////////////////
-// app.post("/credential-register", async (req: Request, res: Response) => {
-//   try {
-//     const body = req.body;
-//     const { fullname, email, birthDate, password, confirmPassword } = body;
-//     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-//     const validNameRegex =
-//       /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
-//     const validatedCredentials: string[] = [];
 
-//     if (password && password === confirmPassword) {
-//       validatedCredentials.push(...checkPasswordValidity(password));
-//     } else {
-//       validatedCredentials.push("Valid passwords must be provided");
-//     }
-
-//     if (email) {
-//       if (!validEmailRegex.test(email)) {
-//         validatedCredentials.unshift("Invalid email");
-//       }
-//     } else {
-//       validatedCredentials.unshift("Valid email must be provided");
-//     }
-
-//     if (fullname) {
-//       if (!validNameRegex.test(fullname)) {
-//         validatedCredentials.unshift(
-//           "Your full name must provided. e.g John Doe"
-//         );
-//       }
-//     } else {
-//       validatedCredentials.unshift("Valid name must be provided");
-//     }
-
-//     if (
-//       Array.isArray(validatedCredentials) &&
-//       validatedCredentials.length === 0
-//     ) {
-//       const { message, success, user } = (await getUser(email))!;
-
-//       if (!success) {
-//         return res
-//           .status(201)
-//           .json({ message: message, success: success, user: user });
-//       }
-
-//       const hashedPassword = bcrypt.hashSync(password, 10);
-//       const dbUser = await User.create({
-//         name: fullname,
-//         email: email,
-//         password: hashedPassword,
-//         birthday: birthDate,
-//       });
-
-//       req.session.user = {
-//         id: dbUser?._id,
-//         name: dbUser?.name,
-//         email: dbUser.email,
-//       };
-
-//       req.session.save((err) => {
-//         if (err) {
-//           console.log("ERROR OCCUR SAVING USER SESSIONS: ", err);
-//         } else {
-//           console.log("SESSION SAVED IN THE DB: ");
-//         }
-//       });
-//       console.log("Session data require: ", req.session.user);
-//       const payload = {
-//         id: dbUser._id,
-//         email: dbUser.email,
-//         name: dbUser.name,
-//       };
-//       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
-
-//       if (dbUser) {
-//         const accessToken = dbUser.generateToken();
-//         const refreshToken = jwt.sign(payload, jwtRefreshSecret);
-//         req.session.refreshToken = refreshToken;
-
-//         return res.status(200).json({
-//           message: ["User has been successfully registered"],
-//           success: true,
-//           credential_access_token: accessToken,
-//           credential_refresh_token: refreshToken,
-//         });
-//       }
-
-//       return res
-//         .status(500)
-//         .json({ message: ["Internal server error"], success: false });
-//     } else {
-//       return res
-//         .status(203)
-//         .json({ message: validatedCredentials, success: false });
-//     }
-//   } catch (error) {
-//     console.error("Error handling user credentials body!", error);
-//     return res
-//       .status(500)
-//       .json({ message: "Internal server error", success: false });
-//   }
-// });
 ///////////////////////////////////////////////////////////
 app.post("/signin", async (req: Request, res: Response) => {
   try {
@@ -652,7 +551,7 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
   const token = req.query.token as string;
   const MAIL_TOKEN = process.env.MAIL_TOKEN as string;
 
-  console.log("TOKEN DATA: ", token);
+  // console.log("TOKEN DATA: ", token);
   try {
     const verifyToken = jwt.verify(token, MAIL_TOKEN); // Verify JWT token
     if (!verifyToken) {
@@ -663,16 +562,16 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         success: false,
       });
     }
-    console.log("+++TOKEN+++: 1", verifyToken);
+    // console.log("+++TOKEN+++: 1", verifyToken);
     await mongoClient.connect(); // Connect to MongoDB
     const db = mongoClient.db(dbName);
     const collection = db.collection(collectionName);
     const verificationRecord = await collection.findOne({ token });
-    console.log("+++TOKEN+++: 2", verifyToken);
+    // console.log("+++TOKEN+++: 2", verifyToken);
 
     if (verificationRecord) {
       const { data } = verificationRecord;
-      console.log("Verification: 3", data);
+      // console.log("Verification: 3", data);
       const user_data = {
         fullname: data.fullname,
         email: data.email,
@@ -681,7 +580,7 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         confirmPassword: data.password,
       };
 
-      console.log("===========Data==========: ", user_data);
+      // console.log("===========Data==========: ", user_data);
       try {
         const response = await fetch(
           "http://localhost:8000/credential-register",
@@ -703,7 +602,7 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
           });
         }
 
-        console.log("No error found: 1");
+        // console.log("No error found: 1");
         const {
           message,
           success,
@@ -720,6 +619,7 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         });
       } catch (error) {
         console.log("error", error);
+
         // Changed res.send(500) to res.status(500)
         return res.status(500).json({
           message: ["Internal server error!. Try again"],

@@ -26,12 +26,12 @@ const cookieVerificationAndRefresh = async (
 
     if (accessToken || refreshToken) {
       //OAuth Verification logic
-      console.log(
-        "SESSION FROM DB: ",
-        req.session.refreshToken,
-        " ---------:::::------- ",
-        credential_refresh_token
-      );
+      // console.log(
+      //   "SESSION FROM DB: ",
+      //   req.session.refreshToken,
+      //   " ---------:::::------- ",
+      //   credential_refresh_token
+      // );
       const verify_access_token = await verifyAccessToken(accessToken);
       const verify_access_token_response =
         verify_access_token?.verify_access_token_response;
@@ -91,11 +91,11 @@ const cookieVerificationAndRefresh = async (
             process.env.JWT_REFRESH_TOKEN_SECRET as string,
             (error) => {
               if (error) {
-                console.log("Access token from JWT: Error");
+                // console.log("Access token from JWT: Error");
                 // return;
                 decodeStateAcess = false;
               } else {
-                console.log("Access token from JWT: SUCCESS");
+                // console.log("Access token from JWT: SUCCESS");
 
                 decodeStateAcess = true;
               }
@@ -118,9 +118,9 @@ const cookieVerificationAndRefresh = async (
           //   credential_refresh_token
           // );
 
-          console.log("Accessing stored data with the following credentials:");
-          console.log("credential_access_token:", credential_access_token);
-          console.log("credential_refresh_token:", credential_refresh_token);
+          // console.log("Accessing stored data with the following credentials:");
+          // console.log("credential_access_token:", credential_access_token);
+          // console.log("credential_refresh_token:", credential_refresh_token);
 
           try {
             await mongoClient.connect();
@@ -131,7 +131,7 @@ const cookieVerificationAndRefresh = async (
               refresh_token: credential_refresh_token,
             });
 
-            console.log("RESULT FROM DB:", result);
+            // console.log("RESULT FROM DB:", result);
             /////////////////////////////////
             // console.log(
             //   credential_access_token,
@@ -160,7 +160,7 @@ const cookieVerificationAndRefresh = async (
                 );
 
                 if (!session_bool) {
-                  console.log("Refresh token from JWT: Error");
+                  // console.log("Refresh token from JWT: Error");
 
                   return res.status(403).json({
                     authenticated: false,
@@ -170,7 +170,7 @@ const cookieVerificationAndRefresh = async (
                 }
 
                 if (typeof jsonValue === "string") {
-                  console.log("INVALID JWT VERIFYING: ");
+                  // console.log("INVALID JWT VERIFYING: ");
                   return res.status(500).json({
                     authenticated: false,
                     message: "Invalid token payload!",
@@ -184,7 +184,7 @@ const cookieVerificationAndRefresh = async (
                 //   name: (user as JwtPayload)?.name,
                 // };
 
-                console.log("CREATING NEW TOKENS PAYLOAD: ", payload);
+                // console.log("CREATING NEW TOKENS PAYLOAD: ", payload);
                 const new_access_token = jwt.sign(
                   payload,
                   process.env.JWT_ACCESS_TOKEN_SECRET as string,
@@ -211,7 +211,7 @@ const cookieVerificationAndRefresh = async (
                 // const options = { returnDocument: 'after' };
                 collection.findOneAndUpdate(filter, update);
 
-                console.log("OK, Cool!");
+                // console.log("OK, Cool!");
                 return res.status(200).json({
                   authenticated: true,
                   message: "success",
@@ -220,7 +220,7 @@ const cookieVerificationAndRefresh = async (
                   credential_refresh_token: req.session.refreshToken,
                 });
               } else {
-                console.log("BAD==============! 1");
+                // console.log("BAD==============! 1");
 
                 return res.status(401).json({
                   authenticated: false,
@@ -229,7 +229,7 @@ const cookieVerificationAndRefresh = async (
                 });
               }
             } else {
-              console.log("BAD==============! 2");
+              // console.log("BAD==============! 2");
 
               return res.status(401).json({
                 authenticated: false,
@@ -257,7 +257,7 @@ const cookieVerificationAndRefresh = async (
           });
         }
       } else {
-        console.log("BAD==============! 3");
+        // console.log("BAD==============! 3");
 
         return res.status(401).json({
           authenticated: false,

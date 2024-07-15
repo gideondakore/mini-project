@@ -27,6 +27,7 @@ import {
 
 import "../hostelMap/HostelMap.css";
 import knustLogoDark from "../../../assets/images/knust-logo.jpeg";
+import userImageOnMap from "../../../assets/images/Gemini_Generated_Image_iwxyeeiwxyeeiwxy.jpeg";
 import knustLogoLight from "../../../assets/images/KnustLogo.png";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
@@ -75,6 +76,22 @@ interface CurrentDestinationPositionProp {
   >;
 }
 
+interface CurrentUserPositionProp {
+  currentUserPosition:
+    | google.maps.LatLngLiteral
+    | google.maps.LatLng
+    | google.maps.Place
+    | string;
+  setCurrentUserPosition: React.Dispatch<
+    React.SetStateAction<
+      | google.maps.LatLngLiteral
+      | google.maps.LatLng
+      | google.maps.Place
+      | string
+    >
+  >;
+}
+
 const CurrentDestinationPositionContext =
   createContext<CurrentDestinationPositionProp | null>(null);
 
@@ -82,6 +99,14 @@ const DestinationNameContext = createContext<{
   destinationName: string;
   setDestinationName: React.Dispatch<SetStateAction<string>>;
 } | null>(null);
+
+const LiveLocationContext = createContext<{
+  liveLocation: boolean;
+  setLiveLocation: React.Dispatch<SetStateAction<boolean>>;
+}>({ liveLocation: false, setLiveLocation: () => {} });
+
+const CurrentUserPositionContext =
+  createContext<CurrentUserPositionProp | null>(null);
 
 const HostelMap = () => {
   const location = useLocation();
@@ -116,6 +141,19 @@ const HostelMap = () => {
     hostelName ? hostelName : "KNUST administration building"
   );
 
+  const [currentUserPosition, setCurrentUserPosition] = useState<
+    google.maps.LatLngLiteral | google.maps.LatLng | google.maps.Place | string
+  >(INITIAL_CAMERA.center);
+
+  const [liveLocation, setLiveLocation] = useState<boolean>(false);
+
+  // const [isToggled, setIsToggled] = useState(false);
+
+  // Step 2: Create a function to toggle the state
+  const toggleButton = () => {
+    setLiveLocation((prevState) => !prevState);
+  };
+
   return (
     <div style={{ height: "100vh", width: "80%" }}>
       <Map
@@ -139,15 +177,51 @@ const HostelMap = () => {
             <p style={{ fontWeight: "bold", fontSize: "1rem" }}>Duplex</p>
           </div>
         </MapControl>
+        <MapControl position={ControlPosition.BLOCK_START_INLINE_CENTER}>
+          <div
+            style={{
+              backgroundColor: "red",
+              width: "12rem",
+              height: "2.5rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "0.8rem",
+            }}
+          >
+            <button
+              style={{
+                width: "100%",
+                height: "100%",
+                cursor: "pointer",
+                color: "white",
+                backgroundColor: "#050315",
+                fontWeight: "bold",
+                border: "solid",
+              }}
+              onClick={toggleButton}
+            >
+              {liveLocation ? "Live Direction: ON" : "Live Direction: OFF"}
+            </button>
+          </div>
+        </MapControl>
         <CurrentDestinationPositionContext.Provider
           value={{ currentDestinationPosition, setCurrentDestinationPosition }}
         >
           <DestinationNameContext.Provider
             value={{ destinationName, setDestinationName }}
           >
-            <Markers points={formattedDataForMap} />
-            <Directions />
-            <Places points={formattedDataForMap} />
+            <LiveLocationContext.Provider
+              value={{ liveLocation, setLiveLocation }}
+            >
+              <CurrentUserPositionContext.Provider
+                value={{ currentUserPosition, setCurrentUserPosition }}
+              >
+                <Markers points={formattedDataForMap} />
+                <Directions />
+                <Places points={formattedDataForMap} />
+              </CurrentUserPositionContext.Provider>
+            </LiveLocationContext.Provider>
           </DestinationNameContext.Provider>
         </CurrentDestinationPositionContext.Provider>
       </Map>
@@ -161,6 +235,9 @@ const Markers = ({ points }: Prop) => {
   const { setCurrentDestinationPosition } = useContext(
     CurrentDestinationPositionContext
   )!;
+
+  const { liveLocation } = useContext(LiveLocationContext);
+  const { currentUserPosition } = useContext(CurrentUserPositionContext)!;
 
   const { setDestinationName } = useContext(DestinationNameContext)!;
   const position: google.maps.LatLngLiteral = useMemo(
@@ -329,6 +406,23 @@ const Markers = ({ points }: Prop) => {
           }}
         />
       </AdvancedMarker>
+
+      {liveLocation && (
+        <AdvancedMarker
+          title={"userMarker"}
+          position={currentUserPosition as google.maps.LatLngLiteral}
+        >
+          <img
+            src={userImageOnMap}
+            alt="user logo"
+            height={70}
+            width={30}
+            style={{
+              borderRadius: "10px 10px 50% 50%",
+            }}
+          />
+        </AdvancedMarker>
+      )}
       {infoWindowShowKnust && (
         <InfoWindow
           position={position}
@@ -361,6 +455,11 @@ const Directions = () => {
     CurrentDestinationPositionContext
   )!;
 
+  const { currentUserPosition, setCurrentUserPosition } = useContext(
+    CurrentUserPositionContext
+  )!;
+
+  const { liveLocation } = useContext(LiveLocationContext);
   const map = useMap();
   const routeLibrary = useMapsLibrary("routes");
   const [directionsService, setDirectionsService] =
@@ -397,7 +496,9 @@ const Directions = () => {
     directionsService
       .route({
         origin: mapCollegePositions,
-        destination: currentDestinationPosition,
+        destination: liveLocation
+          ? currentUserPosition
+          : currentDestinationPosition,
         travelMode:
           mapTravelMode === "DRIVING"
             ? google.maps.TravelMode.DRIVING
@@ -426,6 +527,8 @@ const Directions = () => {
     mapTravelMode,
     currentDestinationPosition,
     dispatch,
+    liveLocation,
+    currentUserPosition,
   ]);
 
   useEffect(() => {
@@ -433,6 +536,31 @@ const Directions = () => {
 
     directionRenderer.setRouteIndex(mapRoutesIndex);
   }, [directionRenderer, mapRoutesIndex]);
+
+  useEffect(() => {
+    (() => {
+      if (navigator.geolocation) {
+        const watchId = navigator.geolocation.watchPosition(
+          (position) => {
+            const usePosition: google.maps.LatLngLiteral = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+
+            console.log("User Position", position);
+            setCurrentUserPosition(usePosition);
+          },
+          (error) => {
+            console.error("Error getting the user location:", error);
+          },
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 100000 }
+        );
+        return () => navigator.geolocation.clearWatch(watchId);
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    })();
+  }, [currentUserPosition, setCurrentUserPosition]);
 
   return <></>;
 };
