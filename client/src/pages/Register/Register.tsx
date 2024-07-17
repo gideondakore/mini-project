@@ -40,28 +40,8 @@ const Register = () => {
     } else {
       setIsLoading(true);
       try {
-        // const response = await fetch(
-        //   `${process.env.REACT_APP_LOCAL_HOST_SERVER}/credential-register`,
-        //   {
-        //     method: "POST",
-        //     headers: new Headers({
-        //       "Content-Type": "application/json",
-        //       "ngrok-skip-browser-warning": "12345",
-        //     }),
-        //     body: JSON.stringify({
-        //       fullname,
-        //       email,
-        //       birthDate,
-        //       password,
-        //       confirmPassword,
-        //     }),
-        //     credentials: "include",
-        //   }
-        // );
-
-        //////////////////////////////////////////
         const response = await fetch(
-          "http://localhost:8000/api/send-verification-email",
+          `${process.env.REACT_APP_LOCAL_HOST_SERVER}/api/send-verification-email`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -85,8 +65,6 @@ const Register = () => {
 
         const { message, success } = await response.json();
         if (success) {
-          // console.log(message, " : ", success);
-          // toast(message.join(" "));
           if (isChecked) {
             const rememberUserInputObj = {
               name: fullname,
@@ -100,61 +78,15 @@ const Register = () => {
           const userName = generateUsername(fullname);
           dispatch(setChatUSerName(userName));
 
-          window.location.href = "http://localhost:3000/email-sent";
+          window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/email-sent`;
           return;
         } else {
           setErrorMsg(message);
           setSuccess(success);
           return;
         }
-
-        // toast(message.join(" "));
-
-        //////////////////////
-        // if (!response.ok) {
-        //   // throw new Error("Failed to submit data, please try again!");
-        //   setErrorMsg(["Failed to submit data, please try again!"]);
-        // }
-
-        ///NOT//
-        // if (isChecked) {
-        //   const rememberUserInputObj = {
-        //     name: fullname,
-        //     email: email,
-        //     birth_day: birthDate,
-        //     password: password,
-        //   };
-        //   dispatch(setRememberUser({ remember_user: rememberUserInputObj }));
-        // }
-        ////////////////////
-        // const {
-        //   message,
-        //   success,
-        //   credential_access_token,
-        //   credential_refresh_token,
-        // } = await response.json();
-
-        // if (!success) {
-        //   setErrorMsg(message);
-        //   setSuccess(success);
-        //   return;
-        // }
-
-        ////////////////////////////////////////////////////
-        // const userName = generateUsername(fullname);
-        // dispatch(setChatUSerName(userName));
-
-        // window.localStorage.setItem(
-        //   "credential_access_token",
-        //   credential_access_token
-        // );
-        // window.localStorage.setItem(
-        //   "credential_refresh_token",
-        //   credential_refresh_token
-        // );
       } catch (error) {
         toast("Ooops! An error occur. Try again!");
-        // throw new Error(`Error: ${error}`);
       } finally {
         setIsLoading(false);
         if (success) {
@@ -162,7 +94,6 @@ const Register = () => {
           setEmail("");
           setBirthDate("");
           setPassword("");
-          // window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}`;
         }
       }
     }

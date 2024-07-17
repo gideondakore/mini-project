@@ -30,7 +30,7 @@ const LoginForm = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/send-verification-email",
+        `${process.env.REACT_APP_LOCAL_HOST_SERVER}/api/send-verification-email`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -43,7 +43,6 @@ const LoginForm = () => {
         }
       );
 
-      console.log("RESPONSE: ", response);
       if (!response.ok) {
         console.log("Error sending request to email");
         toast("Error sending request to email");

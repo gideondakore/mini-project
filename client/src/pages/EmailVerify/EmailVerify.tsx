@@ -28,11 +28,8 @@ const EmailVerify = () => {
               credentials: "include",
             }
           );
-          // console.log("RESPONSE: ", response);
           if (!response.ok) {
             console.log("Email verification failed!");
-            // toast("Email verification failed!");
-            // return;ss
           }
 
           const {
@@ -41,7 +38,6 @@ const EmailVerify = () => {
             credential_access_token,
             credential_refresh_token,
           } = await response.json();
-          // console.log("Data: ", data);
           if (success) {
             window.localStorage.setItem(
               "credential_access_token",
@@ -55,11 +51,7 @@ const EmailVerify = () => {
           } else {
             window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/verification-error/?verification_msg=${message}`;
           }
-          // alert(message);
-          // toast(success);
         } catch (error) {
-          // console.log("Something went wrong verifying email error");
-          // toast("Something went wrong verifying email error");
           window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/verification-error`;
         }
       };

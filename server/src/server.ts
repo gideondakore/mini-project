@@ -496,7 +496,8 @@ app.post(
       //Checking if email already exist
       const { message, success, user } = (await getUser(email))!;
       // console.log("Info: 4");
-      // console.log(message, " : ", " : ", success, " : ", user);
+      console.log(message, " : ", " : ", success, " : ", user);
+
       if (!success) {
         return res
           .status(201)
