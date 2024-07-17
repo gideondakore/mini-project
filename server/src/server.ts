@@ -579,7 +579,7 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
   }
 });
 
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 4000;
 
 const start = (port: string | number) => {
   app.listen(port, () => {
