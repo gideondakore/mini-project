@@ -42,13 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(cookieParser(process.env.COOKIES_SECRET_KEY as string));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET_TOKEN as string,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET_TOKEN as string,
@@ -57,8 +51,6 @@ app.use(
     store: MongoStore.create({
       mongoUrl:
         "mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/sessionStore?retryWrites=true&w=majority&appName=merncrud",
-      // ttl: 14 * 24 * 60 * 60,
-      // autoRemove: "native",
     }),
     cookie: {
       secure: process.env.NODE_ENV === "production",
