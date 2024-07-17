@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const EmailVerify = () => {
   const location = useLocation();
@@ -11,9 +11,7 @@ const EmailVerify = () => {
 
   useEffect(() => {
     const token = searchParams.get("token");
-    // console.log("Token: ", token);
     const handleOnload = () => {
-      // console.log("Message Client: ", token);
       const verifyEmail = async (mailToken: string) => {
         try {
           const response = await fetch(
@@ -29,7 +27,7 @@ const EmailVerify = () => {
             }
           );
           if (!response.ok) {
-            console.log("Email verification failed!");
+            toast("Email verification failed!");
           }
 
           const {
@@ -59,7 +57,6 @@ const EmailVerify = () => {
       if (token) {
         verifyEmail(token);
       } else {
-        // console.log("Email verification token not found!");
         window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/verification-error`;
       }
     };

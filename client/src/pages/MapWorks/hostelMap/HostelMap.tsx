@@ -40,7 +40,6 @@ import { setDestination } from "../../../store/features/mapDestinationNameSlice"
 import { useLocation } from "react-router-dom";
 import useDebounced from "../../../hooks/useDebounced";
 // import { saveAs } from "file-saver";
-// import { saveAs } from "file-saver";
 // import detailMapData from "./data/HostelsDetailData.json";
 
 type Point = google.maps.LatLngLiteral & {

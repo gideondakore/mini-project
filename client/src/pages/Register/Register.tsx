@@ -58,7 +58,6 @@ const Register = () => {
         );
 
         if (!response.ok) {
-          console.log("Error sending request to email");
           toast("Error sending request to email");
           return;
         }

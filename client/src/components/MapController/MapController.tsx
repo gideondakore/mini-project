@@ -113,7 +113,6 @@ const MapController = () => {
       <select
         value={mapTravelMode}
         onChange={({ target }) => {
-          console.log(target.value);
           dispatch(
             setTravelModes({
               travelMode:

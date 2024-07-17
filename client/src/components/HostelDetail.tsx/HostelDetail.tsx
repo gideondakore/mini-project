@@ -50,12 +50,9 @@ const HostelDetail = () => {
         (slide as HTMLElement).style.width = "auto";
       });
 
-      // console.log((swiperPagination as HTMLElement).style);
-      // swiperPagination.forEach((swiperPage) => {
       if (swiperPagination instanceof HTMLElement) {
         swiperPagination.style.setProperty("position", "relative");
       }
-      // });
 
       swiper3DSlidePadding.forEach((slide) => {
         if (slide instanceof HTMLElement) {

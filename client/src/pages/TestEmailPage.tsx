@@ -44,20 +44,18 @@ const LoginForm = () => {
       );
 
       if (!response.ok) {
-        console.log("Error sending request to email");
         toast("Error sending request to email");
         return;
       }
 
       const { message, success } = await response.json();
       if (success) {
-        console.log(message, " : ", success);
         toast(message.join(" "));
         return;
       }
       toast(message.join(" "));
     } catch (error) {
-      console.log("error from email page");
+      toast("Error sending request to email");
     }
   };
 

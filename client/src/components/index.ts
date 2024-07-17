@@ -7,10 +7,6 @@ import SideBar from "./SideBar/SideBar";
 import ComprehensiveSearch from "./ComprehensiveSearch/ComprehensiveSearch";
 import SignOutBtn from "./SignOutBtn/SignOut";
 import ProfilePhoto from "./ProfilePhoto/ProfilePhoto";
-// import MapController from "./MapController/MapController";
-// import SignOutBtn from "./SignOutBtn/SignOut";
-
-// import type { StarType, RemarkType } from "./DisplayHostels/DisplayHostels";
 
 export {
   RegisterBtn,
@@ -22,7 +18,4 @@ export {
   ComprehensiveSearch,
   SignOutBtn,
   ProfilePhoto,
-  // MapController,
-  // StarType,
-  // RemarkType,
 };

@@ -23,7 +23,6 @@ const aouthLogin = async () => {
 
 const isAuthenticated = async () => {
   const { credential_access_token, credential_refresh_token } = getToken();
-  // console.log(credential_access_token, "--:-- ", credential_refresh_token);
 
   try {
     const response = await fetch(
@@ -50,7 +49,6 @@ const isAuthenticated = async () => {
       await response.json();
 
     if (credential_access && credential_refresh) {
-      console.log(credential_access, " ==:== ", credential_refresh);
       window.localStorage.setItem("credential_access_token", credential_access);
       window.localStorage.setItem(
         "credential_refresh_token",
@@ -97,7 +95,6 @@ const signIn = async (body: { email: string; password: string }) => {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
-          "ngrok-skip-browswer-warning": "12345",
         }),
         credentials: "include",
         body: JSON.stringify(body),
@@ -117,7 +114,6 @@ const authUserProfile = async () => {
       {
         headers: new Headers({
           "Content-Type": "application/json",
-          // "ngrok-skip-browser-warning": "12345",
         }),
         credentials: "include",
       }

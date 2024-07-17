@@ -5,14 +5,16 @@ const UserInfo = () => {
   const getCookie = async () => {
     try {
       const response = await fetch(
-        "https://aae1-129-122-16-255.ngrok-free.app/api/test",
+        `${process.env.REACT_APP_LOCAL_HOST_SERVER}/api/test`,
         {
           credentials: "include",
         }
       );
       const data = await response.json();
       console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log("Error occur testing api");
+    }
   };
 
   return (

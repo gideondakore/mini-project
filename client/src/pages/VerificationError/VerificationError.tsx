@@ -3,7 +3,7 @@ import "./VerificationError.css";
 
 const VerificationError: React.FC = () => {
   const handleGoBack = () => {
-    window.location.href = "http://localhost:3000/register";
+    window.location.href = `${process.env.REACT_APP_LOCAL_HOST_CLIENT}/register`;
   };
   return (
     <div className="error-container">

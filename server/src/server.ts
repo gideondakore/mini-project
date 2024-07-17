@@ -139,7 +139,6 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     return res.status(500).send("Authentication failed");
   }
 });
-////////////////////////////////////////////////
 
 app.get("/api/test", async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refresh_token;
@@ -153,10 +152,8 @@ app.get(
   cookieVerificationAndRefresh,
   async (req: Request, res: Response) => {
     try {
-      // console.log("FROM DB: ", req.session.refreshToken);
       const { access_token } = req.cookies;
-      // console.log("ACCESS TOKEN FROM BROWSER: ", access_token);
-      // console.log("CONNECT-MONGO ID: ", req.session.id);
+
       const access_token_response = await verifyAccessToken(access_token);
       const response = access_token_response?.verify_access_token_response;
 
@@ -209,8 +206,6 @@ app.get("/user-profile", async (req: Request, res: Response) => {
   try {
     const { access_token } = req.cookies;
     const userProfile = await getUserProfile(access_token);
-    // console.log("Profile: ", userProfile);
-    // console.log("User Profile: ", userProfile);
 
     if (userProfile) {
       const { verify_access_token_data } = userProfile;
@@ -231,51 +226,37 @@ app.get("/user-profile", async (req: Request, res: Response) => {
 app.post("/credential-register", async (req: Request, res: Response) => {
   try {
     const body = req.body;
-    // console.log("BODY: ", body);
     const { fullname, email, birthDate, password, confirmPassword } = body;
     const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
     const validNameRegex =
       /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
     const validatedCredentials: string[] = [];
 
-    // console.log("Info: 1");
-    // console.log(password, " : ", confirmPassword);
     if (password && password === confirmPassword) {
       validatedCredentials.push(...checkPasswordValidity(password));
     } else {
       validatedCredentials.push("Valid passwords must be provided");
     }
 
-    // console.log("Info: 2");
     //Email verification
     if (email) {
       if (!validEmailRegex.test(email)) {
-        // console.log("Error--1");
         validatedCredentials.unshift("Invalid email");
       }
     } else {
-      // console.log("Error--2");
-
       validatedCredentials.unshift("Valid email must be provided");
     }
 
     //Name verification
     if (fullname) {
       if (!validNameRegex.test(fullname)) {
-        // console.log("Error--2");
-
         validatedCredentials.unshift(
           "Your full name must provided. e.g John Doe"
         );
       }
     } else {
-      // console.log("Error--3");
-
       validatedCredentials.unshift("Valid name must be provided");
     }
-
-    // console.log("Info: 3");
-    // console.log("Full Error messages: ", validatedCredentials);
 
     if (
       Array.isArray(validatedCredentials) &&
@@ -283,15 +264,11 @@ app.post("/credential-register", async (req: Request, res: Response) => {
     ) {
       const { message, success, user } = (await getUser(email))!;
 
-      // console.log("EMAIL: ", user);
-      // console.log("Info: 4");
-
       if (!success) {
         return res
           .status(201)
           .json({ message: message, success: success, user: user });
       }
-      // console.log("Info: 5");
 
       const hashedPassword = bcrypt.hashSync(password, 10);
       const dbUser = await User.create({
@@ -300,8 +277,6 @@ app.post("/credential-register", async (req: Request, res: Response) => {
         password: hashedPassword,
         birthday: birthDate,
       });
-
-      // console.log("Info: 6");
 
       req.session.user = {
         id: dbUser?._id,
@@ -316,18 +291,12 @@ app.post("/credential-register", async (req: Request, res: Response) => {
       };
 
       const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET as string;
-      // console.log("Info: 7");
 
       if (dbUser) {
         try {
           const accessToken = dbUser.generateToken();
           const refreshToken = jwt.sign(payload, jwtRefreshSecret);
-          // req.session.refreshToken = refreshToken;
 
-          // await mongoClient.connect();
-          // const db = mongoClient.db(dbName);
-          // const collection = db.collection(collectionName);
-          // await collection.insertOne({ data, token, createAt: new Date() });
           await mongoClient.connect();
           const dbSession = mongoClient.db(dbNameSession);
           const collectionSession = dbSession.collection(collectionNameSession);
@@ -345,18 +314,16 @@ app.post("/credential-register", async (req: Request, res: Response) => {
             credential_refresh_token: refreshToken,
           });
         } catch (error) {
-          console.log("Error occur while saving session data in mongo");
+          return res
+            .status(500)
+            .json({ message: ["Internal server error"], success: false });
         }
-
-        //Saving session in DB;
       }
-      // console.log("Info: 8");
 
       return res
         .status(500)
         .json({ message: ["Internal server error"], success: false });
     } else {
-      console.log("Big Error from Credential register: ");
       return res
         .status(203)
         .json({ message: validatedCredentials, success: false });
@@ -365,9 +332,7 @@ app.post("/credential-register", async (req: Request, res: Response) => {
     console.error("Error handling user credentials body!");
   }
 });
-/////////////////////////////////////////
 
-///////////////////////////////////////////////////////////
 app.post("/signin", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -448,7 +413,6 @@ app.get("/maps-api", async (req: Request, res: Response) => {
       `https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`
     );
 
-    // console.log("Response from Map API: ", response);
     res.setHeader("Content-Type", "text/javascript");
     res.send(response.data);
   } catch (error) {
@@ -475,13 +439,11 @@ app.post("/authenticate", async (req, res) => {
     return res.status(r.status).json(r.data);
   } catch (error) {
     console.log(error);
-    // return res.status(error?.response.status).json(error?.response.data);
   }
 });
 
 // Credential email verification
 
-////////////////////////
 app.post(
   "/api/send-verification-email",
   async (req: Request, res: Response) => {
@@ -495,8 +457,6 @@ app.post(
       };
       //Checking if email already exist
       const { message, success, user } = (await getUser(email))!;
-      // console.log("Info: 4");
-      console.log(message, " : ", " : ", success, " : ", user);
 
       if (!success) {
         return res
@@ -528,7 +488,6 @@ app.post(
           .json({ message: ["Failed to send the email!"], success: false });
       }
     } catch (error) {
-      console.log("Error occur", error);
       return res
         .status(500)
         .json({ message: ["Failed to send the email!"], success: false });
@@ -536,17 +495,12 @@ app.post(
   }
 );
 
-///////////////////////////////////////////////////
-
-//////////////////////////////////////////////////
-
 app.get("/api/verify-email", async (req: Request, res: Response) => {
   const token = req.query.token as string;
   const MAIL_TOKEN = process.env.MAIL_TOKEN as string;
 
-  // console.log("TOKEN DATA: ", token);
   try {
-    const verifyToken = jwt.verify(token, MAIL_TOKEN); // Verify JWT token
+    const verifyToken = jwt.verify(token, MAIL_TOKEN);
     if (!verifyToken) {
       return res.status(500).json({
         message: [
@@ -555,16 +509,13 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         success: false,
       });
     }
-    // console.log("+++TOKEN+++: 1", verifyToken);
-    await mongoClient.connect(); // Connect to MongoDB
+    await mongoClient.connect();
     const db = mongoClient.db(dbName);
     const collection = db.collection(collectionName);
     const verificationRecord = await collection.findOne({ token });
-    // console.log("+++TOKEN+++: 2", verifyToken);
 
     if (verificationRecord) {
       const { data } = verificationRecord;
-      // console.log("Verification: 3", data);
       const user_data = {
         fullname: data.fullname,
         email: data.email,
@@ -573,10 +524,9 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         confirmPassword: data.password,
       };
 
-      // console.log("===========Data==========: ", user_data);
       try {
         const response = await fetch(
-          "http://localhost:8000/credential-register",
+          `${process.env.LOCAL_HOST_SERVER}/credential-register`,
           {
             method: "POST",
             headers: {
@@ -588,14 +538,12 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
         );
 
         if (!response.ok) {
-          // Changed res.send(500) to res.status(500)
           return res.status(500).json({
             message: ["Ooops! error occur occur while registering!. Try again"],
             success: false,
           });
         }
 
-        // console.log("No error found: 1");
         const {
           message,
           success,
@@ -603,7 +551,6 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
           credential_refresh_token,
         } = await response.json();
 
-        // Changed res.send(200) to res.status(200)
         return res.status(200).json({
           message,
           success,
@@ -611,16 +558,12 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
           credential_refresh_token,
         });
       } catch (error) {
-        console.log("error", error);
-
-        // Changed res.send(500) to res.status(500)
         return res.status(500).json({
           message: ["Internal server error!. Try again"],
           success: false,
         });
       }
     } else {
-      // Changed res.send(500) to res.status(500)
       return res.status(500).json({
         message: [
           "Email verification failed, possibly the link is invalid or expired",
@@ -629,8 +572,6 @@ app.get("/api/verify-email", async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    console.log("Error verifying token: ", error);
-    // Changed res.send(500) to res.status(500)
     return res.status(500).json({
       message: ["Error verifying token"],
       success: false,
