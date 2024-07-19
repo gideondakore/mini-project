@@ -128,7 +128,7 @@
   width: 100%;
   text-align: center;
   position: relative;
-  /* margin: 0.8rem 0px 1rem 0px; */
+  margin: 0.8rem 0px 1rem 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -136,14 +136,11 @@
 
 .showMap button {
   background-color: var(--accent);
-  /* transform: translate(-50%, -50%); */
   height: 3rem;
-  /* width: 9rem; */
   width: auto;
   color: var(--fontColor);
   font-family: var(--fontFamily);
   font-size: 1.2rem;
-  /* font-weight: 600; */
   border-radius: 8px;
   border-style: solid;
   cursor: pointer;
