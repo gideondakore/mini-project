@@ -3,8 +3,6 @@
   flex-direction: column;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 10px rgba(95, 110, 245, 0.5);
-  /* box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04); */
   padding: 10px 0px 10px 0px;
   border-radius: 20px;
   gap: 1rem;
@@ -125,27 +123,27 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-origin: border-box;
-  /* background-attachment: fixed; */
   border-radius: 8px;
   height: 20rem;
   width: 100%;
   text-align: center;
   position: relative;
-  margin: 0.8rem 0px 1rem 0px;
+  /* margin: 0.8rem 0px 1rem 0px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .showMap button {
   background-color: var(--accent);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* transform: translate(-50%, -50%); */
   height: 3rem;
-  width: 9rem;
+  /* width: 9rem; */
+  width: auto;
   color: var(--fontColor);
   font-family: var(--fontFamily);
   font-size: 1.2rem;
-  font-weight: 600;
+  /* font-weight: 600; */
   border-radius: 8px;
   border-style: solid;
   cursor: pointer;

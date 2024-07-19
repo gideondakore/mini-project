@@ -265,7 +265,7 @@ const SideBar = ({
           </ul>
         )}
       </div>
-      <div style={{ paddingLeft: "2rem", paddingRight: "10px" }}>
+      <div>
         <p className="smart-map">Smart map</p>
         <div className="showMap">
           <button

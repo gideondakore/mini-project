@@ -10,8 +10,9 @@
   padding-top: 20px;
   display: flex;
   flex-direction: column;
-  width: 60rem;
+  width: auto;
   gap: 4rem;
+  width: 25%;
 }
 
 .site-icon--wrapper {
