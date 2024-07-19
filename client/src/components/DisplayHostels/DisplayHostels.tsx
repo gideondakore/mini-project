@@ -47,7 +47,7 @@ const DisplayHostels = ({
   rate,
   icon,
   categories,
-  user_review,
+  // user_review,
   distance,
   duration,
   lat,
@@ -117,22 +117,22 @@ const DisplayHostels = ({
     if (hostel) {
       const hostelsData: FormattedHostelsData = {
         name: hostel.name,
-        fulladdr: hostel.fulladdr,
-        categories: hostel.categories,
+        fulladdr: hostel.fulladdr as string,
+        categories: hostel.categories as string[],
         photos: hostel.photos as string[],
         distance: hostel.distance,
         duration: hostel.duration,
-        lat: hostel.lat,
-        lng: hostel.lng,
-        rating: hostel.rating,
-        reviews: hostel.reviews,
+        lat: hostel.lat as number,
+        lng: hostel.lng as number,
+        rating: hostel.rating as number,
+        reviews: hostel.reviews as number,
         reviews_by_person: hostel.reviews_by_person as Array<{
           [key: string]: string | number;
         }>,
         user_ratings_total: hostel.user_ratings_total,
-        vicinity: hostel.vicinity,
-        formatted_address: hostel.formatted_address,
-        icons: hostel.icon,
+        vicinity: hostel.vicinity as string,
+        formatted_address: hostel.formatted_address as string,
+        icons: hostel.icon as string,
       };
 
       dispatch(setHostelsDetailData(hostelsData));
@@ -223,7 +223,8 @@ const DisplayHostels = ({
                   Show on map
                 </Link>
               </div>
-              <div className="userReview">
+
+              {/* <div className="userReview">
                 <div className="testimony">
                   <div className="userPic">
                     <img
@@ -244,12 +245,12 @@ const DisplayHostels = ({
                     <p className="userName">{user_review.author_name}</p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="hostelInfo-review">
               <div className="hostelInfo-review--rate">
-                <h2 style={{ height: "10%" }}>Services Include</h2>
+                <h4 style={{ height: "10%" }}>Services Include</h4>
                 <ul className="serviceInclude">
                   {categories.map((category, index) => {
                     return (

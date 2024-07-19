@@ -615,6 +615,7 @@ const Directions = () => {
     dispatch,
     liveLocation,
     currentUserPosition,
+    hostelOrCollegeLiveLocation,
   ]);
 
   useEffect(() => {
