@@ -32,7 +32,6 @@ const mongoUserDbConnect_1 = __importDefault(require("../utils/mongoUserDbConnec
 const UserSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
-        unique: true,
         trim: true,
         required: [true, "Please provide a name"],
         minlength: 3,

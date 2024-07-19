@@ -15,15 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const verifyAccessToken_1 = __importDefault(require("./verifyAccessToken"));
 const tokenRefresh_1 = __importDefault(require("./tokenRefresh"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-//session validation using cookies
+const mongodb_1 = require("mongodb");
+const mongoClient = new mongodb_1.MongoClient("mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/?retryWrites=true&w=majority&appName=merncrud");
 const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const dbNameSession = "SessionVerification";
+    const collectionNameSession = "userSessionVerification";
     try {
         const accessToken = req.cookies.access_token;
         const refreshToken = req.cookies.refresh_token;
         const authHeader = req.headers["authorization"];
         const tokens = authHeader && authHeader.split(" ")[1].split(",");
-        const credential_access_token = tokens === null || tokens === void 0 ? void 0 : tokens.at(0);
-        const credential_refresh_token = tokens === null || tokens === void 0 ? void 0 : tokens.at(1);
+        const credential_access_token = (_a = tokens === null || tokens === void 0 ? void 0 : tokens.at(0)) === null || _a === void 0 ? void 0 : _a.trim();
+        const credential_refresh_token = (_b = tokens === null || tokens === void 0 ? void 0 : tokens.at(1)) === null || _b === void 0 ? void 0 : _b.trim();
         if (accessToken || refreshToken) {
             const verify_access_token = yield (0, verifyAccessToken_1.default)(accessToken);
             const verify_access_token_response = verify_access_token === null || verify_access_token === void 0 ? void 0 : verify_access_token.verify_access_token_response;
@@ -62,17 +66,18 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
             return next();
         }
         else {
+            //Credential Verification logic
             if (credential_access_token !== "null" &&
                 credential_refresh_token !== "null") {
                 try {
                     let decodeStateAcess = false;
-                    // let decodeStateRefresh: boolean = false;
-                    jsonwebtoken_1.default.verify(credential_access_token === null || credential_access_token === void 0 ? void 0 : credential_access_token.trim(), process.env.JWT_ACCESS_TOKEN_SECRET, (error) => {
+                    jsonwebtoken_1.default.verify(credential_refresh_token === null || credential_refresh_token === void 0 ? void 0 : credential_refresh_token.trim(), process.env.JWT_REFRESH_TOKEN_SECRET, (error) => {
                         if (error) {
-                            return;
+                            decodeStateAcess = false;
                         }
-                        decodeStateAcess = true;
-                        return;
+                        else {
+                            decodeStateAcess = true;
+                        }
                     });
                     if (decodeStateAcess) {
                         return res.status(200).json({
@@ -81,47 +86,84 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
                             status: 200,
                         });
                     }
-                    if (credential_refresh_token === req.session.refreshToken) {
-                        jsonwebtoken_1.default.verify(credential_refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, user) => {
-                            if (err) {
-                                return res.status(403).json({
-                                    authenticated: false,
-                                    message: "Invalid token!",
-                                    status: 403,
+                    try {
+                        yield mongoClient.connect();
+                        const db = mongoClient.db(dbNameSession);
+                        const collection = db.collection(collectionNameSession);
+                        const result = yield collection.findOne({
+                            access_token: credential_access_token,
+                            refresh_token: credential_refresh_token,
+                        });
+                        if (result) {
+                            const { access_token, refresh_token, payload } = result;
+                            if (credential_refresh_token === refresh_token) {
+                                let session_bool = false;
+                                let jsonValue;
+                                jsonwebtoken_1.default.verify(credential_refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET, (err, user) => {
+                                    if (err) {
+                                        session_bool = false;
+                                    }
+                                    jsonValue = user;
+                                    session_bool = true;
+                                });
+                                if (!session_bool) {
+                                    return res.status(403).json({
+                                        authenticated: false,
+                                        message: "Invalid token!",
+                                        status: 403,
+                                    });
+                                }
+                                if (typeof jsonValue === "string") {
+                                    return res.status(500).json({
+                                        authenticated: false,
+                                        message: "Invalid token payload!",
+                                        status: 500,
+                                    });
+                                }
+                                const new_access_token = jsonwebtoken_1.default.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_LIFETIME });
+                                const new_refresh_token = jsonwebtoken_1.default.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
+                                const filter = {
+                                    access_token: access_token,
+                                    refresh_token: refresh_token,
+                                };
+                                const update = {
+                                    $set: {
+                                        access_token: new_access_token,
+                                        refresh_token: new_refresh_token,
+                                        payload: payload,
+                                        updateAt: new Date(),
+                                    },
+                                };
+                                collection.findOneAndUpdate(filter, update);
+                                return res.status(200).json({
+                                    authenticated: true,
+                                    message: "success",
+                                    status: 200,
+                                    credential_access_token: req.session.accessToken,
+                                    credential_refresh_token: req.session.refreshToken,
                                 });
                             }
-                            if (typeof user === "string") {
-                                return res.status(500).json({
+                            else {
+                                return res.status(401).json({
                                     authenticated: false,
-                                    message: "Invalid token payload!",
-                                    status: 500,
+                                    message: "No valid token provided",
+                                    status: 401,
                                 });
                             }
-                            const payload = {
-                                id: user === null || user === void 0 ? void 0 : user.id,
-                                email: user === null || user === void 0 ? void 0 : user.email,
-                                name: user === null || user === void 0 ? void 0 : user.name,
-                            };
-                            const new_access_token = jsonwebtoken_1.default.sign(payload, process.env.JWT_ACCESS_TOKEN_SECRET, { expiresIn: process.env.JWT_LIFETIME });
-                            const new_refresh_token = jsonwebtoken_1.default.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
-                            req.session.refreshToken = new_refresh_token;
-                            req.session.accessToken = new_access_token;
-                            // decodeStateRefresh = true;
-                            return;
-                        });
-                        return res.status(200).json({
-                            authenticated: true,
-                            message: "success",
-                            status: 200,
-                            credential_access: req.session.accessToken,
-                            credential_refresh: req.session.refreshToken,
-                        });
+                        }
+                        else {
+                            return res.status(401).json({
+                                authenticated: false,
+                                message: "No valid token provided",
+                                status: 401,
+                            });
+                        }
                     }
-                    else {
-                        return res.status(401).json({
+                    catch (error) {
+                        return res.status(403).json({
                             authenticated: false,
-                            message: "No valid token provided",
-                            status: 401,
+                            message: "Invalid token!",
+                            status: 403,
                         });
                     }
                 }
@@ -144,7 +186,10 @@ const cookieVerificationAndRefresh = (req, res, next) => __awaiter(void 0, void 
         }
     }
     catch (error) {
-        console.error(`Error occur in the Middle ware: ${error}`);
+        console.error(`Error occur in the Middleware: ${error}`);
+        return res
+            .status(500)
+            .json({ message: "Internal server error", status: 500 });
     }
 });
 exports.default = cookieVerificationAndRefresh;

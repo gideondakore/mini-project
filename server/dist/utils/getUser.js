@@ -12,19 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import express, { Request, Response } from "express";
 const user_model_1 = __importDefault(require("../models/user.model"));
-const getUser = (email, name) => __awaiter(void 0, void 0, void 0, function* () {
+const getUser = (email) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield user_model_1.default.findOne({ email }).select("-password");
         if (user) {
             return {
-                message: [`User with the same name ${name} and email '${email}' exist`],
+                message: [
+                    `User with the same email '${email}' exist. You can proceed to signin.`,
+                ],
                 success: false,
                 user: user,
             };
         }
-        return { message: "User not found", success: true, user: user };
+        return { message: ["User not found"], success: true, user: user };
     }
     catch (error) {
         console.error(`Error occur accessing user from database`);

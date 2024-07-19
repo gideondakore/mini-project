@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const checkPasswordValidity = (passWord) => {
-    // const validatePasssword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
     const errors = [];
     const isNonWhiteSpace = /^\S*$/;
     if (!isNonWhiteSpace.test(passWord)) {

@@ -51,8 +51,12 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const axios_1 = __importDefault(require("axios"));
+// import nodemailer from "nodemailer";
 // import { Server } from "socket.io";
 // import { createServer } from "http";
+const mail_1 = __importDefault(require("./utils/mail"));
+const mongodb_1 = require("mongodb");
+// const MongoStore = require(‘connect-mongo’)(session);
 dotenv.config();
 const corsOptions = {
     origin: `${process.env.LOCAL_HOST_CLIENT}`,
@@ -73,10 +77,17 @@ app.use((0, express_session_1.default)({
         mongoUrl: "mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/sessionStore?retryWrites=true&w=majority&appName=merncrud",
     }),
     cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
     },
 }));
+const mongoClient = new mongodb_1.MongoClient("mongodb+srv://zedcurl1:8vu3UFpUsknGZbr2@merncrud.h6dnvjx.mongodb.net/?retryWrites=true&w=majority&appName=merncrud");
+//Token verification
+const dbName = "CredentialEmailVerification";
+const collectionName = "userEmailVerificationData";
+//Session Verification
+const dbNameSession = "SessionVerification";
+const collectionNameSession = "userSessionVerification";
 // const ngrok_forward_uri = "https://1e3d-154-161-15-37.ngrok-free.app";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -125,7 +136,6 @@ app.get("/google/callback", (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(500).send("Authentication failed");
     }
 }));
-////////////////////////////////////////////////
 app.get("/api/test", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const refreshToken = req.cookies.refresh_token;
     const accessToken = req.cookies.access_token;
@@ -180,22 +190,28 @@ app.get("/user-profile", (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { access_token } = req.cookies;
         const userProfile = yield (0, getUserProfile_1.default)(access_token);
-        const { verify_access_token_data } = userProfile;
-        const { email } = verify_access_token_data;
-        const user = yield user_model_1.default.findOne({ email: email }).select("-password");
-        res.status(200).json({ user: user });
+        if (userProfile) {
+            const { verify_access_token_data } = userProfile;
+            const { email } = verify_access_token_data;
+            const user = yield user_model_1.default.findOne({ email: email }).select("-password");
+            res.status(200).json({ user: user });
+        }
+        else {
+            res.status(400).json({ user: "no profile provided" });
+        }
     }
     catch (error) {
         console.error("Error occur in user-profile response handler");
     }
 }));
 //////////////////// CREDENTIALS FUNCTIONALITY ////////////////////////
-//Credential login
+////Credential login
 app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const body = req.body;
         const { fullname, email, birthDate, password, confirmPassword } = body;
         const validEmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
+        const validNameRegex = /^[A-Za-z]+(?:[-'\s][A-Za-z]+)* [A-Za-z]+(?:[-'\s][A-Za-z]+)*$/;
         const validatedCredentials = [];
         if (password && password === confirmPassword) {
             validatedCredentials.push(...(0, checkPasswordValidity_1.default)(password));
@@ -203,6 +219,7 @@ app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0,
         else {
             validatedCredentials.push("Valid passwords must be provided");
         }
+        //Email verification
         if (email) {
             if (!validEmailRegex.test(email)) {
                 validatedCredentials.unshift("Invalid email");
@@ -211,9 +228,18 @@ app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0,
         else {
             validatedCredentials.unshift("Valid email must be provided");
         }
+        //Name verification
+        if (fullname) {
+            if (!validNameRegex.test(fullname)) {
+                validatedCredentials.unshift("Your full name must provided. e.g John Doe");
+            }
+        }
+        else {
+            validatedCredentials.unshift("Valid name must be provided");
+        }
         if (Array.isArray(validatedCredentials) &&
             validatedCredentials.length === 0) {
-            const { message, success, user } = (yield (0, getUser_1.default)(email, fullname));
+            const { message, success, user } = (yield (0, getUser_1.default)(email));
             if (!success) {
                 return res
                     .status(201)
@@ -238,19 +264,39 @@ app.post("/credential-register", (req, res) => __awaiter(void 0, void 0, void 0,
             };
             const jwtRefreshSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
             if (dbUser) {
-                const accessToken = dbUser.generateToken();
-                const refreshToken = jsonwebtoken_1.default.sign(payload, jwtRefreshSecret);
-                req.session.refreshToken = refreshToken;
-                return res.status(200).json({
-                    message: [message],
-                    success: success,
-                    credential_access_token: accessToken,
-                    credential_refresh_token: refreshToken,
-                });
+                try {
+                    const accessToken = dbUser.generateToken();
+                    const refreshToken = jsonwebtoken_1.default.sign(payload, jwtRefreshSecret);
+                    yield mongoClient.connect();
+                    const dbSession = mongoClient.db(dbNameSession);
+                    const collectionSession = dbSession.collection(collectionNameSession);
+                    yield collectionSession.insertOne({
+                        access_token: accessToken,
+                        refresh_token: refreshToken,
+                        payload,
+                        createAt: new Date(),
+                    });
+                    return res.status(200).json({
+                        message: ["User have been succefully registered"],
+                        success: true,
+                        credential_access_token: accessToken,
+                        credential_refresh_token: refreshToken,
+                    });
+                }
+                catch (error) {
+                    return res
+                        .status(500)
+                        .json({ message: ["Internal server error"], success: false });
+                }
             }
             return res
                 .status(500)
                 .json({ message: ["Internal server error"], success: false });
+        }
+        else {
+            return res
+                .status(203)
+                .json({ message: validatedCredentials, success: false });
         }
     }
     catch (error) {
@@ -275,6 +321,7 @@ app.post("/signin", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 req.session.refreshToken = new_refresh_token;
                 req.session.accessToken = new_access_token;
                 return res.status(200).json({
+                    name: user.name,
                     message: ["Sign in successful"],
                     success: true,
                     status: 200,
@@ -325,7 +372,6 @@ const apiKey = process.env.GOOGLE_MAPS_API_KEY;
 app.get("/maps-api", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(`https://maps.googleapis.com/maps/api/js?key=${apiKey}&loading=async`);
-        // console.log("Response from Map API: ", response);
         res.setHeader("Content-Type", "text/javascript");
         res.send(response.data);
     }
@@ -348,10 +394,128 @@ app.post("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
     catch (error) {
         console.log(error);
-        // return res.status(error?.response.status).json(error?.response.data);
     }
 }));
-const PORT = process.env.PORT || 5500;
+// Credential email verification
+app.post("/api/send-verification-email", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { fullname, email, birthDate, password } = req.body;
+        const data = {
+            fullname,
+            email: email,
+            birth_day: birthDate,
+            password: password,
+        };
+        //Checking if email already exist
+        const { message, success, user } = (yield (0, getUser_1.default)(email));
+        if (!success) {
+            return res
+                .status(201)
+                .json({ message: message, success: success, user: user });
+        }
+        const { tempData, token } = yield (0, mail_1.default)(email, password);
+        if (token && tempData) {
+            //Mongodb connection
+            try {
+                yield mongoClient.connect();
+                const db = mongoClient.db(dbName);
+                const collection = db.collection(collectionName);
+                yield collection.insertOne({ data, token, createAt: new Date() });
+                return res
+                    .status(200)
+                    .json({ message: ["Email send successfully!"], success: true });
+            }
+            catch (error) {
+                return res
+                    .status(500)
+                    .json({ message: ["Internal server error!"], success: true });
+            }
+        }
+        else {
+            return res
+                .status(500)
+                .json({ message: ["Failed to send the email!"], success: false });
+        }
+    }
+    catch (error) {
+        return res
+            .status(500)
+            .json({ message: ["Failed to send the email!"], success: false });
+    }
+}));
+app.get("/api/verify-email", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.query.token;
+    const MAIL_TOKEN = process.env.MAIL_TOKEN;
+    try {
+        const verifyToken = jsonwebtoken_1.default.verify(token, MAIL_TOKEN);
+        if (!verifyToken) {
+            return res.status(500).json({
+                message: [
+                    "Email verification failed, possibly the link is invalid or expired",
+                ],
+                success: false,
+            });
+        }
+        yield mongoClient.connect();
+        const db = mongoClient.db(dbName);
+        const collection = db.collection(collectionName);
+        const verificationRecord = yield collection.findOne({ token });
+        if (verificationRecord) {
+            const { data } = verificationRecord;
+            const user_data = {
+                fullname: data.fullname,
+                email: data.email,
+                birthDay: data.birth_day,
+                password: data.password,
+                confirmPassword: data.password,
+            };
+            try {
+                const response = yield fetch(`${process.env.LOCAL_HOST_SERVER}/credential-register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(user_data),
+                    credentials: "include",
+                });
+                if (!response.ok) {
+                    return res.status(500).json({
+                        message: ["Ooops! error occur occur while registering!. Try again"],
+                        success: false,
+                    });
+                }
+                const { message, success, credential_access_token, credential_refresh_token, } = yield response.json();
+                return res.status(200).json({
+                    message,
+                    success,
+                    credential_access_token,
+                    credential_refresh_token,
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: ["Internal server error!. Try again"],
+                    success: false,
+                });
+            }
+        }
+        else {
+            return res.status(500).json({
+                message: [
+                    "Email verification failed, possibly the link is invalid or expired",
+                ],
+                success: false,
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: ["Error verifying token"],
+            success: false,
+        });
+    }
+}));
+const PORT = process.env.PORT || 4000;
 const start = (port) => {
     app.listen(port, () => {
         console.log(`Listening on port ${port}`);
