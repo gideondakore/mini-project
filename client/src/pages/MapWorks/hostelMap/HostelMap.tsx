@@ -726,22 +726,24 @@ const Places = ({ points }: Prop) => {
   //   (async () => {
   //     const gallery = await Promise.all(
   //       detailMapData.map((id) => {
-  //         const url = fetchPhotos(placesService, id.place_id as string);
-  //         const response = url
-  //           .then((data) => {
-  //             const galleryObj = {
-  //               name: id.name,
-  //               photos: data,
-  //               place_id: id.place_id,
-  //             };
+  //         if (id.place_id) {
+  //           const url = fetchPhotos(placesService, id.place_id as string);
+  //           const response = url
+  //             .then((data) => {
+  //               const galleryObj = {
+  //                 name: id.name,
+  //                 photos: data,
+  //                 place_id: id.place_id,
+  //               };
 
-  //             return galleryObj;
-  //           })
-  //           .catch((err) => {
-  //             console.error("Error photo: ", err);
-  //           });
+  //               return galleryObj;
+  //             })
+  //             .catch((err) => {
+  //               console.error("Error photo: ", err);
+  //             });
 
-  //         return response;
+  //           return response;
+  //         }
   //       })
   //     );
 

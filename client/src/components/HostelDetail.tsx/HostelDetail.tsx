@@ -262,37 +262,39 @@ const HostelDetail = () => {
         </div>
         <div className="testimonial-box-container">
           {hostelDetailData.reviews_by_person &&
-            hostelDetailData.reviews_by_person.map((user, index) => {
-              const timestamp = user.time as number;
-              const date = new Date(timestamp * 1000);
-              return (
-                <div className="testimonial-box" key={index}>
-                  <div className="box-top">
-                    <div className="profile">
-                      <div className="profile-img">
-                        <img
-                          src={user.profile_photo_url as string}
-                          alt="hostel"
-                        />
+            hostelDetailData.reviews_by_person
+              .sort((a, b) => +b.time - +a.time)
+              .map((user, index) => {
+                const timestamp = user.time as number;
+                const date = new Date(timestamp * 1000);
+                return (
+                  <div className="testimonial-box" key={index}>
+                    <div className="box-top">
+                      <div className="profile">
+                        <div className="profile-img">
+                          <img
+                            src={user.profile_photo_url as string}
+                            alt="hostel"
+                          />
+                        </div>
+                        <div className="name-user">
+                          <strong>{user.name}</strong>
+                          <span>{user.relative_time_description}</span>
+                        </div>
                       </div>
-                      <div className="name-user">
-                        <strong>{user.name}</strong>
-                        <span>{user.relative_time_description}</span>
+                      <div className="reviews">
+                        <p>{starRate({ rating: user.rating as number })}</p>
                       </div>
                     </div>
-                    <div className="reviews">
-                      <p>{starRate({ rating: user.rating as number })}</p>
+                    <div className="client-comment">
+                      <p>{user.text}</p>
+                    </div>
+                    <div className="comment-date">
+                      <p>Date: {date.toUTCString()}</p>
                     </div>
                   </div>
-                  <div className="client-comment">
-                    <p>{user.text}</p>
-                  </div>
-                  <div className="comment-date">
-                    <p>Date: {date.toUTCString()}</p>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
         </div>
       </div>
 
