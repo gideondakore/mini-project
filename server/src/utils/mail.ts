@@ -32,11 +32,13 @@ interface SendMailResult {
   token: string;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
+
 const sendMail = async (
   email: string,
   password: string
 ): Promise<SendMailResult> => {
   const MAIL_TOKEN = process.env.MAIL_TOKEN as string;
+
   const auth = {
     host: "smtp.gmail.com",
     port: 587,
@@ -53,58 +55,61 @@ const sendMail = async (
     expiresIn: "24h",
   });
 
-  const templatePath = path.join(__dirname, "emailTemplate.html");
-  const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
+  const templatePath = path.resolve(__dirname, "emailTemplate.html");
 
-  // const htmlContent = htmlTemplate.replace("{{token}}", token);
-  const client = process.env.LOCAL_HOST_CLIENT as string;
+  try {
+    const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
 
-  const htmlContent = htmlTemplate
-    .replace("{{client}}", client)
-    .replace("{{token}}", token);
+    const client = process.env.LOCAL_HOST_CLIENT as string;
 
-  const mailOption = {
-    from: "armstrongspycon27@gmail.com",
-    to: email,
-    subject: "Welcome to Duplex",
-    html: htmlContent,
-  };
+    const htmlContent = htmlTemplate
+      .replace("{{client}}", client)
+      .replace("{{token}}", token);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  let tempData: any;
-  /* eslint-enable @typescript-eslint/no-explicit-any */
+    const mailOption = {
+      from: "armstrongspycon27@gmail.com",
+      to: email,
+      subject: "Welcome to Duplex",
+      html: htmlContent,
+    };
 
-  let attempts = 0;
-  const maxAttempts = 5;
-  const retryDelay = (attempt: number) => Math.pow(2, attempt) * 1000;
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    let tempData: any;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+    let attempts = 0;
+    const maxAttempts = 5;
+    const retryDelay = (attempt: number) => Math.pow(2, attempt) * 1000;
 
-  const sendMailWithRetry = (): Promise<SendMailResult> => {
-    return new Promise((resolve, reject) => {
-      const attemptSendMail = () => {
-        transporter.sendMail(mailOption, (error, data) => {
-          if (error) {
-            if (attempts < maxAttempts) {
-              attempts++;
-              console.log(
-                `Attempt ${attempts} failed. Retrying in ${retryDelay(attempts)} ms...`
-              );
-              setTimeout(attemptSendMail, retryDelay(attempts));
+    const sendMailWithRetry = (): Promise<SendMailResult> => {
+      return new Promise((resolve, reject) => {
+        const attemptSendMail = () => {
+          transporter.sendMail(mailOption, (error, data) => {
+            if (error) {
+              if (attempts < maxAttempts) {
+                attempts++;
+                console.log(
+                  `Attempt ${attempts} failed. Retrying in ${retryDelay(attempts)} ms...`
+                );
+                setTimeout(attemptSendMail, retryDelay(attempts));
+              } else {
+                tempData = undefined;
+                reject({ tempData, token });
+              }
             } else {
-              tempData = undefined;
-              console.log("Error :", error);
-              reject({ tempData, token });
+              tempData = data;
+              resolve({ tempData, token });
             }
-          } else {
-            tempData = data;
-            resolve({ tempData, token });
-          }
-        });
-      };
-      attemptSendMail();
-    });
-  };
+          });
+        };
+        attemptSendMail();
+      });
+    };
 
-  return sendMailWithRetry();
+    return sendMailWithRetry();
+  } catch (error) {
+    console.error("Error reading email template:", error);
+    throw error;
+  }
 };
 
 export default sendMail;

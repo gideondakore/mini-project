@@ -407,38 +407,48 @@ app.post("/api/send-verification-email", (req, res) => __awaiter(void 0, void 0,
             birth_day: birthDate,
             password: password,
         };
+        console.log("1st log: ", data);
         //Checking if email already exist
         const { message, success, user } = (yield (0, getUser_1.default)(email));
+        console.log("2nd log: ", message, " : ", success, " : ", user);
         if (!success) {
             return res
                 .status(201)
                 .json({ message: message, success: success, user: user });
         }
+        console.log("2nd loggy: ", message, " : ", success, " : ", user);
         const { tempData, token } = yield (0, mail_1.default)(email, password);
+        console.log("3rd log: ", tempData, " : ", token);
         if (token && tempData) {
+            console.log("4th log: ", tempData, " : ", token);
             //Mongodb connection
             try {
+                console.log("5th log: ", tempData, " : ", token);
                 yield mongoClient.connect();
                 const db = mongoClient.db(dbName);
                 const collection = db.collection(collectionName);
                 yield collection.insertOne({ data, token, createAt: new Date() });
+                console.log("6th log: ", collection);
                 return res
                     .status(200)
                     .json({ message: ["Email send successfully!"], success: true });
             }
             catch (error) {
+                console.log("7th log: ");
                 return res
                     .status(500)
                     .json({ message: ["Internal server error!"], success: true });
             }
         }
         else {
+            console.log("8th log: ");
             return res
                 .status(500)
                 .json({ message: ["Failed to send the email!"], success: false });
         }
     }
     catch (error) {
+        console.log("9th log: ");
         return res
             .status(500)
             .json({ message: ["Failed to send the email!"], success: false });
