@@ -42,10 +42,13 @@ const sendMail = async (
   const auth = {
     host: "smtp.gmail.com",
     port: 587,
-    secure: process.env.NODE_ENV === "production",
+    secure: false,
     auth: {
       user: "armstrongspycon27@gmail.com",
       pass: process.env.GMAIL_APP_PASSWORD,
+    },
+    tls: {
+      ciphers: "SSLv3",
     },
   };
 
