@@ -32,7 +32,7 @@ export default {
       patterns: [
         {
           from: "src/utils/emailTemplate.html",
-          to: "utils/emailTemplate.html",
+          to: "emailTemplate.html",
         },
       ],
     }),
