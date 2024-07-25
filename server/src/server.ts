@@ -430,9 +430,10 @@ app.post("/authenticate", async (req, res) => {
       {
         username: username,
         secret: username,
+        first_name: username,
       },
       {
-        headers: { "private-key": process.env.CHAT_ENGINE_IO_SECRET },
+        headers: { "Private-Key": process.env.CHAT_ENGINE_IO_SECRET },
       }
     );
 
