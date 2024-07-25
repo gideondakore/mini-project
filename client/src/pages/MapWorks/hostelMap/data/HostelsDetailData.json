@@ -14803,16 +14803,5 @@
       "text": "1 hour 55 mins",
       "value": 6919
     }
-  },
-  {
-    "name": "Rasayan Vidhya",
-    "distance": {
-      "text": "11,743 km",
-      "value": 11743148
-    },
-    "duration": {
-      "text": "109 days 15 hours",
-      "value": 9472807
-    }
   }
 ]
