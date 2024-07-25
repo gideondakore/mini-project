@@ -47,7 +47,7 @@ const App = () => {
         <Route path="verification-error" element={<VerificationError />} />
         <Route path="email-sent" element={<EmailSentPage />} />
       </Routes>
-      <Analytics />
+      <Analytics debug={false} />
     </>
   );
 };
