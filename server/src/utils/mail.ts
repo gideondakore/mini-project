@@ -84,6 +84,7 @@ const sendMail = async (
       return new Promise((resolve, reject) => {
         const attemptSendMail = () => {
           transporter.sendMail(mailOption, (error, data) => {
+            console.log("Error: ", error, " : ", "Data: ", data);
             if (error) {
               if (attempts < maxAttempts) {
                 attempts++;
@@ -96,6 +97,7 @@ const sendMail = async (
                 reject({ tempData, token });
               }
             } else {
+              console.log("error, ", error);
               tempData = data;
               resolve({ tempData, token });
             }
