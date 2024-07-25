@@ -36,7 +36,7 @@ const sendMail = (email, password) => __awaiter(void 0, void 0, void 0, function
     const auth = {
         host: "smtp.gmail.com",
         port: 587,
-        secure: false,
+        secure: process.env.NODE_ENV === "production",
         auth: {
             user: "armstrongspycon27@gmail.com",
             pass: process.env.GMAIL_APP_PASSWORD,

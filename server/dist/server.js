@@ -387,8 +387,9 @@ app.post("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, functi
         const r = yield axios_1.default.put("https://api.chatengine.io/users/", {
             username: username,
             secret: username,
+            first_name: username,
         }, {
-            headers: { "private-key": process.env.CHAT_ENGINE_IO_SECRET },
+            headers: { "Private-Key": process.env.CHAT_ENGINE_IO_SECRET },
         });
         return res.status(r.status).json(r.data);
     }

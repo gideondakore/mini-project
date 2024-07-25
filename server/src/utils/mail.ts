@@ -40,7 +40,7 @@ const sendMail = async (
   const auth = {
     host: "smtp.gmail.com",
     port: 587,
-    secure: false,
+    secure: process.env.NODE_ENV === "production",
     auth: {
       user: "armstrongspycon27@gmail.com",
       pass: process.env.GMAIL_APP_PASSWORD,
@@ -57,8 +57,7 @@ const sendMail = async (
   const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
 
   // const htmlContent = htmlTemplate.replace("{{token}}", token);
-  const client =
-    process.env.LOCAL_HOST_CLIENT || "https://mini-project-gid.vercel.app";
+  const client = process.env.LOCAL_HOST_CLIENT as string;
 
   const htmlContent = htmlTemplate
     .replace("{{client}}", client)
