@@ -422,8 +422,37 @@ app.get("/maps-api", async (req: Request, res: Response) => {
 });
 
 //CHATENGINE.IO
+// app.post("/authenticate", async (req, res) => {
+//   const { username } = req.body;
+//   try {
+//     const r = await axios.put(
+//       "https://api.chatengine.io/users/",
+//       {
+//         username: username,
+//         secret: username,
+//         first_name: username,
+//       },
+//       {
+//         headers: { "Private-Key": process.env.CHAT_ENGINE_IO_SECRET },
+//       }
+//     );
+
+//     return res.status(r.status).json(r.data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
 app.post("/authenticate", async (req, res) => {
   const { username } = req.body;
+  const privateKey = process.env.CHAT_ENGINE_IO_SECRET?.trim();
+
+  if (!privateKey) {
+    return res
+      .status(500)
+      .json({ error: "CHAT_ENGINE_IO_SECRET is not set or invalid" });
+  }
+
   try {
     const r = await axios.put(
       "https://api.chatengine.io/users/",
@@ -433,13 +462,14 @@ app.post("/authenticate", async (req, res) => {
         first_name: username,
       },
       {
-        headers: { "Private-Key": process.env.CHAT_ENGINE_IO_SECRET },
+        headers: { "Private-Key": privateKey },
       }
     );
 
     return res.status(r.status).json(r.data);
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({ error: "Error authenticating user" });
   }
 });
 
