@@ -64,7 +64,6 @@ const sendMail = async (
       : path.join(__dirname, "emailTemplate.html");
 
   try {
-    console.log("Dir name: ", path.join(__dirname, "/emailTemplate.html"));
     const htmlTemplate = fs.readFileSync(templatePath, "utf-8");
 
     const client = process.env.LOCAL_HOST_CLIENT as string;

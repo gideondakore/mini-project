@@ -422,31 +422,9 @@ app.get("/maps-api", async (req: Request, res: Response) => {
 });
 
 //CHATENGINE.IO
-// app.post("/authenticate", async (req, res) => {
-//   const { username } = req.body;
-//   try {
-//     const r = await axios.put(
-//       "https://api.chatengine.io/users/",
-//       {
-//         username: username,
-//         secret: username,
-//         first_name: username,
-//       },
-//       {
-//         headers: { "Private-Key": process.env.CHAT_ENGINE_IO_SECRET },
-//       }
-//     );
-
-//     return res.status(r.status).json(r.data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 app.post("/authenticate", async (req, res) => {
   const { username } = req.body;
   const privateKey = process.env.CHAT_ENGINE_IO_SECRET?.trim();
-  console.log("CHAT_ENGINE_IO_SECRET: ", privateKey);
 
   if (!privateKey) {
     return res
