@@ -602,7 +602,7 @@ const Home = () => {
                   handleCardMomo={handleCardMomo}
                 />
                 <div className="contacts-btns">
-                  <Link title="Call available hostels managers" to="/contacts">
+                  <Link title="Call available hostels managers" to="/contact">
                     <IoCall size={50} />
                   </Link>
                   <Link title="Real time chat with hostels managers" to="/chat">
