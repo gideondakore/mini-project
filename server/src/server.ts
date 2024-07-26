@@ -446,6 +446,7 @@ app.get("/maps-api", async (req: Request, res: Response) => {
 app.post("/authenticate", async (req, res) => {
   const { username } = req.body;
   const privateKey = process.env.CHAT_ENGINE_IO_SECRET?.trim();
+  console.log("CHAT_ENGINE_IO_SECRET: ", privateKey);
 
   if (!privateKey) {
     return res
