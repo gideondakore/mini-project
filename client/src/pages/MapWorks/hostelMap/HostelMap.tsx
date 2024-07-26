@@ -248,7 +248,7 @@ const HostelMap = () => {
             </button>
           </div>
         </MapControl>
-        <MapControl position={ControlPosition.BLOCK_START_INLINE_CENTER}>
+        <MapControl position={ControlPosition.BOTTOM_RIGHT}>
           <div
             style={{
               backgroundColor: "red",
@@ -861,7 +861,7 @@ const Places = ({ points }: Prop) => {
         <div
           style={{
             height: "auto",
-            width: "20rem",
+            width: "auto",
             zIndex: "100",
             marginTop: "10px",
           }}
