@@ -220,7 +220,7 @@ const HostelMap = () => {
             <p style={{ fontWeight: "bold", fontSize: "1rem" }}>Duplex</p>
           </div>
         </MapControl>
-        <MapControl position={ControlPosition.BLOCK_START_INLINE_END}>
+        <MapControl position={ControlPosition.INLINE_START_BLOCK_END}>
           <div
             style={{
               backgroundColor: "red",
@@ -248,7 +248,7 @@ const HostelMap = () => {
             </button>
           </div>
         </MapControl>
-        <MapControl position={ControlPosition.BOTTOM_RIGHT}>
+        <MapControl position={ControlPosition.INLINE_START_BLOCK_END}>
           <div
             style={{
               backgroundColor: "red",
