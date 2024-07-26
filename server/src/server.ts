@@ -77,76 +77,22 @@ const GOOGLE_ACCESS_TOKEN_URL = process.env.GOOGLE_ACCESS_TOKEN_URL as string;
 const GOOGLE_TOKEN_INFO_URL = process.env.GOOGLE_TOKEN_INFO_URL as string;
 const FRONTEND_URL = `${process.env.LOCAL_HOST_CLIENT}`;
 
-//Google  Oauth call back url
-// app.get("/google/callback", async (req: Request, res: Response) => {
-//   interface GoogleOAuthData {
-//     code: string;
-//     client_id: string;
-//     client_secret: string;
-//     redirect_uri: string;
-//     grant_type: string;
-//   }
+// Google  Oauth call back url
+app.get("/google/callback", async (req: Request, res: Response) => {
+  interface GoogleOAuthData {
+    code: string;
+    client_id: string;
+    client_secret: string;
+    redirect_uri: string;
+    grant_type: string;
+  }
 
-//   const code = req.query.code as string;
+  const code = req.query.code as string;
 
-//   const data: GoogleOAuthData = {
-//     code,
-//     client_id: GOOGLE_CLIENT_ID as string,
-//     client_secret: GOOGLE_CLIENT_SECRET as string,
-//     redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
-//     grant_type: "authorization_code",
-//   };
-
-//   try {
-//     const response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
-//       method: "POST",
-//       body: JSON.stringify(data),
-//     });
-
-//     const access_token_data = await response.json();
-
-//     const { access_token, refresh_token, id_token, expires_in } =
-//       access_token_data;
-
-//     const token_info_response = await fetch(
-//       `${GOOGLE_TOKEN_INFO_URL}?id_token=${id_token}`
-//     );
-
-//     const token_info_data = await token_info_response.json();
-
-//     const { email, name, picture } = token_info_data;
-//     let user = await User.findOne({ email }).select("-password");
-//     if (!user) {
-//       user = await User.create({ name, email, picture: picture });
-//     }
-
-//     res.cookie("access_token", access_token, {
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: "none",
-//       maxAge: expires_in * 1000,
-//     });
-
-//     res.cookie("refresh_token", refresh_token, {
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: "none",
-//     });
-
-//     return res.redirect(`${FRONTEND_URL}`);
-//   } catch (error) {
-//     console.error("ErroreExchanging authentication code for token: ", error);
-//     return res.status(500).send("Authentication failed");
-//   }
-// });
-/////////////////////////////////////////////////////////
-app.get("/google/callback", async (req, res) => {
-  const code = req.query.code;
-
-  const data = {
+  const data: GoogleOAuthData = {
     code,
-    client_id: GOOGLE_CLIENT_ID,
-    client_secret: GOOGLE_CLIENT_SECRET,
+    client_id: GOOGLE_CLIENT_ID as string,
+    client_secret: GOOGLE_CLIENT_SECRET as string,
     redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
     grant_type: "authorization_code",
   };
@@ -154,9 +100,6 @@ app.get("/google/callback", async (req, res) => {
   try {
     const response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(data),
     });
 
@@ -174,7 +117,7 @@ app.get("/google/callback", async (req, res) => {
     const { email, name, picture } = token_info_data;
     let user = await User.findOne({ email }).select("-password");
     if (!user) {
-      user = await User.create({ name, email, picture });
+      user = await User.create({ name, email, picture: picture });
     }
 
     res.cookie("access_token", access_token, {
@@ -190,12 +133,69 @@ app.get("/google/callback", async (req, res) => {
       sameSite: "none",
     });
 
-    return res.redirect(FRONTEND_URL);
+    return res.redirect(`${FRONTEND_URL}`);
   } catch (error) {
-    console.error("Error exchanging authentication code for token: ", error);
+    console.error("ErroreExchanging authentication code for token: ", error);
     return res.status(500).send("Authentication failed");
   }
 });
+/////////////////////////////////////////////////////////
+// app.get("/google/callback", async (req, res) => {
+//   const code = req.query.code;
+
+//   const data = {
+//     code,
+//     client_id: GOOGLE_CLIENT_ID,
+//     client_secret: GOOGLE_CLIENT_SECRET,
+//     redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
+//     grant_type: "authorization_code",
+//   };
+
+//   try {
+//     const response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(data),
+//     });
+
+//     const access_token_data = await response.json();
+
+//     const { access_token, refresh_token, id_token, expires_in } =
+//       access_token_data;
+
+//     const token_info_response = await fetch(
+//       `${GOOGLE_TOKEN_INFO_URL}?id_token=${id_token}`
+//     );
+
+//     const token_info_data = await token_info_response.json();
+
+//     const { email, name, picture } = token_info_data;
+//     let user = await User.findOne({ email }).select("-password");
+//     if (!user) {
+//       user = await User.create({ name, email, picture });
+//     }
+
+//     res.cookie("access_token", access_token, {
+//       httpOnly: true,
+//       secure: true,
+//       sameSite: "none",
+//       maxAge: expires_in * 1000,
+//     });
+
+//     res.cookie("refresh_token", refresh_token, {
+//       httpOnly: true,
+//       secure: true,
+//       sameSite: "none",
+//     });
+
+//     return res.redirect(FRONTEND_URL);
+//   } catch (error) {
+//     console.error("Error exchanging authentication code for token: ", error);
+//     return res.status(500).send("Authentication failed");
+//   }
+// });
 
 /////////////////////////////////////////////////////
 
