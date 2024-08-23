@@ -1,7 +1,6 @@
 import React from "react";
 
 const UserInfo = () => {
-  // const [cookie, setCookie] = useState<string>("");
   const getCookie = async () => {
     try {
       const response = await fetch(
@@ -20,7 +19,6 @@ const UserInfo = () => {
   return (
     <div>
       <button onClick={getCookie}>Click</button>
-      {/* <p>{cookie}</p> */}
     </div>
   );
 };

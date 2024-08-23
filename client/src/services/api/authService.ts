@@ -48,11 +48,6 @@ const isAuthenticated = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_LOCAL_HOST_SERVER}/authentication-status`,
       {
-        // headers: new Headers({
-        //   "Content-Type": "application/json",
-        //   "ngrok-skip-browser-warning": "12345",
-        //   Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
-        // }),
         headers: {
           Authorization: `Bearer ${credential_access_token},${credential_refresh_token}`,
           "Content-Type": "application/json",

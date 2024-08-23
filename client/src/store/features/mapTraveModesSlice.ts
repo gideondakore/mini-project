@@ -1,12 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TravelMode {
-  // travelMode: google.maps.TravelMode;
   travelMode: "DRIVING" | "WALKING";
 }
 
 const initialState: TravelMode = {
-  // travelMode: google.maps.TravelMode.DRIVING,
   travelMode: "DRIVING",
 };
 

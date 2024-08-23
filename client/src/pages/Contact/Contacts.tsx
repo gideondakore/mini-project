@@ -1,33 +1,3 @@
-// import React from "react";
-// import "./Contacts.css";
-// import hostels from "../../pages/MapWorks/hostelMap/data/HostelsDetailData.json";
-
-// const Contacts: React.FC = () => {
-//   return (
-//     <div className="contacts-container">
-//       <h2>Hostel Information</h2>
-//       <table>
-//         <thead>
-//           <tr>
-//             <th>Hostel Name</th>
-//             <th>Contact Information</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {hostels.map((hostel, index) => (
-//             <tr key={index}>
-//               <td>{hostel.name}</td>
-//               <td>{hostel.formatted_phone_number}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default Contacts;
-
 import React, { useState } from "react";
 import "./Contacts.css";
 import hostels from "../../pages/MapWorks/hostelMap/data/HostelsDetailData.json";

@@ -14,12 +14,8 @@ import jwt from "jsonwebtoken";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import axios from "axios";
-// import nodemailer from "nodemailer";
-// import { Server } from "socket.io";
-// import { createServer } from "http";
 import sendMail from "./utils/mail";
 import { MongoClient } from "mongodb";
-// const MongoStore = require(‘connect-mongo’)(session);
 
 dotenv.config();
 
@@ -139,65 +135,6 @@ app.get("/google/callback", async (req: Request, res: Response) => {
     return res.status(500).send("Authentication failed");
   }
 });
-/////////////////////////////////////////////////////////
-// app.get("/google/callback", async (req, res) => {
-//   const code = req.query.code;
-
-//   const data = {
-//     code,
-//     client_id: GOOGLE_CLIENT_ID,
-//     client_secret: GOOGLE_CLIENT_SECRET,
-//     redirect_uri: `${process.env.LOCAL_HOST_SERVER}/google/callback`,
-//     grant_type: "authorization_code",
-//   };
-
-//   try {
-//     const response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(data),
-//     });
-
-//     const access_token_data = await response.json();
-
-//     const { access_token, refresh_token, id_token, expires_in } =
-//       access_token_data;
-
-//     const token_info_response = await fetch(
-//       `${GOOGLE_TOKEN_INFO_URL}?id_token=${id_token}`
-//     );
-
-//     const token_info_data = await token_info_response.json();
-
-//     const { email, name, picture } = token_info_data;
-//     let user = await User.findOne({ email }).select("-password");
-//     if (!user) {
-//       user = await User.create({ name, email, picture });
-//     }
-
-//     res.cookie("access_token", access_token, {
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: "none",
-//       maxAge: expires_in * 1000,
-//     });
-
-//     res.cookie("refresh_token", refresh_token, {
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: "none",
-//     });
-
-//     return res.redirect(FRONTEND_URL);
-//   } catch (error) {
-//     console.error("Error exchanging authentication code for token: ", error);
-//     return res.status(500).send("Authentication failed");
-//   }
-// });
-
-/////////////////////////////////////////////////////
 
 app.get("/api/test", async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refresh_token;

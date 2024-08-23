@@ -318,7 +318,6 @@ const Register = () => {
                       onClick={() => {
                         setOauthType("google");
                       }}
-                      // disabled
                       type="button"
                     >
                       <img src={gLogo} alt="google logo" />

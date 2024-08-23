@@ -64,10 +64,7 @@ const About = () => {
             </div>
             <div className="ceo-signature"></div>
             <p className="ceo-name">Gideon Dakore</p>
-            {/* <div className="ceo-rank"> */}
             <p className="ceo-rank">Co-founder | Ceo</p>
-            {/* <hr /> */}
-            {/* </div> */}
           </div>
           <div className="mystory-ceo-pic"></div>
         </div>
