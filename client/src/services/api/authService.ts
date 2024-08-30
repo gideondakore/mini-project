@@ -21,26 +21,6 @@ const aouthLogin = async () => {
   }
 };
 
-// const aouthLogin = async () => {
-//   const GOOGLE_OAUTH_URL = process.env.REACT_APP_GOOGLE_OAUTH_URL;
-//   const GOOGLE_CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-//   const GOOGLE_CALLBACK_URI = `${process.env.REACT_APP_LOCAL_HOST_SERVER}/google/callback`;
-//   const GOOGLE_OAUTH_SCOPES = [
-//     "https://www.googleapis.com/auth/userinfo.email",
-//     "https://www.googleapis.com/auth/userinfo.profile",
-//   ];
-
-//   try {
-//     const state = "some_state";
-//     const scopes = encodeURIComponent(GOOGLE_OAUTH_SCOPES.join(" "));
-//     const GOOGLE_OAUTH_CONSENT_SCREEN = `${GOOGLE_OAUTH_URL}?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_CALLBACK_URI}&access_type=offline&response_type=code&state=${state}&scope=${scopes}&prompt=consent`;
-//     window.location.href = GOOGLE_OAUTH_CONSENT_SCREEN;
-//   } catch (err) {
-//     throw new Error(`Network error: ${err}`);
-//   }
-// };
-
 const isAuthenticated = async () => {
   const { credential_access_token, credential_refresh_token } = getToken();
 
